@@ -2,12 +2,6 @@
     box-sizing: border-box;
 }
 
-/* :root {
-    --bg-color: #4589FF;
-    --ligth-blue: #005DFF;
-    --menu: #42526E;
-} */
-
 body {
     margin: 0;
     font-family: 'Open sans', sans-serif;
@@ -18,4 +12,19 @@ body {
 
 canvas {
     background-color: black;
+    display: block;
+}
+
+/* Smartphones -------------- */
+@media only screen and (max-width: 720px) {
+    canvas {
+        width: 100%;
+    }
+}
+
+/* Smartphones -------------- */
+@media only screen and (max-height: 480px) {
+    canvas {
+        height: 100vh;
+    }
 }
