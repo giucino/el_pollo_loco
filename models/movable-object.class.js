@@ -63,6 +63,11 @@ class MovableObject extends DrawableObject {
     }
 
 
+    isMovingHorizontally(keyboard) {
+        return keyboard.KEY_RIGHT || keyboard.KEY_LEFT;
+    }
+
+
     playAnimation(images) {
         let i = this.currentImage % images.length;
         let path = images[i];
