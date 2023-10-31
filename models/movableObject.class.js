@@ -1,5 +1,5 @@
 class MovableObject extends DrawableObject {
-    speed = 0.15;
+    speed = 0.09;
     otherDirection = false;
     speedY = 0;
     acceleration = 2.5;
@@ -41,7 +41,7 @@ class MovableObject extends DrawableObject {
     }
 
 
-    hit() {
+    reduceEnergy() {
         this.energy -= 5;
         if (this.energy < 0) {
             this.energy = 0;
@@ -58,7 +58,7 @@ class MovableObject extends DrawableObject {
     }
 
 
-    isDead() {
+    isGameOver() {
         return this.energy == 0;
     }
 
@@ -89,4 +89,12 @@ class MovableObject extends DrawableObject {
     jump() {
         this.speedY = 30;
     }
+
+
+    moveCloudLeft() {
+        setInterval(() => {
+            this.x -= this.speed;
+        }, 1000 / 60)
+    }
+
 }

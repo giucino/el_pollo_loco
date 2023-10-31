@@ -1,12 +1,23 @@
 class World {
     character = new Character();
+    // chicken = new Chicken();
+    // chick = new Chick();
+    // bottle = new ThrowableObject();
     level = level1;
     canvas;
     ctx;
     keyboard;
     camera_x = 0;
-    statusBar = new StatusBar();
+    statusBarHealth = new StatusBarHealth();
+    statusBarBottle = new StatusBarBottle();
+    statusBarCoin = new StatusBarCoin();
+    statusbarHealthEndboss = new StatusbarHealthEndboss();
+    statusbarHealthEndbossLogo = new StatusbarHealthEndbossLogo();
+    bottle = new Bottle();
+    coin = new Coin();
     throwableObjects = [];
+    throw_bottle = new Audio('audio/throw_bottle.flac');
+
 
 
     constructor(canvas, keyboard) {
@@ -34,8 +45,9 @@ class World {
 
     checkThrowObjects() {
         if (this.keyboard.KEY_D) {
-            let bottle = new ThrowableObject(this.character.x + 100, this.character.y + 100);
+            let bottle = new ThrowableObject(this.character.x + 60, this.character.y + 100);
             this.throwableObjects.push(bottle);
+            this.throw_bottle.play();
         }
     }
 
@@ -43,40 +55,54 @@ class World {
     checkCollisions() {
         this.level.enemies.forEach((enemy) => {
             if (this.character.isColliding(enemy)) {
-                this.character.hit();
-                this.statusBar.setPercentage(this.character.energy);
+                this.character.reduceEnergy();
+                this.statusBarHealth.setPercentage(this.character.energy);
             }
         });
     }
 
 
+    // checkBottleCollisions() {
+    //     this.level.enemies.forEach((enemy) => {
+    //         if (this.bottle.isColliding(enemy)) {
+    //             this.chicken.playCollisionAnimation(enemy);
+    //         }
+    //     });
+    // }
+    
+
+
     draw() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height); // Bilder nach Bewegung löschen
 
+
         this.ctx.translate(this.camera_x, 0);
+
+
         this.addObjectsToMap(this.level.backgroundObjects);
-
-        this.ctx.translate(-this.camera_x, 0);
-        // ------ Space for fixed objects ------
-        this.addToMap(this.statusBar);
-        this.ctx.translate(this.camera_x, 0);
-
         this.addToMap(this.character);
         this.addObjectsToMap(this.level.clouds);
         this.addObjectsToMap(this.level.enemies);
         this.addObjectsToMap(this.throwableObjects);
+        this.addObjectsToMap(this.level.bottle);
+        this.addObjectsToMap(this.level.coin);
+
 
         this.ctx.translate(-this.camera_x, 0);
+        // ------ Space for fixed objects ------
+        this.addToMap(this.statusBarHealth);
+        this.addToMap(this.statusBarBottle);
+        this.addToMap(this.statusBarCoin);
+        this.addToMap(this.statusbarHealthEndboss);
+        this.addToMap(this.statusbarHealthEndbossLogo);
+        this.ctx.translate(this.camera_x, 0);
+        this.ctx.translate(-this.camera_x, 0);
 
-        let self = this;
-        requestAnimationFrame(function () {
-            self.draw();
+
+        requestAnimationFrame(() => {
+            this.draw(); //Dieses "this" bezieht sich direkt auf das "this" im äußeren Kontext der Methode.
         });
     }
-
-    //     //Dieses "this" bezieht sich direkt auf das "this" im äußeren Kontext der Methode.
-    //     requestAnimationFrame(() => {
-    //         this.draw();
 
 
     addObjectsToMap(objects) {

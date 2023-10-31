@@ -1,13 +1,12 @@
 class Character extends MovableObject {
 
     height = 280;
-    y = 80;
+    y = 90; 
     speed = 5;
     world;
-    walking_sound = new Audio('audio/running.wav');
+    walking_sound = new Audio('audio/running.mp3');
     jumping_sound = new Audio('audio/fast-jump.mp3');
-    jumping_sound1 = new Audio('audio/jumping.mp3');
-    jumping_sound2 = new Audio('audio/sound_jump.mp3');
+    jumping_sound1 = new Audio('audio/sound_jump.mp3');
 
     IMAGES_STANDING = [
         'img/2_character_pepe/1_idle/idle/I-1.png',
@@ -62,7 +61,7 @@ class Character extends MovableObject {
         'img/2_character_pepe/4_hurt/H-43.png'
     ];
 
-    IMAGES_DEAD = [
+    IMAGES_GAME_OVER = [
         'img/2_character_pepe/5_dead/D-51.png',
         'img/2_character_pepe/5_dead/D-52.png',
         'img/2_character_pepe/5_dead/D-53.png',
@@ -80,15 +79,15 @@ class Character extends MovableObject {
         this.loadImages(this.IMAGES_WALKING);
         this.loadImages(this.IMAGES_JUMPING);
         this.loadImages(this.IMAGES_HURT);
-        this.loadImages(this.IMAGES_DEAD);
+        this.loadImages(this.IMAGES_GAME_OVER);
         this.applyGravity();
         this.animate();
-        this.motion();
+        this.characterMotion();
     }
 
 
 
-    motion() {
+    characterMotion() {
         setInterval(() => {
             this.walking_sound.pause();
             if (this.world.keyboard.KEY_RIGHT && this.x < this.world.level.level_end_x) {
@@ -105,7 +104,7 @@ class Character extends MovableObject {
 
             if (this.world.keyboard.KEY_SPACE && !this.isAboveGround()) {
                 this.jump();
-                this.jumping_sound2.play();
+                this.jumping_sound1.play();
             }
 
             this.world.camera_x = -this.x + 100;
@@ -120,12 +119,12 @@ class Character extends MovableObject {
             const currentTime = new Date().getTime();
             const inactivityDuration = (currentTime - this.lastActivityTime) / 1000;
 
-            if (inactivityDuration > 2) {
+            if (inactivityDuration > 3) {
                 this.playAnimation(this.IMAGES_IDLE);
             } else if (this.isHurt()) {
                 this.playAnimation(this.IMAGES_HURT);
-            } else if (this.isDead()) {
-                this.playAnimation(this.IMAGES_DEAD);
+            } else if (this.isGameOver()) {
+                this.playAnimation(this.IMAGES_GAME_OVER);
             } else if (this.isAboveGround()) {
                 this.playAnimation(this.IMAGES_JUMPING);
             } else if (this.isMovingHorizontally(this.world.keyboard)) {
@@ -134,10 +133,8 @@ class Character extends MovableObject {
                 this.playAnimation(this.IMAGES_STANDING);
             }
         }, 50);
-
         document.addEventListener('keydown', () => {
             this.lastActivityTime = new Date().getTime();
         });
-
     }
 }
