@@ -7,51 +7,53 @@ let keyboard = new Keyboard();
 function init() {
     canvas = document.getElementById('canvas');
     world = new World(canvas, keyboard);
-
     console.log('My character is', world.character);
-
 }
 
 
 window.addEventListener('keydown', (event) => {
-    if (event.keyCode == 37) {
+    const { key, code } = event;
+
+    if (code === 'ArrowLeft') {
         keyboard.KEY_LEFT = true;
     }
-    if (event.keyCode == 39) {
+    if (code === 'ArrowRight') {
         keyboard.KEY_RIGHT = true;
     }
-    if (event.keyCode == 38) {
+    if (code === 'ArrowUp') {
         keyboard.KEY_UP = true;
     }
-    if (event.keyCode == 40) {
+    if (code === 'ArrowDown') {
         keyboard.KEY_DOWN = true;
     }
-    if (event.keyCode == 32) {
+    if (key === ' ') { // Leertaste
         keyboard.KEY_SPACE = true;
     }
-    if (event.keyCode == 68) {
+    if (key === 'd' || event.key === 'D')  {
         keyboard.KEY_D = true;
     }
 });
 
 
 window.addEventListener('keyup', (event) => {
-    if (event.keyCode == 37) {
+    const { key, code } = event;
+
+    if (code === 'ArrowLeft') {
         keyboard.KEY_LEFT = false;
     }
-    if (event.keyCode == 39) {
+    if (code === 'ArrowRight') {
         keyboard.KEY_RIGHT = false;
     }
-    if (event.keyCode == 38) {
+    if (code === 'ArrowUp') {
         keyboard.KEY_UP = false;
     }
-    if (event.keyCode == 40) {
+    if (code === 'ArrowDown') {
         keyboard.KEY_DOWN = false;
     }
-    if (event.keyCode == 32) {
+    if (key === ' ') { // Leertaste
         keyboard.KEY_SPACE = false;
     }
-    if (event.keyCode == 68) {
+    if (key === 'd' || key === 'D') {
         keyboard.KEY_D = false;
     }
 });

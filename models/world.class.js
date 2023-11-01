@@ -13,8 +13,6 @@ class World {
     statusBarCoin = new StatusBarCoin();
     statusbarHealthEndboss = new StatusbarHealthEndboss();
     statusbarHealthEndbossLogo = new StatusbarHealthEndbossLogo();
-    bottle = new Bottle();
-    coin = new Coin();
     throwableObjects = [];
     throw_bottle = new Audio('audio/throw_bottle.flac');
 
@@ -69,7 +67,6 @@ class World {
     //         }
     //     });
     // }
-    
 
 
     draw() {
@@ -80,12 +77,12 @@ class World {
 
 
         this.addObjectsToMap(this.level.backgroundObjects);
-        this.addToMap(this.character);
         this.addObjectsToMap(this.level.clouds);
+        this.addObjectsToMap(this.level.bottles);
+        this.addObjectsToMap(this.level.coin);
+        this.addToMap(this.character);
         this.addObjectsToMap(this.level.enemies);
         this.addObjectsToMap(this.throwableObjects);
-        this.addObjectsToMap(this.level.bottle);
-        this.addObjectsToMap(this.level.coin);
 
 
         this.ctx.translate(-this.camera_x, 0);

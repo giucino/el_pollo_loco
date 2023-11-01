@@ -96,5 +96,4 @@ class MovableObject extends DrawableObject {
             this.x -= this.speed;
         }, 1000 / 60)
     }
-
 }

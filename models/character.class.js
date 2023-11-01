@@ -86,7 +86,6 @@ class Character extends MovableObject {
     }
 
 
-
     characterMotion() {
         setInterval(() => {
             this.walking_sound.pause();
@@ -96,7 +95,7 @@ class Character extends MovableObject {
                 this.walking_sound.play();
             }
 
-            if (this.world.keyboard.KEY_LEFT && this.x > 0) {
+            if (this.world.keyboard.KEY_LEFT && this.x > -680) {
                 this.moveLeft();
                 this.otherDirection = true;
                 this.walking_sound.play();

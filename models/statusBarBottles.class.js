@@ -22,7 +22,6 @@ class StatusBarBottle extends DrawableObject {
     }
 
 
-
     draw(ctx) {
         super.draw(ctx);
         ctx.font = '30px Trochut';

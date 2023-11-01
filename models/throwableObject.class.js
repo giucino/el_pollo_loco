@@ -26,8 +26,8 @@ class ThrowableObject extends MovableObject {
         this.loadImages(this.SALSA_BOTTLE_COLLISION);
         this.x = x;
         this.y = y;
-        this.height = 80;
-        this.width = 60;
+        this.height = 70;
+        this.width = 70;
         this.throwBottle();
     }
 
