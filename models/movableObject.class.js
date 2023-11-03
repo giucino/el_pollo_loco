@@ -5,6 +5,7 @@ class MovableObject extends DrawableObject {
     acceleration = 2.5;
     energy = 100;
     lastHit = 0;
+    lastAction = new Date().getTime();
 
 
     applyGravity() {
@@ -21,7 +22,7 @@ class MovableObject extends DrawableObject {
         if (this instanceof ThrowableObject) { // Throwable object should always fall
             return true;
         } else {
-            return this.y < 155;
+            return this.y < 145;
         }
     }
 
@@ -41,7 +42,7 @@ class MovableObject extends DrawableObject {
     }
 
 
-    reduceEnergy() {
+    reduceEnergy() {   
         this.energy -= 5;
         if (this.energy < 0) {
             this.energy = 0;
@@ -54,7 +55,7 @@ class MovableObject extends DrawableObject {
     isHurt() {
         let timePassed = new Date().getTime() - this.lastHit;
         timePassed = timePassed / 1000;
-        return timePassed < .5;
+        return timePassed < .2;
     }
 
 
@@ -85,9 +86,24 @@ class MovableObject extends DrawableObject {
         this.x -= this.speed;
     }
 
+    
+    characterJump() {
+        if (this.canJump()) {
+            if (!this.isGameOver()) {
+                this.jump();
+            }
+        }
+    }
+
 
     jump() {
         this.speedY = 30;
+        this.lastAction = new Date().getTime();
+    }
+
+
+    canJump() {
+        return this.world.keyboard.SPACE && !this.isAboveGround();
     }
 
 

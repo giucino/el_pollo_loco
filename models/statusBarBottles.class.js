@@ -1,23 +1,21 @@
-class StatusBarBottle extends DrawableObject {
+class StatusBarBottles extends DrawableObject {
     IMAGE_BOTTLE = [
         'img/7_statusbars/3_icons/icon_salsa_bottle.png'
     ];
 
-    id;
     count = 0;
 
-    constructor(id) {
+    constructor() {
         super();
         this.loadImage(this.IMAGE_BOTTLE);
         this.x = 280;
         this.y = 10;
         this.width = 60;
         this.height = 60;
-        this.id = id;
     }
 
 
-    incrementCount() {
+    increaseCountByOne() {
         this.count++;
     }
 
@@ -30,7 +28,7 @@ class StatusBarBottle extends DrawableObject {
     }
 
 
-    decrementCount() {
+    decreaseCountByOne() {
         this.count--;
     }    
 }

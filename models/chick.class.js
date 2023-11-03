@@ -1,6 +1,6 @@
 class Chick extends MovableObject {
     x = 120;
-    y = 370;
+    y = 375;
     height = 50;
     width = 50;
     IMAGES_WALKING = [
@@ -15,11 +15,11 @@ class Chick extends MovableObject {
         this.loadImages(this.IMAGES_WALKING);
         this.x = 200 + Math.random() * 5000;
         this.speed = 0.15 + Math.random() * 0.5;
-        this.animate();
+        this.animateChick();
     }
     
 
-    animate() {
+    animateChick() {
         setInterval(() => {
             this.moveLeft();
         }, 1000 / 60);

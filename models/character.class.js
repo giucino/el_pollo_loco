@@ -1,12 +1,12 @@
 class Character extends MovableObject {
 
-    height = 280;
-    y = 90; 
+    height = 290;
+    y = 145; 
     speed = 5;
     world;
     walking_sound = new Audio('audio/running.mp3');
-    jumping_sound = new Audio('audio/fast-jump.mp3');
-    jumping_sound1 = new Audio('audio/sound_jump.mp3');
+    jumping_sound = new Audio('audio/sound_jump.mp3');
+    hurt_sound = new Audio('audio/hurt.mp3');
 
     IMAGES_STANDING = [
         'img/2_character_pepe/1_idle/idle/I-1.png',
@@ -81,7 +81,7 @@ class Character extends MovableObject {
         this.loadImages(this.IMAGES_HURT);
         this.loadImages(this.IMAGES_GAME_OVER);
         this.applyGravity();
-        this.animate();
+        this.animateCharacter();
         this.characterMotion();
     }
 
@@ -103,7 +103,7 @@ class Character extends MovableObject {
 
             if (this.world.keyboard.KEY_SPACE && !this.isAboveGround()) {
                 this.jump();
-                this.jumping_sound1.play();
+                this.jumping_sound.play();
             }
 
             this.world.camera_x = -this.x + 100;
@@ -111,17 +111,18 @@ class Character extends MovableObject {
     }
 
 
-    animate() {
+    animateCharacter() {
         this.lastActivityTime = new Date().getTime();
 
         setInterval(() => {
             const currentTime = new Date().getTime();
             const inactivityDuration = (currentTime - this.lastActivityTime) / 1000;
 
-            if (inactivityDuration > 3) {
+            if (inactivityDuration > 5) {
                 this.playAnimation(this.IMAGES_IDLE);
             } else if (this.isHurt()) {
                 this.playAnimation(this.IMAGES_HURT);
+                this.hurt_sound.play();
             } else if (this.isGameOver()) {
                 this.playAnimation(this.IMAGES_GAME_OVER);
             } else if (this.isAboveGround()) {

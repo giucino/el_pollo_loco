@@ -1,23 +1,21 @@
-class StatusBarCoin extends DrawableObject {
+class StatusBarCoins extends DrawableObject {
     IMAGE_COIN = [
         'img/7_statusbars/3_icons/icon_coin.png'
     ];
 
-    id;
     count = 0;
 
-    constructor(id) {
+    constructor() {
         super();
         this.loadImage(this.IMAGE_COIN);
         this.x = 350;
         this.y = 10;
         this.width = 60;
         this.height = 60;
-        this.id = id;
     }
 
 
-    incrementCount() {
+    increaseCountByOne() {
         this.count++;
     }
 

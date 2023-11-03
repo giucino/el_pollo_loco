@@ -38,8 +38,8 @@ function generateBottlesStraight(count) {
     let bottlesStraight = [];
 
     for (let i = 0; i < count; i++) {
-        const bottles = new BottleStraight();
-        bottlesStraight.push(bottles);
+        const bottle = new BottleStraight();
+        bottlesStraight.push(bottle);
     }
     return bottlesStraight;
 }
