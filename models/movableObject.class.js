@@ -1,11 +1,19 @@
 class MovableObject extends DrawableObject {
+    offset = {
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+    };
+
     speed = 0.09;
     otherDirection = false;
     speedY = 0;
     acceleration = 2.5;
     energy = 100;
+    energyEndboss = 100;
     lastHit = 0;
-    lastAction = new Date().getTime();
+    jumpTimeStamp = new Date().getTime();
 
 
     applyGravity() {
@@ -13,6 +21,10 @@ class MovableObject extends DrawableObject {
             if (this.isAboveGround() || this.speedY > 0) {
                 this.y -= this.speedY;
                 this.speedY -= this.acceleration;
+
+                if (this instanceof Character && this.y > 145) {
+                    this.y = 145;
+                }
             }
         }, 1000 / 25);
     }
@@ -27,25 +39,30 @@ class MovableObject extends DrawableObject {
     }
 
 
-    // isColliding(obj) {
-    //     return (this.x + this.width) >= obj.x && this.x <= (obj.x + obj.width) &&
-    //         (this.y + this.offsetY + this.height) >= obj.y &&
-    //         (this.y + this.offsetY) <= (obj.y + obj.height) &&
-    //         obj.onCollisionCourse;
-    // }
-
-    isColliding(mo) {
-        return this.x + this.width > mo.x &&
-            this.y + this.height > mo.y &&
-            this.x < mo.x &&
-            this.y < mo.y + mo.height;
+    isColliding(obj) {
+        return (
+            this.x + this.width - this.offset.right > obj.x + obj.offset.left &&
+            this.y + this.height - this.offset.bottom > obj.y + obj.offset.top &&
+            this.x + this.offset.left < obj.x + obj.width - obj.offset.right &&
+            this.y + this.offset.top < obj.y + obj.height - obj.offset.bottom
+        );
     }
 
 
-    reduceEnergy() {   
+    reduceEnergy() {
         this.energy -= 5;
         if (this.energy < 0) {
             this.energy = 0;
+        } else {
+            this.lastHit = new Date().getTime();
+        }
+    }
+
+
+    reduceEnergyEndboss() {
+        this.energyEndboss -= 20;
+        if (this.energyEndboss < 0) {
+            this.energyEndboss = 0;
         } else {
             this.lastHit = new Date().getTime();
         }
@@ -58,9 +75,21 @@ class MovableObject extends DrawableObject {
         return timePassed < .2;
     }
 
+    /**
+   * Checks if the object was hit.
+   * @returns {boolean} - True if the object was hit, false otherwise.
+   */
+    wasHit() {
+        return this.energy < 100;
+    }
+
 
     isGameOver() {
         return this.energy == 0;
+    }
+
+    endbossIsGameOver() {
+        return this.energyEndboss == 0;
     }
 
 
@@ -86,7 +115,7 @@ class MovableObject extends DrawableObject {
         this.x -= this.speed;
     }
 
-    
+
     characterJump() {
         if (this.canJump()) {
             if (!this.isGameOver()) {
@@ -98,18 +127,11 @@ class MovableObject extends DrawableObject {
 
     jump() {
         this.speedY = 30;
-        this.lastAction = new Date().getTime();
+        this.jumpTimeStamp = new Date().getTime();
     }
 
 
     canJump() {
         return this.world.keyboard.SPACE && !this.isAboveGround();
-    }
-
-
-    moveCloudLeft() {
-        setInterval(() => {
-            this.x -= this.speed;
-        }, 1000 / 60)
     }
 }

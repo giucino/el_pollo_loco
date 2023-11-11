@@ -1,12 +1,19 @@
 class Character extends MovableObject {
+    offset = {
+        top: 120,
+        bottom: -10,
+        left: 20,
+        right: 20,
+    };
 
     height = 290;
-    y = 145; 
+    width = 110;
+    y = 145;
     speed = 5;
     world;
-    walking_sound = new Audio('audio/running.mp3');
-    jumping_sound = new Audio('audio/sound_jump.mp3');
-    hurt_sound = new Audio('audio/hurt.mp3');
+    // walkingAudio = new Audio('audio/running.mp3');
+    // jumpingAudio = new Audio('audio/jump.mp3');
+    // hurtAudio = new Audio('audio/hurt.mp3');
 
     IMAGES_STANDING = [
         'img/2_character_pepe/1_idle/idle/I-1.png',
@@ -73,7 +80,8 @@ class Character extends MovableObject {
 
 
     constructor() {
-        super().loadImage('img/2_character_pepe/2_walk/W-21.png');
+        super();
+        this.loadImage('img/2_character_pepe/2_walk/W-21.png');
         this.loadImages(this.IMAGES_STANDING);
         this.loadImages(this.IMAGES_IDLE);
         this.loadImages(this.IMAGES_WALKING);
@@ -88,22 +96,26 @@ class Character extends MovableObject {
 
     characterMotion() {
         setInterval(() => {
-            this.walking_sound.pause();
+            walkingAudio.pause();
             if (this.world.keyboard.KEY_RIGHT && this.x < this.world.level.level_end_x) {
                 this.moveRight();
                 this.otherDirection = false;
-                this.walking_sound.play();
+                walkingAudio.play();
             }
 
             if (this.world.keyboard.KEY_LEFT && this.x > -680) {
                 this.moveLeft();
                 this.otherDirection = true;
-                this.walking_sound.play();
+                walkingAudio.play();
             }
 
             if (this.world.keyboard.KEY_SPACE && !this.isAboveGround()) {
                 this.jump();
-                this.jumping_sound.play();
+                jumpingAudio.play();
+            }
+
+            if (this.isAboveGround() || this.isHurt()) {
+                walkingAudio.pause();
             }
 
             this.world.camera_x = -this.x + 100;
@@ -120,9 +132,10 @@ class Character extends MovableObject {
 
             if (inactivityDuration > 5) {
                 this.playAnimation(this.IMAGES_IDLE);
+                // snoringAudio.play();
             } else if (this.isHurt()) {
                 this.playAnimation(this.IMAGES_HURT);
-                this.hurt_sound.play();
+                // hurtAudio.play();
             } else if (this.isGameOver()) {
                 this.playAnimation(this.IMAGES_GAME_OVER);
             } else if (this.isAboveGround()) {
@@ -131,6 +144,8 @@ class Character extends MovableObject {
                 this.playAnimation(this.IMAGES_WALKING);
             } else {
                 this.playAnimation(this.IMAGES_STANDING);
+                snoringAudio.pause();
+
             }
         }, 50);
         document.addEventListener('keydown', () => {

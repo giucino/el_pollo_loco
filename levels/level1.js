@@ -1,35 +1,11 @@
-// function generateClouds(count) {
-//     let cloudSpacing = 450;
-//     let clouds = [];
-
-//     for (let i = 0; i < count; i++) {
-//         const cloud = new Cloud(-1000 + i * cloudSpacing);
-//         clouds.push(cloud);
-//     }
-//     return clouds;
-// }
-
-
-// function generateClouds(count) {
-//     let cloudSpacing = 450;
-//     let clouds = [];
-//     let i = 0;
-
-//     while (i < count) {
-//         const cloud = new Cloud(-1000 + i * cloudSpacing);
-//         clouds.push(cloud);
-//         i++;
-//     }
-//     return clouds;
-// }
-
-
 function generateClouds(count) {
-    const cloudSpacing = 450;
+    let cloudSpacing = 450;
+    let clouds = [];
 
-    const clouds = Array.from({ length: count }, (_, index) => {
-        return new Cloud(-1000 + index * cloudSpacing);
-    });
+    for (let i = 0; i < count; i++) {
+        const cloud = new Cloud(-1000 + i * cloudSpacing);
+        clouds.push(cloud);
+    }
     return clouds;
 }
 
@@ -79,9 +55,6 @@ function generateCoins(count) {
 //             case 'Chick':
 //                 enemy = new Chick();
 //                 break;
-//             case 'Endboss':
-//                 enemy = new Endboss();
-//                 break;
 //         }
 //         enemies.push(enemy);
 //     }
@@ -92,8 +65,7 @@ function generateCoins(count) {
 function generateEnemies(count, enemyType) {
     const enemyConstructors = {
         'Chicken': Chicken,
-        'Chick': Chick,
-        'Endboss': Endboss
+        'Chick': Chick
     };
 
     let enemies = [];
@@ -120,9 +92,8 @@ const bottles = [...bottlesStraight, ...leftTiltedBottles, ...rightTiltedBottles
 
 
 const chickens = generateEnemies(10, 'Chicken');
-const chicks =  generateEnemies(7, 'Chick');
-const endboss =  generateEnemies(1, 'Endboss');
-const enemies = [...chickens, ...chicks, ...endboss]; 
+const chicks = generateEnemies(7, 'Chick');
+const enemies = [...chickens, ...chicks];
 
 
 const level1 = new Level(
@@ -197,6 +168,8 @@ const level1 = new Level(
     clouds,
 
     enemies,
+
+    [new Endboss()],
 
     bottles,
 

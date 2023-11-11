@@ -1,22 +1,21 @@
 class World {
-    character = new Character();
-    // chicken = new Chicken();
-    // chick = new Chick();
-    // bottle = new ThrowableObject();
-    level = level1;
     canvas;
     ctx;
     keyboard;
     camera_x = 0;
+    level = level1;
+    character = new Character();
+    endboss = new Endboss();
     statusBarHealth = new StatusBarHealth();
     statusBarBottles = new StatusBarBottles();
     statusBarCoins = new StatusBarCoins();
-    statusbarHealthEndboss = new StatusbarHealthEndboss();
-    statusbarHealthEndbossLogo = new StatusbarHealthEndbossLogo();
+    statusBarHealthEndboss = new StatusBarHealthEndboss();
     throwableObjects = [];
-    throw_bottle = new Audio('audio/throw_bottle.flac');
-    // coin = new Coin();
-    // bottle = new BottleStraight();
+    coinSounds;
+    bottleSounds;
+    collectedCoins;
+    collectedBottles;
+    firstContactMade;
 
 
     constructor(canvas, keyboard) {
@@ -30,59 +29,41 @@ class World {
         this.bottleSounds = new Map();
         this.collectedCoins = [];
         this.collectedBottles = [];
+        this.statusBarHealthEndboss.visible = false;
+        this.firstContactMade = false; 
     }
 
 
     setWorld() {
         this.character.world = this;
+        this.endboss.world = this;
     }
 
 
     run() {
         setInterval(() => {
-            this.checkCollisions();
-            this.checkThrowObjects();
+            this.draw();
+            this.checkThrowableObjects();
+            this.checkCollisionEnemy();
+            this.bottleIsHurtingEnemy();
+            this.checkCollisionEndboss();
+            this.bottleIsHurtingEndboss();
             this.collectCoins();
             this.collectBottles();
+            // this.reachedEndboss();
         }, 200);
     }
 
 
-    checkThrowObjects() {
-        if (this.keyboard.KEY_D && this.collectedBottles.length > 0) {
-            this.statusBarBottles.decreaseCountByOne();
-            let bottle = new ThrowableObject(
-                this.character.x + 60,
-                this.character.y + 100
-            );
-            this.throwableObjects.push(bottle);
-            this.throw_bottle.play();
-            this.collectedBottles.pop();
-        }
-    }
-
-
-    checkCollisions() {
-        this.level.enemies.forEach((enemy) => {
-            if (this.character.isColliding(enemy)) {
-                this.character.reduceEnergy();
-                this.statusBarHealth.setPercentage(this.character.energy);
-            }
-        });
-    }
-
-
-    // checkBottleCollisions() {
-    //     this.level.enemies.forEach((enemy) => {
-    //         if (this.bottle.isColliding(enemy)) {
-    //             this.chicken.playCollisionAnimation(enemy);
-    //         }
-    //     });
-    // }
-
-
     draw() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height); // Bilder nach Bewegung löschen
+
+        if (this.character.otherDirection) {
+            this.camera_x = -this.character.x + this.canvas.width - 450;
+        } else {
+            this.camera_x = -this.character.x + 200;
+        }
+
 
 
         this.ctx.translate(this.camera_x, 0);
@@ -92,18 +73,21 @@ class World {
         this.addObjectsToMap(this.level.clouds);
         this.addObjectsToMap(this.level.bottles);
         this.addObjectsToMap(this.level.coins);
-        this.addToMap(this.character);
+        this.addMovableObjectsToMap(this.character);
+        this.addMovableObjectsToMap(this.endboss);
         this.addObjectsToMap(this.level.enemies);
         this.addObjectsToMap(this.throwableObjects);
 
 
         this.ctx.translate(-this.camera_x, 0);
         // ------ Space for fixed objects ------
-        this.addToMap(this.statusBarHealth);
-        this.addToMap(this.statusBarBottles);
-        this.addToMap(this.statusBarCoins);
-        this.addToMap(this.statusbarHealthEndboss);
-        this.addToMap(this.statusbarHealthEndbossLogo);
+        this.addMovableObjectsToMap(this.statusBarHealth);
+        this.addMovableObjectsToMap(this.statusBarBottles);
+        this.addMovableObjectsToMap(this.statusBarCoins);
+        this.addMovableObjectsToMap(this.statusBarHealthEndboss);
+        // if (this.statusBarHealthEndboss.visible) {
+        //     this.addMovableObjectsToMap(this.statusBarHealthEndboss);
+        // }
         this.ctx.translate(this.camera_x, 0);
         this.ctx.translate(-this.camera_x, 0);
 
@@ -116,17 +100,17 @@ class World {
 
     addObjectsToMap(objects) {
         objects.forEach(o => {
-            this.addToMap(o);
+            this.addMovableObjectsToMap(o);
         });
     }
 
 
-    addToMap(mo) {
+    addMovableObjectsToMap(mo) {
         if (mo.otherDirection) {
             this.flipImage(mo);
         }
         mo.draw(this.ctx);
-        mo.drawFrame(this.ctx);
+        // mo.drawFrame(this.ctx);
 
         if (mo.otherDirection) {
             this.flipImageBack(mo);
@@ -148,7 +132,190 @@ class World {
     }
 
 
-    // Gemeinsame Funktion zum Sammeln von Münzen und Flaschen
+    checkThrowableObjects() {
+        if (this.keyboard.KEY_D && this.collectedBottles.length > 0) {
+            this.statusBarBottles.decreaseCountByOne();
+
+            let bottleX = this.character.x + (this.character.otherDirection ? -10 : 50);
+            let bottleY = this.character.y + 100;
+            let bottleDirection = this.character.otherDirection;
+
+            let bottle = new ThrowableObject(bottleX, bottleY, bottleDirection);
+            this.throwableObjects.push(bottle);
+            throwBottleAudio.play();
+            this.collectedBottles.pop();
+        }
+    }
+
+
+    checkCollisionEnemy() {
+        this.level.enemies.forEach((enemy) => {
+            if (this.characterJumpAttack(enemy)) {
+                this.eliminateEnemy(enemy);
+                this.character.jump();
+            }
+            if (this.enemyCanDamageCharacter(enemy)) {
+                this.handleCharacterHealth();
+            }
+        });
+    }
+
+
+    characterJumpAttack(enemy) {
+        return !this.character.isHurt() && this.character.isColliding(enemy) && this.character.isAboveGround() && this.character.speedY < 0;
+    }
+
+
+
+    eliminateEnemy(enemy) {
+        const indexEnemy = this.level.enemies.findIndex(e => e === enemy);
+        if (indexEnemy !== -1) {
+            this.level.enemies[indexEnemy].energy = 0;
+            this.delayedRemoveEnemy(indexEnemy);
+        }
+    }
+
+
+    // eliminateEnemy(enemy) {
+    //     let indexEnemy = -1;
+    //     for (let i = 0; i < this.level.enemies.length; i++) {
+    //         if (this.level.enemies[i] === enemy) {
+    //             indexEnemy = i;
+    //         }
+    //     }
+    //     if (indexEnemy !== -1) {
+    //         this.level.enemies[indexEnemy].energy = 0;
+    //         this.delayedRemoveEnemy(indexEnemy);
+    //     }
+    // }
+
+
+    delayedRemoveEnemy(enemy) {
+        setTimeout(() => {
+            this.level.enemies.splice(enemy, 1);
+        }, 500);
+    }
+
+
+
+    enemyCanDamageCharacter(enemy) {
+        return this.character.isColliding(enemy) && !this.character.isHurt() && !this.character.isAboveGround();
+    }
+
+
+
+    handleCharacterHealth() {
+        if (this.characterCanBeHurt()) {
+            this.character.reduceEnergy();
+            this.statusBarHealth.setPercentage(this.character.energy);
+        }
+    }
+
+
+    characterCanBeHurt() {
+        return !this.character.isHurt() && !this.character.isGameOver();
+    }
+
+
+    bottleIsHurtingEnemy() {
+        this.throwableObjects.forEach((bottle) => {
+            this.level.enemies.forEach((enemy) => {
+                if (!bottle.isBursted && bottle.isColliding(enemy) && !enemy.isGameOver()) {
+                    this.eliminateEnemy(enemy);
+                    bottle.isBursted = true;
+                }
+            });
+        });
+    }
+
+
+    checkCollisionEndboss() {
+        this.level.endboss.forEach((endboss) => {
+            if (this.character.isColliding(endboss)) {
+                this.character.reduceEnergy();
+                this.statusBarHealth.setPercentage(this.character.energy);
+            }
+        });
+    }
+
+
+    bottleIsHurtingEndboss() {
+        this.throwableObjects.forEach((bottle) => {
+            if (!bottle.isBursted && this.isBottleHittingEndboss(bottle)) {
+                this.handleEndbossHealth();
+                bottle.isBursted = true;
+            }
+        });
+    }
+
+
+    isBottleHittingEndboss(bottle) {
+        return this.endboss.isColliding(bottle) && !this.endboss.isHurt();
+    }
+
+
+    handleEndbossHealth() {
+        // this.endboss.isAlarmed = false;
+        this.endboss.reduceEnergyEndboss();
+        this.statusBarHealthEndboss.setPercentage(this.endboss.energyEndboss);
+        console.log(this.endboss.energyEndboss);
+        // playAudio("chickenHit");
+    }
+
+
+    reachedEndboss() {
+        if (this.isCharacterNearEndboss()) {
+            console.log('Character is near endboss');
+
+            this.statusBarHealthEndboss.visible = true;
+            this.firstContactMade = true;
+        }
+    }
+
+
+    // reachedEndboss() {
+    //     console.log('reachedEndboss called');
+    //     console.log('isCharacterNearEndboss:', this.isCharacterNearEndboss());
+    //     if (this.isCharacterNearEndboss()) {
+    //         console.log('Character is near endboss');
+    //         this.statusBarHealthEndboss.visible = true;
+    //         this.firstContactMade = true;
+    //     }
+    // }
+
+
+    // isCharacterNearEndboss() {
+    //     return !this.firstContactMade && Math.abs(this.character.x - this.endboss.x) <= 800;
+    // }
+
+
+    // triggerEndbossEncounter() { 
+    //     this.statusBarHealthEndboss.visible = true;
+    //     this.firstContactMade = true;
+    // }
+
+
+
+
+    // /**
+    //  * Activates the endboss and plays audio if conditions are met.
+    //  */
+    // activatingEndboss() {
+    //     this.statusBarHealthEndboss.toggleVisibility(true);
+    //     // this.endboss.isAlarmed = true;
+
+    //     if (!this.endboss.energy == 0) {
+    //         if (!this.character.isGameOver()) {
+    //             // endbossAudio.play();
+    //             // playAudio("endboss");
+    //             // pauseAudio("backgroundSound");
+    //         }
+    //     }
+    // }
+
+
+
+
     collectItems(items, itemSounds, statusBar, canCollectItem, itemSoundFile) {
         items.forEach((item, index) => {
             if (this.characterCanCollectItem(item, canCollectItem)) {
@@ -161,7 +328,6 @@ class World {
     }
 
 
-    // Sammeln von Münzen
     collectCoins() {
         this.collectItems(
             this.level.coins,
@@ -173,19 +339,17 @@ class World {
     }
 
 
-    // Sammeln von Flaschen
     collectBottles() {
         this.collectItems(
             this.level.bottles,
             this.bottleSounds,
             this.statusBarBottles,
             (bottle) => this.characterCanCollectItem(bottle),
-            'audio/collect_bottle2.mp3'  
+            'audio/collect_bottle.mp3'
         );
     }
 
 
-    // Gemeinsame Funktion zum Abspielen von Item-Sound
     playItemSound(item, itemSounds, itemSoundFile) {
         if (!itemSounds.has(item)) {
             const sound = new Audio(itemSoundFile);
@@ -196,7 +360,6 @@ class World {
     }
 
 
-    // Gemeinsame Funktion zur Überprüfung, ob der Charakter ein Item sammeln kann
     characterCanCollectItem(item) {
         return this.character.isColliding(item) && !this.character.isHurt();
     }
@@ -209,7 +372,6 @@ class World {
             this.collectedCoins.push(item);
         }
     }
-
 
 
     // collectCoins() {

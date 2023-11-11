@@ -8,6 +8,7 @@ class Keyboard {
 
     isSpacePressed = true;
 
+    
     /**
      * Constructor for the Keyboard class.
      * Initializes keyboard events for both physical keyboard and touchpad.
@@ -88,4 +89,83 @@ class Keyboard {
             }
         });
     }
+
+
+    //     /**
+    //  * Sets up touchpad events for touch start and end.
+    //  */
+    //     eventTouchpad() {
+    //         this.checkButtonsArePressed();
+    //         this.checkButtonsAreReleased();
+    //     }
+    
+    //     /**
+    //      * Checks for touchpad buttons that are pressed and updates corresponding properties.
+    //      */
+    //     checkButtonsArePressed() {
+    //         setTimeout(() => {
+    //             document.getElementById("btnRight").addEventListener(
+    //                 "touchstart",
+    //                 (e) => {
+    //                     e.preventDefault();
+    //                     this.KEY_RIGHT = true;
+    //                 },
+    //                 { passive: false }
+    //             );
+    
+    //             document.getElementById("btnLeft").addEventListener(
+    //                 "touchstart",
+    //                 (e) => {
+    //                     e.preventDefault();
+    //                     this.KEY_LEFT = true;
+    //                 },
+    //                 { passive: false }
+    //             );
+    
+    //             document.getElementById("btnJump").addEventListener(
+    //                 "touchstart",
+    //                 (e) => {
+    //                     e.preventDefault();
+    //                     this.KEY_SPACE = true;
+    //                 },
+    //                 { passive: false }
+    //             );
+    
+    //             document.getElementById("btnThrow").addEventListener(
+    //                 "touchstart",
+    //                 (e) => {
+    //                     e.preventDefault();
+    //                     this.KEY_D = true;
+    //                 },
+    //                 { passive: false }
+    //             );
+    //         }, 500);
+    //     }
+    
+    //     /**
+    //      * Checks for touchpad buttons that are released and updates corresponding properties.
+    //      */
+    //     checkButtonsAreReleased() {
+    //         setTimeout(() => {
+    //             document.getElementById("btnRight").addEventListener("touchend", (e) => {
+    //                 e.preventDefault();
+    //                 this.KEY_RIGHT = false;
+    //             });
+    
+    //             document.getElementById("btnLeft").addEventListener("touchend", (e) => {
+    //                 e.preventDefault();
+    //                 this.KEY_LEFT = false;
+    //             });
+    
+    //             document.getElementById("btnJump").addEventListener("touchend", (e) => {
+    //                 e.preventDefault();
+    //                 this.KEY_SPACE = false;
+    //             });
+    
+    //             document.getElementById("btnThrow").addEventListener("touchend", (e) => {
+    //                 e.preventDefault();
+    //                 this.KEY_D = false;
+    //             });
+    //         }, 500);
+    //     }
 }
