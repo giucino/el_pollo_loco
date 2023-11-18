@@ -6,9 +6,9 @@ class Keyboard {
     KEY_SPACE = false;
     KEY_D = false;
 
-    isSpacePressed = true;
+    isKeyPressed = true;
 
-    
+
     /**
      * Constructor for the Keyboard class.
      * Initializes keyboard events for both physical keyboard and touchpad.
@@ -37,28 +37,34 @@ class Keyboard {
                 keyboard.KEY_RIGHT = true;
             }
             if (code === 'ArrowUp') {
-                keyboard.KEY_UP = true;
+                if (this.isKeyPressed) {
+                    keyboard.KEY_UP = true;
+                }
+                setTimeout(() => {
+                    keyboard.KEY_UP = false;
+                }, 500);
+                this.isKeyPressed = false;
             }
             if (code === 'ArrowDown') {
                 keyboard.KEY_DOWN = true;
             }
             if (key === ' ') {
-                if (this.isSpacePressed) {
+                if (this.isKeyPressed) {
                     keyboard.KEY_SPACE = true;
                 }
                 setTimeout(() => {
                     keyboard.KEY_SPACE = false;
                 }, 500);
-                this.isSpacePressed = false;
+                this.isKeyPressed = false;
             }
             if (key === 'd' || event.key === 'D') {
-                if (this.isSpacePressed) {
+                if (this.isKeyPressed) {
                     keyboard.KEY_D = true;
                 }
                 setTimeout(() => {
                     keyboard.KEY_D = false;
                 }, 500);
-                this.isSpacePressed = false;
+                this.isKeyPressed = false;
             }
         });
     }
@@ -75,17 +81,18 @@ class Keyboard {
             }
             if (code === 'ArrowUp') {
                 keyboard.KEY_UP = false;
+                this.isKeyPressed = true;
             }
             if (code === 'ArrowDown') {
                 keyboard.KEY_DOWN = false;
             }
             if (key === ' ') {
                 keyboard.KEY_SPACE = false;
-                this.isSpacePressed = true;
+                this.isKeyPressed = true;
             }
             if (key === 'd' || key === 'D') {
                 keyboard.KEY_D = false;
-                this.isSpacePressed = true;
+                this.isKeyPressed = true;
             }
         });
     }
@@ -98,7 +105,7 @@ class Keyboard {
     //         this.checkButtonsArePressed();
     //         this.checkButtonsAreReleased();
     //     }
-    
+
     //     /**
     //      * Checks for touchpad buttons that are pressed and updates corresponding properties.
     //      */
@@ -112,7 +119,7 @@ class Keyboard {
     //                 },
     //                 { passive: false }
     //             );
-    
+
     //             document.getElementById("btnLeft").addEventListener(
     //                 "touchstart",
     //                 (e) => {
@@ -121,7 +128,7 @@ class Keyboard {
     //                 },
     //                 { passive: false }
     //             );
-    
+
     //             document.getElementById("btnJump").addEventListener(
     //                 "touchstart",
     //                 (e) => {
@@ -130,7 +137,7 @@ class Keyboard {
     //                 },
     //                 { passive: false }
     //             );
-    
+
     //             document.getElementById("btnThrow").addEventListener(
     //                 "touchstart",
     //                 (e) => {
@@ -141,7 +148,7 @@ class Keyboard {
     //             );
     //         }, 500);
     //     }
-    
+
     //     /**
     //      * Checks for touchpad buttons that are released and updates corresponding properties.
     //      */
@@ -151,17 +158,17 @@ class Keyboard {
     //                 e.preventDefault();
     //                 this.KEY_RIGHT = false;
     //             });
-    
+
     //             document.getElementById("btnLeft").addEventListener("touchend", (e) => {
     //                 e.preventDefault();
     //                 this.KEY_LEFT = false;
     //             });
-    
+
     //             document.getElementById("btnJump").addEventListener("touchend", (e) => {
     //                 e.preventDefault();
     //                 this.KEY_SPACE = false;
     //             });
-    
+
     //             document.getElementById("btnThrow").addEventListener("touchend", (e) => {
     //                 e.preventDefault();
     //                 this.KEY_D = false;

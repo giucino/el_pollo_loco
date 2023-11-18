@@ -6,10 +6,20 @@ let character;
 
 
 function init() {
+    initLevel();
     canvas = document.getElementById('canvas');
     world = new World(canvas, keyboard);
-    console.log('My character is', world.character);
 }
+
+
+function startGame() {
+    init();
+    document.getElementById('startScreen').style.display = 'none';
+    // backgroundMusic.play();  
+}
+
+
+
 
 
 // window.addEventListener('keydown', (event) => {

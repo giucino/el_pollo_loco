@@ -30,7 +30,7 @@ class World {
         this.collectedCoins = [];
         this.collectedBottles = [];
         this.statusBarHealthEndboss.visible = false;
-        this.firstContactMade = false; 
+        this.firstContactMade = false;
     }
 
 
@@ -42,7 +42,6 @@ class World {
 
     run() {
         setInterval(() => {
-            this.draw();
             this.checkThrowableObjects();
             this.checkCollisionEnemy();
             this.bottleIsHurtingEnemy();
@@ -50,7 +49,7 @@ class World {
             this.bottleIsHurtingEndboss();
             this.collectCoins();
             this.collectBottles();
-            // this.reachedEndboss();
+            this.reachedEndboss();
         }, 200);
     }
 
@@ -69,7 +68,15 @@ class World {
         this.ctx.translate(this.camera_x, 0);
 
 
-        this.addObjectsToMap(this.level.backgroundObjects);
+        // ------ Space for moving objects ------
+        if (this.character.isMoving) {
+            this.level.backgroundObjects.forEach(bgObject => {
+                bgObject.moveBackground(this.character.otherDirection);
+                this.addMovableObjectsToMap(bgObject);
+            });
+        } else {
+            this.addObjectsToMap(this.level.backgroundObjects);
+        }
         this.addObjectsToMap(this.level.clouds);
         this.addObjectsToMap(this.level.bottles);
         this.addObjectsToMap(this.level.coins);
@@ -84,10 +91,9 @@ class World {
         this.addMovableObjectsToMap(this.statusBarHealth);
         this.addMovableObjectsToMap(this.statusBarBottles);
         this.addMovableObjectsToMap(this.statusBarCoins);
-        this.addMovableObjectsToMap(this.statusBarHealthEndboss);
-        // if (this.statusBarHealthEndboss.visible) {
-        //     this.addMovableObjectsToMap(this.statusBarHealthEndboss);
-        // }
+        if (this.statusBarHealthEndboss.visible) {
+            this.addMovableObjectsToMap(this.statusBarHealthEndboss);
+        }
         this.ctx.translate(this.camera_x, 0);
         this.ctx.translate(-this.camera_x, 0);
 
@@ -111,6 +117,7 @@ class World {
         }
         mo.draw(this.ctx);
         // mo.drawFrame(this.ctx);
+        // mo.drawInnerFrame(this.ctx);
 
         if (mo.otherDirection) {
             this.flipImageBack(mo);
@@ -197,11 +204,9 @@ class World {
     }
 
 
-
     enemyCanDamageCharacter(enemy) {
         return this.character.isColliding(enemy) && !this.character.isHurt() && !this.character.isAboveGround();
     }
-
 
 
     handleCharacterHealth() {
@@ -229,13 +234,39 @@ class World {
     }
 
 
+    // checkCollisionEndboss() {
+    //     this.level.endboss.forEach((endboss) => {
+    //         if (this.character.isColliding(endboss)) {
+    //             this.character.reduceEnergy();
+    //             this.statusBarHealth.setPercentage(this.character.energy);
+    //         }
+    //     });
+    // }
+
+
+    // checkCollisionEndboss() {
+    //     this.level.endboss.forEach((endboss) => {
+    //         if (this.character.isColliding(endboss)) {
+    //             console.log('Collision detected');
+    //             this.character.reduceEnergy();
+    //             this.statusBarHealth.setPercentage(this.character.energy);
+    //         } 
+    //     });
+    // }
+
+
     checkCollisionEndboss() {
         this.level.endboss.forEach((endboss) => {
-            if (this.character.isColliding(endboss)) {
-                this.character.reduceEnergy();
-                this.statusBarHealth.setPercentage(this.character.energy);
+            if (this.endbossCanDamageCharacter(endboss)) {
+                this.handleCharacterHealth();
+                console.log('Collision detected');
             }
         });
+    }
+
+
+    endbossCanDamageCharacter(endboss) {
+        return this.character.isColliding(endboss) && !this.character.isHurt() && !this.character.isAboveGround();
     }
 
 
@@ -255,65 +286,31 @@ class World {
 
 
     handleEndbossHealth() {
-        // this.endboss.isAlarmed = false;
         this.endboss.reduceEnergyEndboss();
         this.statusBarHealthEndboss.setPercentage(this.endboss.energyEndboss);
-        console.log(this.endboss.energyEndboss);
         // playAudio("chickenHit");
     }
 
 
     reachedEndboss() {
-        if (this.isCharacterNearEndboss()) {
-            console.log('Character is near endboss');
-
-            this.statusBarHealthEndboss.visible = true;
-            this.firstContactMade = true;
+        if (this.firstContactMade) {
+            return;
+        }
+        if (!this.firstContactMade && this.isCharacterNearEndboss()) {
+            this.triggerEndbossEncounter();
         }
     }
 
 
-    // reachedEndboss() {
-    //     console.log('reachedEndboss called');
-    //     console.log('isCharacterNearEndboss:', this.isCharacterNearEndboss());
-    //     if (this.isCharacterNearEndboss()) {
-    //         console.log('Character is near endboss');
-    //         this.statusBarHealthEndboss.visible = true;
-    //         this.firstContactMade = true;
-    //     }
-    // }
+    isCharacterNearEndboss() {
+        return Math.abs(this.character.x - this.endboss.x) <= 800;
+    }
 
 
-    // isCharacterNearEndboss() {
-    //     return !this.firstContactMade && Math.abs(this.character.x - this.endboss.x) <= 800;
-    // }
-
-
-    // triggerEndbossEncounter() { 
-    //     this.statusBarHealthEndboss.visible = true;
-    //     this.firstContactMade = true;
-    // }
-
-
-
-
-    // /**
-    //  * Activates the endboss and plays audio if conditions are met.
-    //  */
-    // activatingEndboss() {
-    //     this.statusBarHealthEndboss.toggleVisibility(true);
-    //     // this.endboss.isAlarmed = true;
-
-    //     if (!this.endboss.energy == 0) {
-    //         if (!this.character.isGameOver()) {
-    //             // endbossAudio.play();
-    //             // playAudio("endboss");
-    //             // pauseAudio("backgroundSound");
-    //         }
-    //     }
-    // }
-
-
+    triggerEndbossEncounter() {
+        this.firstContactMade = true;
+        this.statusBarHealthEndboss.visible = true;
+    }
 
 
     collectItems(items, itemSounds, statusBar, canCollectItem, itemSoundFile) {
@@ -334,28 +331,27 @@ class World {
             this.coinSounds,
             this.statusBarCoins,
             (coin) => this.characterCanCollectItem(coin),
-            'audio/coin.mp3'
+            coinAudio
         );
     }
-
-
+    
+    
     collectBottles() {
         this.collectItems(
             this.level.bottles,
             this.bottleSounds,
             this.statusBarBottles,
             (bottle) => this.characterCanCollectItem(bottle),
-            'audio/collect_bottle.mp3'
+            collectBottleAudio 
         );
     }
-
+    
 
     playItemSound(item, itemSounds, itemSoundFile) {
         if (!itemSounds.has(item)) {
-            const sound = new Audio(itemSoundFile);
-            itemSounds.set(item, sound);
+            itemSounds.set(item, itemSoundFile);
         }
-        const sound = itemSounds.get(item);
+        const sound = new Audio(itemSoundFile.src);        
         sound.play();
     }
 
@@ -395,11 +391,6 @@ class World {
     // }
 
 
-    // /**
-    //   * Checks if the character should collect a coin.
-    //   * @param {DrawableObject} coin - The coin to check collision with.
-    //   * @returns {boolean} - True if the character should collect the coin; otherwise, false.
-    //   */
     // characterCanCollectCoin(coin) {
     //     return this.character.isColliding(coin) && !this.character.isHurt();
     // }

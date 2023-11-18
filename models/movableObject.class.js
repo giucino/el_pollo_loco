@@ -7,6 +7,7 @@ class MovableObject extends DrawableObject {
     };
 
     speed = 0.09;
+    endbossSpeed = 30;
     otherDirection = false;
     speedY = 0;
     acceleration = 2.5;
@@ -14,6 +15,42 @@ class MovableObject extends DrawableObject {
     energyEndboss = 100;
     lastHit = 0;
     jumpTimeStamp = new Date().getTime();
+
+
+    playAnimation(images) {
+        let i = this.currentImage % images.length;
+        let path = images[i];
+        this.img = this.imageCache[path];
+        this.currentImage++;
+    }
+
+
+    isColliding(mo) {
+        return (
+            this.x + this.width - this.offset.right > mo.x + mo.offset.left &&
+            this.y + this.height - this.offset.bottom > mo.y + mo.offset.top &&
+            this.x + this.offset.left < mo.x + mo.width - mo.offset.right &&
+            this.y + this.offset.top < mo.y + mo.height - mo.offset.bottom
+        );
+    }
+
+
+    // isColliding(mo) {
+    //     const colliding = (
+    //         this.x + this.width - this.offset.right > mo.x + mo.offset.left &&
+    //         this.y + this.height - this.offset.bottom > mo.y + mo.offset.top &&
+    //         this.x + this.offset.left < mo.x + mo.width - mo.offset.right &&
+    //         this.y + this.offset.top < mo.y + mo.height - mo.offset.bottom
+    //     );
+    //     return colliding;
+    // }
+
+
+    // isColliding(mo) {
+    //     return (this.X + this.width) >= mo.X && this.X <= (mo.X + mo.width) &&
+    //         (this.Y + this.offsetY + this.height) >= mo.Y &&
+    //         (this.Y + this.offsetY) <= (mo.Y + mo.height);
+    // }
 
 
     applyGravity() {
@@ -39,16 +76,6 @@ class MovableObject extends DrawableObject {
     }
 
 
-    isColliding(obj) {
-        return (
-            this.x + this.width - this.offset.right > obj.x + obj.offset.left &&
-            this.y + this.height - this.offset.bottom > obj.y + obj.offset.top &&
-            this.x + this.offset.left < obj.x + obj.width - obj.offset.right &&
-            this.y + this.offset.top < obj.y + obj.height - obj.offset.bottom
-        );
-    }
-
-
     reduceEnergy() {
         this.energy -= 5;
         if (this.energy < 0) {
@@ -56,6 +83,29 @@ class MovableObject extends DrawableObject {
         } else {
             this.lastHit = new Date().getTime();
         }
+    }
+
+
+    isHurt() {
+        let timePassed = new Date().getTime() - this.lastHit;
+        timePassed = timePassed / 1000;
+        return timePassed < .2;
+    }
+
+
+    isGameOver() {
+        return this.energy == 0;
+    }
+
+
+    isMovingHorizontally(keyboard) {
+        return keyboard.KEY_RIGHT || keyboard.KEY_LEFT;
+    }
+
+
+    jump() {
+        this.speedY = 30;
+        this.jumpTimeStamp = new Date().getTime();
     }
 
 
@@ -69,40 +119,31 @@ class MovableObject extends DrawableObject {
     }
 
 
-    isHurt() {
-        let timePassed = new Date().getTime() - this.lastHit;
-        timePassed = timePassed / 1000;
-        return timePassed < .2;
-    }
-
-    /**
-   * Checks if the object was hit.
-   * @returns {boolean} - True if the object was hit, false otherwise.
-   */
     wasHit() {
-        return this.energy < 100;
+        this.isHurt();
+        return this.energyEndboss < 100;
     }
 
 
-    isGameOver() {
-        return this.energy == 0;
+    // endbossMoveLeft() {
+    //     this.x -= this.endbossSpeed;
+    //     // console.log("endbossSpeed:", this.endbossSpeed)
+    // }
+
+    endbossMoveLeft() {
+        this.x -= this.endbossSpeed;
+        // if (this.x < 840) {
+        //     this.x += this.endbossMoveRight();
+        // }
     }
+
+    // endbossMoveRight() {
+    //     this.x += this.endbossSpeed;
+    // }
+
 
     endbossIsGameOver() {
         return this.energyEndboss == 0;
-    }
-
-
-    isMovingHorizontally(keyboard) {
-        return keyboard.KEY_RIGHT || keyboard.KEY_LEFT;
-    }
-
-
-    playAnimation(images) {
-        let i = this.currentImage % images.length;
-        let path = images[i];
-        this.img = this.imageCache[path];
-        this.currentImage++;
     }
 
 
@@ -113,25 +154,5 @@ class MovableObject extends DrawableObject {
 
     moveLeft() {
         this.x -= this.speed;
-    }
-
-
-    characterJump() {
-        if (this.canJump()) {
-            if (!this.isGameOver()) {
-                this.jump();
-            }
-        }
-    }
-
-
-    jump() {
-        this.speedY = 30;
-        this.jumpTimeStamp = new Date().getTime();
-    }
-
-
-    canJump() {
-        return this.world.keyboard.SPACE && !this.isAboveGround();
     }
 }

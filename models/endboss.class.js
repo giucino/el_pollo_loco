@@ -9,7 +9,8 @@ class Endboss extends MovableObject {
     height = 350;
     width = 300;
     y = 95;
-    // isAlarmed = false;
+    endbossInterval;
+
 
     ENDBOSS_WALKING = [
         'img/4_enemie_boss_chicken/1_walk/G1.png',
@@ -60,15 +61,40 @@ class Endboss extends MovableObject {
         this.loadImages(this.ENDBOSS_ATTACK);
         this.loadImages(this.ENDBOSS_HURT);
         this.loadImages(this.ENDBOSS_GAME_OVER);
-        this.x = 6600;
-        this.animateEndboss();
+        this.x = 3000;
+        this.animateEndboss();    
     }
 
 
+    // animateEndboss() {
+    //     setInterval(() => {
+    //         if (this.endbossIsGameOver()) {
+    //             this.playAnimation(this.ENDBOSS_GAME_OVER)
+    //             console.log('GO Animation abgespielt.');
+    //         }
+    //         else if (this.isHurt()) {
+    //             this.playAnimation(this.ENDBOSS_HURT);
+    //             console.log('Hurt Animation abgespielt.');
+    //         }
+    //         else if (this.wasHit()) {
+    //             this.moveLeft();
+    //             this.playAnimation(this.ENDBOSS_ATTACK);
+    //             console.log('Attack Animation abgespielt.');
+    //         }
+    //         else {
+    //             this.playAnimation(this.ENDBOSS_ALERT);
+    //             console.log('Alert Animation abgespielt.');
+    //         }
+    //     }, 200);
+    // }
+
+
     animateEndboss() {
-        setInterval(() => {
+        let isAttacking = true;
+
+        this.endbossInterval = setInterval(() => {
             if (this.endbossIsGameOver()) {
-                this.playAnimation(this.ENDBOSS_GAME_OVER)
+                this.playAnimation(this.ENDBOSS_GAME_OVER);
                 // console.log('GO Animation abgespielt.');
             }
             else if (this.isHurt()) {
@@ -76,13 +102,30 @@ class Endboss extends MovableObject {
                 // console.log('Hurt Animation abgespielt.');
             }
             else if (this.wasHit()) {
-                this.playAnimation(this.ENDBOSS_ATTACK);
-                // console.log('Attack Animation abgespielt.');
-            }
-            else {
+                if (isAttacking) {
+                    this.playAnimation(this.ENDBOSS_ATTACK);
+                    // console.log('Attack Animation abgespielt.');
+                } else {
+                    this.playAnimation(this.ENDBOSS_WALKING);
+                    this.endbossMoveLeft();
+                    // console.log('Walking Animation abgespielt.');
+                }
+                isAttacking = !isAttacking;
+            } else {
                 this.playAnimation(this.ENDBOSS_ALERT);
                 // console.log('Alert Animation abgespielt.');
             }
         }, 200);
     }
+
+    
+    // stopEndbossAnimation() {
+    //     clearInterval(this.animationInterval);
+    // }
+
+
+    // endGame() {
+    //     // Andere Logik für das Spielende...
+    //     this.endboss.stopEndbossAnimation();
+    // } 
 }

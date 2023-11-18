@@ -11,9 +11,10 @@ class Character extends MovableObject {
     y = 145;
     speed = 5;
     world;
-    // walkingAudio = new Audio('audio/running.mp3');
-    // jumpingAudio = new Audio('audio/jump.mp3');
-    // hurtAudio = new Audio('audio/hurt.mp3');
+    lastActivityTime;
+    isMoving;
+    
+
 
     IMAGES_STANDING = [
         'img/2_character_pepe/1_idle/idle/I-1.png',
@@ -91,32 +92,31 @@ class Character extends MovableObject {
         this.applyGravity();
         this.animateCharacter();
         this.characterMotion();
+        this.isMoving = false;
     }
 
 
     characterMotion() {
         setInterval(() => {
             walkingAudio.pause();
-            if (this.world.keyboard.KEY_RIGHT && this.x < this.world.level.level_end_x) {
+            if (this.canMoveRight()) {
                 this.moveRight();
                 this.otherDirection = false;
                 walkingAudio.play();
             }
-
-            if (this.world.keyboard.KEY_LEFT && this.x > -680) {
+            if (this.canMoveLeft()) {
                 this.moveLeft();
                 this.otherDirection = true;
                 walkingAudio.play();
             }
-
-            if (this.world.keyboard.KEY_SPACE && !this.isAboveGround()) {
+            if (this.canJump()) {
                 this.jump();
                 jumpingAudio.play();
             }
-
             if (this.isAboveGround() || this.isHurt()) {
                 walkingAudio.pause();
             }
+            this.isMoving = this.isMovingHorizontally(this.world.keyboard);
 
             this.world.camera_x = -this.x + 100;
         }, 1000 / 60);
@@ -145,11 +145,25 @@ class Character extends MovableObject {
             } else {
                 this.playAnimation(this.IMAGES_STANDING);
                 snoringAudio.pause();
-
             }
         }, 50);
         document.addEventListener('keydown', () => {
             this.lastActivityTime = new Date().getTime();
         });
+    }
+
+
+    canJump() {
+        return (this.world.keyboard.KEY_SPACE || this.world.keyboard.KEY_UP) && !this.isAboveGround();
+    }
+
+
+    canMoveLeft() {
+        return this.world.keyboard.KEY_LEFT && this.x > -438;
+    }
+
+
+    canMoveRight() {
+        return this.world.keyboard.KEY_RIGHT && this.x < this.world.level.level_end_x;
     }
 }

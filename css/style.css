@@ -8,23 +8,57 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
+    background-image: url('/img/9_intro_outro_screens/start/desert-5112222_1280.png');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: 100vw;
+    min-height: 100vh;
+    overflow: hidden;
 }
 
+.game-container {
+    position: relative;
+    width: 720px;
+    height: 480px;
+}
+
+/* Canvas -------------- */
 canvas {
     background-color: black;
     display: block;
+    /* width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0; */
+}
+
+/* Start Screen -------------- */
+.start-screen {
+    position: absolute;
+    /* top: 0;
+    left: 0; */
+    width: 100%;
+    height: 100%;
+    background-image: url('/img/9_intro_outro_screens/start/startscreen_1.png');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    display: flex;
+    align-items: center;
 }
 
 /* Smartphones -------------- */
 @media only screen and (max-width: 720px) {
-    canvas {
+    canvas, .game-container, .start-screen {
         width: 100%;
     }
 }
 
 /* Smartphones -------------- */
 @media only screen and (max-height: 480px) {
-    canvas {
+    canvas, .game-container {
         height: 100vh;
     }
 }

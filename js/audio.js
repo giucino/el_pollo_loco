@@ -7,6 +7,7 @@
     const burstBottleAudio = new Audio('audio/bottle_burst.flac');
     const snoringAudio = new Audio('audio/snoring.mp3');
     const endbossAudio = new Audio('audio/endboss.wav');
+    const backgroundMusic = new Audio('audio/backgroundMusic.mp3');
 
 
     const allSounds = [
@@ -18,10 +19,26 @@
         throwBottleAudio,
         burstBottleAudio,
         snoringAudio,
-        endbossAudio
+        endbossAudio,
+        backgroundMusic
     ];
 
 
+    let isMuted = false;
+
+function toggleSound() {
+    if (isMuted) {
+        allSounds.forEach((sound) => {
+            sound.play();
+        });
+        isMuted = false;
+    } else {
+        allSounds.forEach(sound => {
+            sound.pause();
+        });
+        isMuted = true;
+    }
+}
 
 
 // let allAudios = [
