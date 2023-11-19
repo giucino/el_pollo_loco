@@ -6,6 +6,7 @@ class World {
     level = level1;
     character = new Character();
     endboss = new Endboss();
+    chick = new Chick();
     statusBarHealth = new StatusBarHealth();
     statusBarBottles = new StatusBarBottles();
     statusBarCoins = new StatusBarCoins();
@@ -16,15 +17,16 @@ class World {
     collectedCoins;
     collectedBottles;
     firstContactMade;
+    gameIntervalId;
+    animationFrameId;
 
 
     constructor(canvas, keyboard) {
         this.ctx = canvas.getContext("2d");
         this.canvas = canvas;
         this.keyboard = keyboard;
-        this.draw();
         this.setWorld();
-        this.run();
+        this.start();
         this.coinSounds = new Map();
         this.bottleSounds = new Map();
         this.collectedCoins = [];
@@ -40,8 +42,20 @@ class World {
     }
 
 
+    start() {
+        this.run();
+        this.draw();
+    }
+
+
+    pause() {
+        clearInterval(this.gameIntervalId);
+        cancelAnimationFrame(this.animationFrameId);
+    }
+
+
     run() {
-        setInterval(() => {
+        this.gameIntervalId = setInterval(() => {
             this.checkThrowableObjects();
             this.checkCollisionEnemy();
             this.bottleIsHurtingEnemy();
@@ -98,11 +112,11 @@ class World {
         this.ctx.translate(-this.camera_x, 0);
 
 
-        requestAnimationFrame(() => {
+        this.animationFrameId = requestAnimationFrame(() => {
             this.draw(); //Dieses "this" bezieht sich direkt auf das "this" im äußeren Kontext der Methode.
         });
     }
-
+    
 
     addObjectsToMap(objects) {
         objects.forEach(o => {
@@ -351,7 +365,8 @@ class World {
         if (!itemSounds.has(item)) {
             itemSounds.set(item, itemSoundFile);
         }
-        const sound = new Audio(itemSoundFile.src);        
+        const sound = new Audio(itemSoundFile.src);   
+        sound.muted = isSoundMuted;     
         sound.play();
     }
 

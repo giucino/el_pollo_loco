@@ -1,44 +1,74 @@
-    const walkingAudio = new Audio('audio/running.mp3');
-    const jumpingAudio = new Audio('audio/jump.mp3');
-    // const hurtAudio = new Audio('audio/hurt.mp3');  
-    const coinAudio = new Audio('audio/coin.mp3');
-    const collectBottleAudio = new Audio('audio/collect_bottle.mp3');
-    const throwBottleAudio = new Audio('audio/throw_bottle.flac');
-    const burstBottleAudio = new Audio('audio/bottle_burst.flac');
-    const snoringAudio = new Audio('audio/snoring.mp3');
-    const endbossAudio = new Audio('audio/endboss.wav');
-    const backgroundMusic = new Audio('audio/backgroundMusic.mp3');
+const backgroundMusic = new Audio('audio/backgroundMusic.mp3');
+backgroundMusic.volume = 0.1;
+backgroundMusic.loop = true;
+const walkingAudio = new Audio('audio/running.mp3');
+const jumpingAudio = new Audio('audio/jump.mp3');
+// const hurtAudio = new Audio('audio/hurt.mp3');  
+const coinAudio = new Audio('audio/coin.mp3');
+const collectBottleAudio = new Audio('audio/collect_bottle.mp3');
+const throwBottleAudio = new Audio('audio/throw_bottle.flac');
+const burstBottleAudio = new Audio('audio/bottle_burst.flac');
+const snoringAudio = new Audio('audio/snoring.mp3');
+const endbossAudio = new Audio('audio/endboss.wav');
+const startAudio = new Audio('audio/startMusic.mp3');
+startAudio.loop = true;
+startAudio.volume = 0.1;
 
 
-    const allSounds = [
-        walkingAudio,
-        jumpingAudio,
-        // hurtAudio,
-        coinAudio,
-        collectBottleAudio,
-        throwBottleAudio,
-        burstBottleAudio,
-        snoringAudio,
-        endbossAudio,
-        backgroundMusic
-    ];
+
+const allSounds = [
+    backgroundMusic,
+    walkingAudio,
+    jumpingAudio,
+    // hurtAudio,
+    coinAudio,
+    collectBottleAudio,
+    throwBottleAudio,
+    burstBottleAudio,
+    snoringAudio,
+    endbossAudio,
+    startAudio
+];
 
 
-    let isMuted = false;
+let isSoundMuted = false;
 
-function toggleSound() {
-    if (isMuted) {
-        allSounds.forEach((sound) => {
-            sound.play();
-        });
-        isMuted = false;
-    } else {
-        allSounds.forEach(sound => {
-            sound.pause();
-        });
-        isMuted = true;
-    }
+function toggleMuteSounds() {
+    isSoundMuted = !isSoundMuted;
+
+    const muteButton = document.getElementById('muteSounds');
+
+    // if (isSoundMuted) {
+    //     muteAllSounds();
+    //     muteButton.textContent = 'Unmute';
+    // } else {
+    //     unmuteAllSounds();
+    //     muteButton.textContent = 'Mute';
+    // }
+    isSoundMuted ? muteAllSounds() : unmuteAllSounds();
+    muteButton.textContent = isSoundMuted ? 'Unmute' : 'Mute';
 }
+
+
+function muteAllSounds() {
+    allSounds.forEach(sound => {
+        sound.muted = true;
+    });
+}
+
+
+function unmuteAllSounds() {
+    allSounds.forEach(sound => {
+        sound.muted = false;
+    });
+}
+
+
+document.addEventListener('visibilitychange', function () {
+    document.hidden ? muteAllSounds() : unmuteAllSounds();
+});
+
+
 
 
 // let allAudios = [

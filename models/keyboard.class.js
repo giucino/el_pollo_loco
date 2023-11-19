@@ -2,10 +2,9 @@ class Keyboard {
     KEY_LEFT = false;
     KEY_RIGHT = false;
     KEY_UP = false;
-    KEY_DOWN = false;
     KEY_SPACE = false;
     KEY_D = false;
-
+    KEY_P = false;
     isKeyPressed = true;
 
 
@@ -18,6 +17,7 @@ class Keyboard {
         // this.eventTouchpad();
     }
 
+
     /**
      * Sets up keyboard events for key press and release.
      */
@@ -25,6 +25,7 @@ class Keyboard {
         this.checkKeysArePressed();
         this.checkKeysAreReleased();
     }
+
 
     checkKeysArePressed() {
         window.addEventListener('keydown', (event) => {
@@ -45,9 +46,6 @@ class Keyboard {
                 }, 500);
                 this.isKeyPressed = false;
             }
-            if (code === 'ArrowDown') {
-                keyboard.KEY_DOWN = true;
-            }
             if (key === ' ') {
                 if (this.isKeyPressed) {
                     keyboard.KEY_SPACE = true;
@@ -66,8 +64,18 @@ class Keyboard {
                 }, 500);
                 this.isKeyPressed = false;
             }
+            if (key === 'p' || event.key === 'P') {
+                if (this.isKeyPressed) {
+                    keyboard.KEY_P = true;
+                }
+                setTimeout(() => {
+                    keyboard.KEY_P = false;
+                }, 500);
+                this.isKeyPressed = false;
+            }
         });
     }
+
 
     checkKeysAreReleased() {
         window.addEventListener('keyup', (event) => {
@@ -83,15 +91,16 @@ class Keyboard {
                 keyboard.KEY_UP = false;
                 this.isKeyPressed = true;
             }
-            if (code === 'ArrowDown') {
-                keyboard.KEY_DOWN = false;
-            }
             if (key === ' ') {
                 keyboard.KEY_SPACE = false;
                 this.isKeyPressed = true;
             }
             if (key === 'd' || key === 'D') {
                 keyboard.KEY_D = false;
+                this.isKeyPressed = true;
+            }
+            if (key === 'p' || key === 'P') {
+                keyboard.KEY_P = false;
                 this.isKeyPressed = true;
             }
         });

@@ -6,6 +6,7 @@ class Endboss extends MovableObject {
         right: 30,
     };
 
+
     height = 350;
     width = 300;
     y = 95;
@@ -19,6 +20,7 @@ class Endboss extends MovableObject {
         'img/4_enemie_boss_chicken/1_walk/G4.png'
     ];
 
+
     ENDBOSS_ALERT = [
         'img/4_enemie_boss_chicken/2_alert/G5.png',
         'img/4_enemie_boss_chicken/2_alert/G6.png',
@@ -29,6 +31,7 @@ class Endboss extends MovableObject {
         'img/4_enemie_boss_chicken/2_alert/G11.png',
         'img/4_enemie_boss_chicken/2_alert/G12.png'
     ];
+
 
     ENDBOSS_ATTACK = [
         'img/4_enemie_boss_chicken/3_attack/G13.png',
@@ -41,17 +44,20 @@ class Endboss extends MovableObject {
         'img/4_enemie_boss_chicken/3_attack/G20.png',
     ];
 
+
     ENDBOSS_HURT = [
         'img/4_enemie_boss_chicken/4_hurt/G21.png',
         'img/4_enemie_boss_chicken/4_hurt/G22.png',
         'img/4_enemie_boss_chicken/4_hurt/G23.png'
     ];
 
+
     ENDBOSS_GAME_OVER = [
         'img/4_enemie_boss_chicken/5_dead/G24.png',
         'img/4_enemie_boss_chicken/5_dead/G25.png',
         'img/4_enemie_boss_chicken/5_dead/G26.png'
     ];
+    
 
     constructor() {
         super();

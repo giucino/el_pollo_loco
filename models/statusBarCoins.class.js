@@ -3,8 +3,10 @@ class StatusBarCoins extends DrawableObject {
         'img/7_statusbars/3_icons/icon_coin.png'
     ];
 
+
     count = 0;
 
+    
     constructor() {
         super();
         this.loadImage(this.IMAGE_COIN);

@@ -6,6 +6,7 @@ class Character extends MovableObject {
         right: 20,
     };
 
+
     height = 290;
     width = 110;
     y = 145;
@@ -13,7 +14,8 @@ class Character extends MovableObject {
     world;
     lastActivityTime;
     isMoving;
-    
+    motionIntervalId;
+    animationIntervalId;
 
 
     IMAGES_STANDING = [
@@ -29,6 +31,7 @@ class Character extends MovableObject {
         'img/2_character_pepe/1_idle/idle/I-10.png'
     ];
 
+
     IMAGES_IDLE = [
         'img/2_character_pepe/1_idle/long_idle/I-11.png',
         'img/2_character_pepe/1_idle/long_idle/I-12.png',
@@ -42,6 +45,7 @@ class Character extends MovableObject {
         'img/2_character_pepe/1_idle/long_idle/I-20.png',
     ];
 
+
     IMAGES_WALKING = [
         'img/2_character_pepe/2_walk/W-21.png',
         'img/2_character_pepe/2_walk/W-22.png',
@@ -50,6 +54,7 @@ class Character extends MovableObject {
         'img/2_character_pepe/2_walk/W-25.png',
         'img/2_character_pepe/2_walk/W-26.png'
     ];
+
 
     IMAGES_JUMPING = [
         'img/2_character_pepe/3_jump/J-31.png',
@@ -63,12 +68,14 @@ class Character extends MovableObject {
         'img/2_character_pepe/3_jump/J-39.png'
     ];
 
+
     IMAGES_HURT = [
         'img/2_character_pepe/4_hurt/H-41.png',
         'img/2_character_pepe/4_hurt/H-42.png',
         'img/2_character_pepe/4_hurt/H-43.png'
     ];
 
+    
     IMAGES_GAME_OVER = [
         'img/2_character_pepe/5_dead/D-51.png',
         'img/2_character_pepe/5_dead/D-52.png',
@@ -90,24 +97,43 @@ class Character extends MovableObject {
         this.loadImages(this.IMAGES_HURT);
         this.loadImages(this.IMAGES_GAME_OVER);
         this.applyGravity();
-        this.animateCharacter();
-        this.characterMotion();
+        this.start();
         this.isMoving = false;
     }
 
 
+    start() {
+        if (!this.motionIntervalId) {
+            this.characterMotion();
+        }
+        if (!this.animationIntervalId) {
+            this.animateCharacter();
+        }
+    }
+
+
+    pause() {
+        clearInterval(this.motionIntervalId);
+        clearInterval(this.animationIntervalId);
+        this.motionIntervalId = null;
+        this.animationIntervalId = null;
+    }
+
+    
     characterMotion() {
-        setInterval(() => {
+        this.motionIntervalId = setInterval(() => {
             walkingAudio.pause();
             if (this.canMoveRight()) {
                 this.moveRight();
                 this.otherDirection = false;
                 walkingAudio.play();
+                this.lastActivityTime = new Date().getTime();
             }
             if (this.canMoveLeft()) {
                 this.moveLeft();
                 this.otherDirection = true;
                 walkingAudio.play();
+                this.lastActivityTime = new Date().getTime();
             }
             if (this.canJump()) {
                 this.jump();
@@ -126,7 +152,7 @@ class Character extends MovableObject {
     animateCharacter() {
         this.lastActivityTime = new Date().getTime();
 
-        setInterval(() => {
+        this.animationIntervalId = setInterval(() => {
             const currentTime = new Date().getTime();
             const inactivityDuration = (currentTime - this.lastActivityTime) / 1000;
 

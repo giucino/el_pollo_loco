@@ -6,14 +6,17 @@ class Coin extends MovableObject {
         right: 40,
     };
 
+
     height = 120;
     width = 120;
+
 
     IMAGES_COIN = [
         'img/8_coin/coin_1.png',
         'img/8_coin/coin_2.png'
     ];
 
+    
     constructor() {
         super();
         this.loadImage('img/8_coin/coin_1.png');
@@ -27,6 +30,6 @@ class Coin extends MovableObject {
     animateCoins() {
         setInterval(() => {
             this.playAnimation(this.IMAGES_COIN);
-        }, 450);
+        }, 350);
     }
 }

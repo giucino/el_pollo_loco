@@ -6,6 +6,7 @@ class MovableObject extends DrawableObject {
         bottom: 0,
     };
 
+    
     speed = 0.09;
     endbossSpeed = 30;
     otherDirection = false;

@@ -3,8 +3,10 @@ class StatusBarBottles extends DrawableObject {
         'img/7_statusbars/3_icons/icon_salsa_bottle.png'
     ];
 
+
     count = 0;
 
+    
     constructor() {
         super();
         this.loadImage(this.IMAGE_BOTTLE);

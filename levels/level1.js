@@ -81,7 +81,7 @@ const rightTiltedBottles = generateBottlesTilted(4, true);
 const bottles = [...bottlesStraight, ...leftTiltedBottles, ...rightTiltedBottles];
 
 const chickens = generateEnemies(10, 'Chicken');
-const chicks = generateEnemies(7, 'Chick');
+const chicks = generateEnemies(17, 'Chick');
 const enemies = [...chickens, ...chicks];
 
 const backgroundObjects = generateBackgroundObjects(40);
@@ -97,6 +97,7 @@ function initLevel() {
         bottles,
         coins
     );
+    enemies.forEach(enemy => enemy.start());
 }
 
 

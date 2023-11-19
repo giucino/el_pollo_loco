@@ -10,7 +10,7 @@ class DrawableObject {
     // speedY = 0;
     // animationInterval;
     // otherDirection = false;
-    lastActivityTime = new Date().getTime();
+    // lastActivityTime = new Date().getTime();
     // offset = {
     //     left: 0,
     //     right: 0,

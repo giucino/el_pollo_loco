@@ -6,8 +6,10 @@ class BottleTilted extends DrawableObject {
         right: 40,
     };
 
+
     height = 70;
     width = 70;
+
 
     constructor(useRightTilted = false) {
         super();
@@ -26,9 +28,11 @@ class BottleStraight extends DrawableObject {
         right: 0,
     };
 
+
     height = 70;
     width = 70;
 
+    
     constructor() {
         super();
         this.loadImage('img/6_salsa_bottle/salsa_bottle.png');

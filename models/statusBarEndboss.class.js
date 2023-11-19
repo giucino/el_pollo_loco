@@ -8,6 +8,7 @@ class StatusBarHealthEndboss extends DrawableObject {
         'img/7_statusbars/2_statusbar_endboss/blue/100.png',
     ];
 
+    
     percentage = 100;
     visible = false;
 
