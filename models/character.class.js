@@ -16,6 +16,7 @@ class Character extends MovableObject {
     isMoving;
     motionIntervalId;
     animationIntervalId;
+    isGameOverTriggered = false;
 
 
     IMAGES_STANDING = [
@@ -75,7 +76,7 @@ class Character extends MovableObject {
         'img/2_character_pepe/4_hurt/H-43.png'
     ];
 
-    
+
     IMAGES_GAME_OVER = [
         'img/2_character_pepe/5_dead/D-51.png',
         'img/2_character_pepe/5_dead/D-52.png',
@@ -119,33 +120,85 @@ class Character extends MovableObject {
         this.animationIntervalId = null;
     }
 
-    
+
+    // characterMotion() {
+    //     this.motionIntervalId = setInterval(() => {
+    //         walkingAudio.pause();
+    //         if (this.canMoveRight()) {
+    //             this.moveRight();
+    //             this.otherDirection = false;
+    //             walkingAudio.play();
+    //             this.lastActivityTime = new Date().getTime();
+    //         }
+    //         if (this.canMoveLeft()) {
+    //             this.moveLeft();
+    //             this.otherDirection = true;
+    //             walkingAudio.play();
+    //             this.lastActivityTime = new Date().getTime();
+    //         }
+    //         if (this.canJump()) {
+    //             this.jump();
+    //             jumpingAudio.play();
+    //         }
+    //         if (this.isAboveGround() || this.isHurt()) {
+    //             walkingAudio.pause();
+    //         }
+    //         this.isMoving = this.isMovingHorizontally(this.world.keyboard);
+
+    //         this.world.camera_x = -this.x + 100;
+    //     }, 1000 / 60);
+    // }
+
+
     characterMotion() {
         this.motionIntervalId = setInterval(() => {
-            walkingAudio.pause();
-            if (this.canMoveRight()) {
-                this.moveRight();
-                this.otherDirection = false;
-                walkingAudio.play();
-                this.lastActivityTime = new Date().getTime();
-            }
-            if (this.canMoveLeft()) {
-                this.moveLeft();
-                this.otherDirection = true;
-                walkingAudio.play();
-                this.lastActivityTime = new Date().getTime();
-            }
-            if (this.canJump()) {
-                this.jump();
-                jumpingAudio.play();
-            }
-            if (this.isAboveGround() || this.isHurt()) {
-                walkingAudio.pause();
-            }
-            this.isMoving = this.isMovingHorizontally(this.world.keyboard);
-
-            this.world.camera_x = -this.x + 100;
+            this.handleCharacterMotion();
         }, 1000 / 60);
+    }
+
+
+    handleCharacterMotion() {
+        pauseAudio('walkingAudio');
+        this.handleCharacterMovement();
+        this.handleCharacterJump();
+        this.handleCharacterState();
+        this.isMoving = this.isMovingHorizontally(this.world.keyboard);
+        this.world.camera_x = -this.x + 100;
+    }
+
+
+    handleCharacterMovement() {
+        if (this.canMoveRight()) {
+            this.moveRight();
+            this.otherDirection = false;
+            this.playWalkingAudio();
+        }
+        if (this.canMoveLeft()) {
+            this.moveLeft();
+            this.otherDirection = true;
+            this.playWalkingAudio();
+        }
+    }
+
+
+    playWalkingAudio() {
+        playAudio('walkingAudio');
+        this.lastActivityTime = new Date().getTime();
+    }
+
+
+    handleCharacterJump() {
+        if (this.canJump()) {
+            this.jump();
+            playAudio('jumpingAudio');
+        }
+    }
+
+
+    handleCharacterState() {
+        if (this.isAboveGround() || this.isHurt()) {
+            pauseAudio('walkingAudio');
+        }
     }
 
 
@@ -153,29 +206,52 @@ class Character extends MovableObject {
         this.lastActivityTime = new Date().getTime();
 
         this.animationIntervalId = setInterval(() => {
-            const currentTime = new Date().getTime();
-            const inactivityDuration = (currentTime - this.lastActivityTime) / 1000;
+            this.updateAnimationBasedOnState();
+        }, 50);
 
-            if (inactivityDuration > 5) {
-                this.playAnimation(this.IMAGES_IDLE);
-                // snoringAudio.play();
-            } else if (this.isHurt()) {
-                this.playAnimation(this.IMAGES_HURT);
-                // hurtAudio.play();
-            } else if (this.isGameOver()) {
-                this.playAnimation(this.IMAGES_GAME_OVER);
-            } else if (this.isAboveGround()) {
+        document.addEventListener('keydown', () => {
+            this.lastActivityTime = new Date().getTime();
+        });
+    }
+
+
+    updateAnimationBasedOnState() {
+        const currentTime = new Date().getTime();
+        const inactivityDuration = (currentTime - this.lastActivityTime) / 1000;
+
+        if (this.shouldPlayIdleAnimation(inactivityDuration)) {
+            this.playAnimation(this.IMAGES_IDLE);
+            // snoringAudio.play();
+        } else if (this.isHurt()) {
+            this.playAnimation(this.IMAGES_HURT);
+            // hurtAudio.play();
+        } else if (this.isGameOver()) {
+            this.triggerGameOver();
+            this.playAnimation(this.IMAGES_GAME_OVER);
+        } else {
+            this.isGameOverTriggered = false;
+            if (this.isAboveGround()) {
                 this.playAnimation(this.IMAGES_JUMPING);
             } else if (this.isMovingHorizontally(this.world.keyboard)) {
                 this.playAnimation(this.IMAGES_WALKING);
             } else {
                 this.playAnimation(this.IMAGES_STANDING);
-                snoringAudio.pause();
             }
-        }, 50);
-        document.addEventListener('keydown', () => {
-            this.lastActivityTime = new Date().getTime();
-        });
+        }
+    }
+
+
+    shouldPlayIdleAnimation(inactivityDuration) {
+        return inactivityDuration > 5 && !this.isGameOver();
+    }
+
+
+    triggerGameOver() {
+        if (!this.isGameOverTriggered) {
+            characterIsGameOver();
+            this.isGameOverTriggered = true;
+            pauseAudio('walkingAudio');
+        }
     }
 
 

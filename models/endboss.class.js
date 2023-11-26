@@ -11,6 +11,9 @@ class Endboss extends MovableObject {
     width = 300;
     y = 95;
     endbossInterval;
+    endbossSpeed = 30;
+    energyEndboss = 100;
+    lastHit = 0;
 
 
     ENDBOSS_WALKING = [
@@ -57,7 +60,7 @@ class Endboss extends MovableObject {
         'img/4_enemie_boss_chicken/5_dead/G25.png',
         'img/4_enemie_boss_chicken/5_dead/G26.png'
     ];
-    
+
 
     constructor() {
         super();
@@ -68,31 +71,13 @@ class Endboss extends MovableObject {
         this.loadImages(this.ENDBOSS_HURT);
         this.loadImages(this.ENDBOSS_GAME_OVER);
         this.x = 3000;
-        this.animateEndboss();    
+        this.animateEndboss();
     }
 
 
-    // animateEndboss() {
-    //     setInterval(() => {
-    //         if (this.endbossIsGameOver()) {
-    //             this.playAnimation(this.ENDBOSS_GAME_OVER)
-    //             console.log('GO Animation abgespielt.');
-    //         }
-    //         else if (this.isHurt()) {
-    //             this.playAnimation(this.ENDBOSS_HURT);
-    //             console.log('Hurt Animation abgespielt.');
-    //         }
-    //         else if (this.wasHit()) {
-    //             this.moveLeft();
-    //             this.playAnimation(this.ENDBOSS_ATTACK);
-    //             console.log('Attack Animation abgespielt.');
-    //         }
-    //         else {
-    //             this.playAnimation(this.ENDBOSS_ALERT);
-    //             console.log('Alert Animation abgespielt.');
-    //         }
-    //     }, 200);
-    // }
+    pause() {
+        clearInterval(this.endbossInterval);
+    }
 
 
     animateEndboss() {
@@ -124,14 +109,41 @@ class Endboss extends MovableObject {
         }, 200);
     }
 
-    
-    // stopEndbossAnimation() {
-    //     clearInterval(this.animationInterval);
+
+    reduceEnergyEndboss() {
+        this.energyEndboss -= 20;
+        if (this.energyEndboss < 0) {
+            this.energyEndboss = 0;
+        } else {
+            this.lastHit = new Date().getTime();
+        }
+    }
+
+
+    wasHit() {
+        this.isHurt();
+        return this.energyEndboss < 100;
+    }
+
+
+    // endbossMoveLeft() {
+    //     this.x -= this.endbossSpeed;
+    //     // console.log("endbossSpeed:", this.endbossSpeed)
+    // }
+
+    endbossMoveLeft() {
+        this.x -= this.endbossSpeed;
+        // if (this.x < 840) {
+        //     this.x += this.endbossMoveRight();
+        // }
+    }
+
+    // endbossMoveRight() {
+    //     this.x += this.endbossSpeed;
     // }
 
 
-    // endGame() {
-    //     // Andere Logik für das Spielende...
-    //     this.endboss.stopEndbossAnimation();
-    // } 
+    endbossIsGameOver() {
+        return this.energyEndboss == 0;
+    }
 }

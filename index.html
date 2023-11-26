@@ -12,19 +12,42 @@
 
 <body>
     <h1>El Pollo Loco</h1>
-    <div class="game-container">
-        <main id="startScreen" class="start-screen">
+    <main class="game-container">
+        <div id="startScreen" class="start-screen">
+            <img src="/img/9_intro_outro_screens/start/startscreen_1.png" alt="Start Screen">
             <button id="startGame" class="start-game">Play</button>
-        </main>
+        </div>
+
+        <div class="info-bar">
+            <img src="img/unmute.png" id="muteSounds" alt="Volume"></img>
+            <img src="img/pause.png" id="toggleGame" alt="Resume Game"></img>
+        </div>
+
+        <div id="gameOverContainer" class="dnone">
+            <img src="img/9_intro_outro_screens/game_over/oh no you lost!.png" alt="Game Over">
+            <img src="img/9_intro_outro_screens/game_over/you lost.png" alt="Game Over">
+        </div>
+
         <canvas id="canvas" width="720" height="480"></canvas>
-        <button id="muteSounds" class="start-game" onclick="toggleMuteSounds()">Mute</button>
-        <button id="toggleGame" class="start-game" onclick="toggleGame()">Pause</button>
-    </div>
+    </main>
 
 
-    Music by <a href="https://pixabay.com/de/users/raspberrymusic-27759797/?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=164689">raspberrymusic</a> from <a href="https://pixabay.com/music//?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=164689">Pixabay</a>
-    Music by <a href="https://pixabay.com/de/users/top-flow-production-28521292/?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=148320">Sergio Prosvirini</a> from <a href="https://pixabay.com/music//?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=148320">Pixabay</a>
-    Bild von <a href="https://pixabay.com/de/users/mostafaelturkey36-13328910/?utm_source=link-attribution&utm_medium=referral&utm_campaign=image&utm_content=5112222">Mostafa Elturkey</a> auf <a href="https://pixabay.com/de//?utm_source=link-attribution&utm_medium=referral&utm_campaign=image&utm_content=5112222">Pixabay</a>
+    Music by <a
+        href="https://pixabay.com/de/users/raspberrymusic-27759797/?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=164689">raspberrymusic</a>
+    from <a
+        href="https://pixabay.com/music//?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=164689">Pixabay</a>
+    Music by <a
+        href="https://pixabay.com/de/users/top-flow-production-28521292/?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=148320">Sergio
+        Prosvirini</a> from <a
+        href="https://pixabay.com/music//?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=148320">Pixabay</a>
+    Bild von <a
+        href="https://pixabay.com/de/users/mostafaelturkey36-13328910/?utm_source=link-attribution&utm_medium=referral&utm_campaign=image&utm_content=5112222">Mostafa
+        Elturkey</a> auf <a
+        href="https://pixabay.com/de//?utm_source=link-attribution&utm_medium=referral&utm_campaign=image&utm_content=5112222">Pixabay</a>
+
+
+        <a target="_blank" href="https://icons8.com/icon/eBCEOT0oGnaL/mute">Mute</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>
+
     <script src="models/drawableObject.class.js"></script>
     <script src="models/movableObject.class.js"></script>
     <script src="models/character.class.js"></script>

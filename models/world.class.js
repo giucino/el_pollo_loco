@@ -85,7 +85,7 @@ class World {
         // ------ Space for moving objects ------
         if (this.character.isMoving) {
             this.level.backgroundObjects.forEach(bgObject => {
-                bgObject.moveBackground(this.character.otherDirection);
+                bgObject.start(this.character.otherDirection);
                 this.addMovableObjectsToMap(bgObject);
             });
         } else {
@@ -163,7 +163,8 @@ class World {
 
             let bottle = new ThrowableObject(bottleX, bottleY, bottleDirection);
             this.throwableObjects.push(bottle);
-            throwBottleAudio.play();
+            // throwBottleAudio.play();
+            playAudio('throwBottleAudio');
             this.collectedBottles.pop();
         }
     }
@@ -327,11 +328,11 @@ class World {
     }
 
 
-    collectItems(items, itemSounds, statusBar, canCollectItem, itemSoundFile) {
+    collectItems(items, itemSounds, statusBar, canCollectItem, soundName) {
         items.forEach((item, index) => {
             if (this.characterCanCollectItem(item, canCollectItem)) {
                 this.collectItem(item);
-                this.playItemSound(item, itemSounds, itemSoundFile);
+                this.playItemSound(item, itemSounds, soundName);
                 statusBar.increaseCountByOne();
                 items.splice(index, 1);
             }
@@ -345,7 +346,7 @@ class World {
             this.coinSounds,
             this.statusBarCoins,
             (coin) => this.characterCanCollectItem(coin),
-            coinAudio
+            'coinAudio'
         );
     }
     
@@ -356,16 +357,30 @@ class World {
             this.bottleSounds,
             this.statusBarBottles,
             (bottle) => this.characterCanCollectItem(bottle),
-            collectBottleAudio 
+            'collectBottleAudio' 
         );
     }
     
 
-    playItemSound(item, itemSounds, itemSoundFile) {
+    // playItemSound(item, itemSounds, itemSoundFile) {
+    //     if (!itemSounds.has(item)) {
+    //         itemSounds.set(item, itemSoundFile);
+    //     }
+    //     const sound = new Audio(itemSoundFile.src);   
+    //     sound.muted = isSoundMuted;     
+    //     sound.play();
+    // }
+    playItemSound(item, itemSounds, soundName) {
         if (!itemSounds.has(item)) {
-            itemSounds.set(item, itemSoundFile);
+            const soundFile = findAudioByName(soundName);
+            if (!soundFile) {
+                console.error('Sound not found:', soundName);
+                return;
+            }
+            itemSounds.set(item, soundFile);
         }
-        const sound = new Audio(itemSoundFile.src);   
+        
+        const sound = new Audio(itemSounds.get(item).src);
         sound.muted = isSoundMuted;     
         sound.play();
     }

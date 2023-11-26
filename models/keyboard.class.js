@@ -5,22 +5,16 @@ class Keyboard {
     KEY_SPACE = false;
     KEY_D = false;
     KEY_P = false;
+    KEY_M = false;
     isKeyPressed = true;
 
 
-    /**
-     * Constructor for the Keyboard class.
-     * Initializes keyboard events for both physical keyboard and touchpad.
-     */
     constructor() {
         this.eventKeyboard();
         // this.eventTouchpad();
     }
 
 
-    /**
-     * Sets up keyboard events for key press and release.
-     */
     eventKeyboard() {
         this.checkKeysArePressed();
         this.checkKeysAreReleased();
@@ -55,7 +49,7 @@ class Keyboard {
                 }, 500);
                 this.isKeyPressed = false;
             }
-            if (key === 'd' || event.key === 'D') {
+            if (key === 'd' || key === 'D') {
                 if (this.isKeyPressed) {
                     keyboard.KEY_D = true;
                 }
@@ -64,12 +58,21 @@ class Keyboard {
                 }, 500);
                 this.isKeyPressed = false;
             }
-            if (key === 'p' || event.key === 'P') {
+            if (key === 'p' || key === 'P') {
                 if (this.isKeyPressed) {
                     keyboard.KEY_P = true;
                 }
                 setTimeout(() => {
                     keyboard.KEY_P = false;
+                }, 500);
+                this.isKeyPressed = false;
+            }
+            if (key === 'm' || key === 'M') {
+                if (this.isKeyPressed) {
+                    keyboard.KEY_M = true;
+                }
+                setTimeout(() => {
+                    keyboard.KEY_M = false;
                 }, 500);
                 this.isKeyPressed = false;
             }
@@ -103,21 +106,20 @@ class Keyboard {
                 keyboard.KEY_P = false;
                 this.isKeyPressed = true;
             }
+            if (key === 'm' || key === 'M') {
+                keyboard.KEY_M = false;
+                this.isKeyPressed = true;
+            }
         });
     }
 
 
-    //     /**
-    //  * Sets up touchpad events for touch start and end.
-    //  */
     //     eventTouchpad() {
     //         this.checkButtonsArePressed();
     //         this.checkButtonsAreReleased();
     //     }
 
-    //     /**
-    //      * Checks for touchpad buttons that are pressed and updates corresponding properties.
-    //      */
+
     //     checkButtonsArePressed() {
     //         setTimeout(() => {
     //             document.getElementById("btnRight").addEventListener(

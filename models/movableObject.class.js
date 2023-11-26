@@ -8,12 +8,12 @@ class MovableObject extends DrawableObject {
 
     
     speed = 0.09;
-    endbossSpeed = 30;
+    // endbossSpeed = 30;
     otherDirection = false;
     speedY = 0;
     acceleration = 2.5;
     energy = 100;
-    energyEndboss = 100;
+    // energyEndboss = 100;
     lastHit = 0;
     jumpTimeStamp = new Date().getTime();
 
@@ -110,42 +110,42 @@ class MovableObject extends DrawableObject {
     }
 
 
-    reduceEnergyEndboss() {
-        this.energyEndboss -= 20;
-        if (this.energyEndboss < 0) {
-            this.energyEndboss = 0;
-        } else {
-            this.lastHit = new Date().getTime();
-        }
-    }
+    // reduceEnergyEndboss() {
+    //     this.energyEndboss -= 20;
+    //     if (this.energyEndboss < 0) {
+    //         this.energyEndboss = 0;
+    //     } else {
+    //         this.lastHit = new Date().getTime();
+    //     }
+    // }
 
 
-    wasHit() {
-        this.isHurt();
-        return this.energyEndboss < 100;
-    }
+    // wasHit() {
+    //     this.isHurt();
+    //     return this.energyEndboss < 100;
+    // }
 
+
+    // // endbossMoveLeft() {
+    // //     this.x -= this.endbossSpeed;
+    // //     // console.log("endbossSpeed:", this.endbossSpeed)
+    // // }
 
     // endbossMoveLeft() {
     //     this.x -= this.endbossSpeed;
-    //     // console.log("endbossSpeed:", this.endbossSpeed)
+    //     // if (this.x < 840) {
+    //     //     this.x += this.endbossMoveRight();
+    //     // }
     // }
 
-    endbossMoveLeft() {
-        this.x -= this.endbossSpeed;
-        // if (this.x < 840) {
-        //     this.x += this.endbossMoveRight();
-        // }
-    }
+    // // endbossMoveRight() {
+    // //     this.x += this.endbossSpeed;
+    // // }
 
-    // endbossMoveRight() {
-    //     this.x += this.endbossSpeed;
+
+    // endbossIsGameOver() {
+    //     return this.energyEndboss == 0;
     // }
-
-
-    endbossIsGameOver() {
-        return this.energyEndboss == 0;
-    }
 
 
     moveRight() {

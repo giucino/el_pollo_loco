@@ -4,11 +4,11 @@
 
 body {
     margin: 0;
-    font-family: 'trochut', sans-serif;    
+    font-family: 'trochut', sans-serif;
     display: flex;
     flex-direction: column;
     align-items: center;
-    background-image: url('/img/9_intro_outro_screens/start/desert-5112222_1280.png');
+    background-image: url('/img/9_intro_outro_screens/start/background.png');
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
@@ -19,46 +19,87 @@ body {
 
 .game-container {
     position: relative;
-    width: 720px;
-    height: 480px;
-}
-
-/* Canvas -------------- */
-canvas {
-    background-color: black;
-    display: block;
-    /* width: 100%;
-    height: 100%;
-    position: absolute;
-    top: 0;
-    left: 0; */
+    max-width: 100%;
 }
 
 /* Start Screen -------------- */
 .start-screen {
     position: absolute;
     /* top: 0;
-    left: 0; */
+    bottom: 0;
+    left: 0;
+    right: 0; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+}
+
+.start-screen img {
     width: 100%;
     height: 100%;
-    background-image: url('/img/9_intro_outro_screens/start/startscreen_1.png');
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: 100% 100%;
+    border-radius: 16px;
+}
+
+.start-game {
+    position: absolute;
+    bottom: 20px;
+    z-index: 1;
+    cursor: pointer;
+}
+
+.info-bar {
+    position: absolute;
+    top: 16px;
+    right: 24px;
     display: flex;
-    align-items: center;
+    gap: 20px;
+}
+
+.info-bar img {
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+}
+
+/* End Screen -------------- */
+#gameOverContainer {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    /* top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0; */
+}
+
+#gameOverContainer img {
+    width: 100%;
+    height: 100%;
+}
+
+.dnone {
+    display: none;
+}
+
+/* Canvas -------------- */
+canvas {
+    background-color: black;
+    display: block;
+    border-radius: 16px;
 }
 
 /* Smartphones -------------- */
 @media only screen and (max-width: 720px) {
-    canvas, .game-container, .start-screen {
+    canvas {
         width: 100%;
     }
 }
 
 /* Smartphones -------------- */
 @media only screen and (max-height: 480px) {
-    canvas, .game-container {
+    canvas {
         height: 100vh;
     }
 }

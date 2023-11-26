@@ -37,7 +37,7 @@ class ThrowableObject extends MovableObject {
     throwBottle() {
         this.speedY = 30;
         this.applyGravity();
-        this.speedX = this.otherDirection ? -10 : 10; // Geschwindigkeit je nach Wurfrichtung
+        this.speedX = this.otherDirection ? -10 : 10;
 
         this.animationInterval = setInterval(() => {
             this.handleBottleAnimation();
@@ -62,24 +62,8 @@ class ThrowableObject extends MovableObject {
     }
 
 
-    // playGroundImpactAnimation() {
-    //     const collisionImages = this.SALSA_BOTTLE_COLLISION;
-    //     let currentIndex = 0;
-
-    //     const animationInterval = setInterval(() => {
-    //         if (currentIndex < collisionImages.length) {
-    //             this.playAnimation([collisionImages[currentIndex]]);
-    //             currentIndex++;
-    //         } else {
-    //             clearInterval(animationInterval);
-    //         }
-    //     }, 40);
-    //     burstBottleAudio.play();
-    // }
-
-
     playGroundImpactAnimation() {
         this.playAnimation(this.SALSA_BOTTLE_COLLISION);
-        burstBottleAudio.play();
+        playAudio('burstBottleAudio');
     }
 }

@@ -3,32 +3,30 @@ let ctx;
 let world;
 let keyboard = new Keyboard();
 let character;
-let chick;
 let isGamePaused = false;
+
+const ACTION_START = 'start';
+const ACTION_PAUSE = 'pause';
+const OBJECT_TYPE_CHICK = Chick;
+const OBJECT_TYPE_CHICKEN = Chicken;
+const OBJECT_TYPE_CLOUD = Cloud;
+const OBJECT_TYPE_COIN = Coin;
+const OBJECT_TYPE_BO = BackgroundObject;
 
 
 window.onload = function () {
-    startAudio.play();
+    playAudio('startAudio');
     document.getElementById('startGame').addEventListener('click', startGame);
+    checkMuteKey();
 }
 
 
 function startGame() {
     document.getElementById('startScreen').style.display = 'none';
     init();
-    startAudio.pause();
-    backgroundMusic.play();
-    checkPauseKey();
-}
-
-
-function checkPauseKey() {
-    setInterval(() => {
-        if (keyboard.KEY_P) {
-            toggleGame();
-            keyboard.KEY_P = false;
-        }
-    }, 100);
+    pauseAudio('startAudio');
+    playAudio('backgroundMusic');
+    document.addEventListener('keydown', handlePauseKey);
 }
 
 
@@ -41,94 +39,86 @@ function init() {
 
 function toggleGame() {
     isGamePaused = !isGamePaused;
+    const toggleImage = document.getElementById('toggleGame');
 
-    const toggleButton = document.getElementById('toggleGame');
-    // if (isGamePaused) {
-    //     resumeGame();
-    //     isGamePaused = false;
-    //     toggleButton.innerHTML = 'Pause';
-    // } else {
-    //     pauseGame();
-    //     isGamePaused = true;
-    //     toggleButton.innerHTML = 'Resume';
-    // }
     isGamePaused ? pauseGame() : resumeGame();
-    toggleButton.textContent = isGamePaused ? 'Resume' : 'Pause';
+    toggleImage.setAttribute('src', isGamePaused ? 'img/play.png' : 'img/pause.png');
 }
+document.getElementById('toggleGame').addEventListener('click', toggleGame);
 
 
 function pauseGame() {
-    backgroundMusic.pause();
+    pauseAudio('backgroundMusic');
     world.pause();
     world.character.pause();
-    togglePauseResume(level1.enemies, 'pause', Chick);
-    togglePauseResume(level1.enemies, 'pause', Chicken);
-    togglePauseResume(level1.clouds, 'pause', Cloud);
+    pauseAllGameObjects();
 }
 
 
 function resumeGame() {
-    backgroundMusic.play();
+    playAudio('backgroundMusic');
     world.start();
     world.character.start();
-    togglePauseResume(level1.enemies, 'start', Chick);
-    togglePauseResume(level1.enemies, 'start', Chicken);
-    togglePauseResume(level1.clouds, 'start', Cloud);
+    resumeAllGameObjects();
 }
 
 
 function togglePauseResume(objects, action, objectType) {
     objects.forEach((object) => {
-        if (object instanceof objectType) {
+        if (object instanceof objectType && typeof object[action] === 'function') {
             object[action]();
         }
     });
 }
 
 
-// window.addEventListener('keydown', (event) => {
-//     const { key, code } = event;
-
-//     if (code === 'ArrowLeft') {
-//         keyboard.KEY_LEFT = true;
-//     }
-//     if (code === 'ArrowRight') {
-//         keyboard.KEY_RIGHT = true;
-//     }
-//     if (code === 'ArrowUp') {
-//         keyboard.KEY_UP = true;
-//     }
-//     if (code === 'ArrowDown') {
-//         keyboard.KEY_DOWN = true;
-//     }
-//     if (key === ' ') { // Leertaste
-//         keyboard.KEY_SPACE = true;
-//     }
-//     if (key === 'd' || event.key === 'D')  {
-//         keyboard.KEY_D = true;
-//     }
-// });
+function handlePauseKey(event) {
+    if (event.key.toLowerCase() === 'p') {
+        toggleGame();
+    }
+}
 
 
-// window.addEventListener('keyup', (event) => {
-//     const { key, code } = event;
+function characterIsGameOver() {
+    selectRandomGameOverImage();
+    pauseAudio('backgroundMusic');
+    pauseAllGameObjects();
+    world.endboss.pause();
+    clearInterval(world.character.motionIntervalId);
+    clearInterval(world.gameIntervalId);
+    document.removeEventListener('keydown', handlePauseKey);
+}
 
-//     if (code === 'ArrowLeft') {
-//         keyboard.KEY_LEFT = false;
-//     }
-//     if (code === 'ArrowRight') {
-//         keyboard.KEY_RIGHT = false;
-//     }
-//     if (code === 'ArrowUp') {
-//         keyboard.KEY_UP = false;
-//     }
-//     if (code === 'ArrowDown') {
-//         keyboard.KEY_DOWN = false;
-//     }
-//     if (key === ' ') { // Leertaste
-//         keyboard.KEY_SPACE = false;
-//     }
-//     if (key === 'd' || key === 'D') {
-//         keyboard.KEY_D = false;
-//     }
-// });
+
+function pauseAllGameObjects() {
+    togglePauseResume(level1.enemies, ACTION_PAUSE, OBJECT_TYPE_CHICK);
+    togglePauseResume(level1.enemies, ACTION_PAUSE, OBJECT_TYPE_CHICKEN);
+    togglePauseResume(level1.clouds, ACTION_PAUSE, OBJECT_TYPE_CLOUD);
+    togglePauseResume(level1.coins, ACTION_PAUSE, OBJECT_TYPE_COIN);
+    togglePauseResume(level1.backgroundObjects, ACTION_PAUSE, OBJECT_TYPE_BO);
+}
+
+
+function resumeAllGameObjects() {
+    togglePauseResume(level1.enemies, ACTION_START, OBJECT_TYPE_CHICK);
+    togglePauseResume(level1.enemies, ACTION_START, OBJECT_TYPE_CHICKEN);
+    togglePauseResume(level1.clouds, ACTION_START, OBJECT_TYPE_CLOUD);
+    togglePauseResume(level1.coins, ACTION_START, OBJECT_TYPE_COIN);
+    togglePauseResume(level1.backgroundObjects, ACTION_START, OBJECT_TYPE_BO);
+}
+
+
+function selectRandomGameOverImage() {
+    let gameOverContainer = document.getElementById("gameOverContainer");
+    gameOverContainer.classList.remove("dnone");
+
+    let gameOverImages = gameOverContainer.getElementsByTagName("img");
+    for (let i = 0; i < gameOverImages.length; i++) {
+        gameOverImages[i].style.display = "none";
+    }
+
+    let randomIndex = Math.floor(Math.random() * gameOverImages.length);
+    let selectedImage = gameOverImages[randomIndex];
+
+    selectedImage.style.display = "block";
+}

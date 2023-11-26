@@ -6,11 +6,8 @@ class DrawableObject {
     img;
     imageCache = {};
     currentImage = 0;
-    // speedX = 0;
-    // speedY = 0;
-    // animationInterval;
-    // otherDirection = false;
-    // lastActivityTime = new Date().getTime();
+    
+    
     // offset = {
     //     left: 0,
     //     right: 0,
@@ -41,18 +38,18 @@ class DrawableObject {
     }
 
 
-    drawInnerFrame(ctx){
-        if(this instanceof Character || this instanceof Chicken || this instanceof Chick || this instanceof Endboss || this instanceof ThrowableObject){
-            ctx.beginPath();
-            ctx.lineWidth = '5';
-            ctx.strokeStyle = 'red';
-            ctx.rect(this.offset.left + this.width,
-                this.offset.bottom  + this.height,
-                this.offset.right,
-                this.offset.top);
-            ctx.stroke();
-        }
-    }
+    // drawInnerFrame(ctx){
+    //     if(this instanceof Character || this instanceof Chicken || this instanceof Chick || this instanceof Endboss || this instanceof ThrowableObject){
+    //         ctx.beginPath();
+    //         ctx.lineWidth = '5';
+    //         ctx.strokeStyle = 'red';
+    //         ctx.rect(this.offset.left + this.width,
+    //             this.offset.bottom  + this.height,
+    //             this.offset.right,
+    //             this.offset.top);
+    //         ctx.stroke();
+    //     }
+    // }
 
 
     /**
