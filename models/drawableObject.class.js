@@ -7,15 +7,7 @@ class DrawableObject {
     imageCache = {};
     currentImage = 0;
     
-    
-    // offset = {
-    //     left: 0,
-    //     right: 0,
-    //     top: 0,
-    //     bottom: 0
-    // };
-    
-    
+
     loadImage(path) {
         this.img = new Image();  // this.img = document.getElementById('image');  <img id="image" src="";
         this.img.src = path;
@@ -36,20 +28,6 @@ class DrawableObject {
             ctx.stroke();
         }
     }
-
-
-    // drawInnerFrame(ctx){
-    //     if(this instanceof Character || this instanceof Chicken || this instanceof Chick || this instanceof Endboss || this instanceof ThrowableObject){
-    //         ctx.beginPath();
-    //         ctx.lineWidth = '5';
-    //         ctx.strokeStyle = 'red';
-    //         ctx.rect(this.offset.left + this.width,
-    //             this.offset.bottom  + this.height,
-    //             this.offset.right,
-    //             this.offset.top);
-    //         ctx.stroke();
-    //     }
-    // }
 
 
     /**

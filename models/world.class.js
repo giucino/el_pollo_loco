@@ -162,7 +162,6 @@ class World {
         }
         mo.draw(this.ctx);
         // mo.drawFrame(this.ctx);
-        // mo.drawInnerFrame(this.ctx);
 
         if (mo.otherDirection) {
             this.flipImageBack(mo);
@@ -204,6 +203,8 @@ class World {
     }
 
 
+/* Chicken -------------- */
+
     checkCollisionEnemy() {
         this.level.enemies.forEach((enemy) => {
             if (this.characterJumpAttack(enemy)) {
@@ -220,6 +221,18 @@ class World {
 
     characterJumpAttack(enemy) {
         return !this.character.isHurt() && this.character.isColliding(enemy) && this.character.isAboveGround() && this.character.speedY < 0;
+    }
+
+
+    bottleIsHurtingEnemy() {
+        this.throwableObjects.forEach((bottle) => {
+            this.level.enemies.forEach((enemy) => {
+                if (!bottle.isBursted && bottle.isColliding(enemy) && !enemy.isGameOver()) {
+                    this.eliminateEnemy(enemy);
+                    bottle.isBursted = true;
+                }
+            });
+        });
     }
 
 
@@ -271,17 +284,7 @@ class World {
     }
 
 
-    bottleIsHurtingEnemy() {
-        this.throwableObjects.forEach((bottle) => {
-            this.level.enemies.forEach((enemy) => {
-                if (!bottle.isBursted && bottle.isColliding(enemy) && !enemy.isGameOver()) {
-                    this.eliminateEnemy(enemy);
-                    bottle.isBursted = true;
-                }
-            });
-        });
-    }
-
+/* Endboss -------------- */
 
     checkCollisionEndboss() {
         if (this.endbossCanDamageCharacter(this.endboss)) {
@@ -340,6 +343,8 @@ class World {
         pauseAudio("backgroundMusic");
     }
 
+
+/* Collect Items -------------- */
 
     collectItems(items, itemSounds, statusBar, canCollectItem, soundName) {
         items.forEach((item, index) => {
@@ -412,25 +417,4 @@ class World {
         sound.muted = isSoundMuted;
         sound.play();
     }
-
-
-    // collectCoins() {
-    //     this.level.coins.forEach((coin, index) => {
-    //         if (this.characterCanCollectCoin(coin)) {
-    //             this.playCoinSound(coin); 
-    //             this.statusBarCoins.increaseCountByOne();
-    //             this.level.coins.splice(index, 1);
-    //         }
-    //     });
-    // }
-
-
-    // playCoinSound(coin) {
-    //     if (!this.coinSounds.has(coin)) {
-    //         let coinSound = new Audio('audio/coin.mp3');
-    //         this.coinSounds.set(coin, coinSound);
-    //     }
-    //     let coinSound = this.coinSounds.get(coin);
-    //     coinSound.play();
-    // }
 }

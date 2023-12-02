@@ -32,7 +32,7 @@ class Chick extends MovableObject {
         this.loadImages(this.CHICK_ELIMINATED);
         this.x = 300 + Math.random() * 5000;
         this.speed = 0.15 + Math.random() * 0.5;
-        // this.start();
+        // this.start(); Wird in der level1.js gestartet!!
     }
     
 

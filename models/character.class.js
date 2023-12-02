@@ -280,29 +280,3 @@ class Character extends MovableObject {
         }
     }
 }
-
-
-// updateAnimationBasedOnState() {
-//     const currentTime = new Date().getTime();
-//     const inactivityDuration = (currentTime - this.lastActivityTime) / 1000;
-
-//     if (this.shouldPlayIdleAnimation(inactivityDuration)) {
-//         this.playCharacterAnimation(this.IMAGES_IDLE);
-//         playAudio('snoringAudio');
-//     } else if (this.isHurt()) {
-//         this.playCharacterAnimation(this.IMAGES_HURT);
-//         playAudio('hurtAudio');
-//     } else if (this.isGameOver()) {
-//         this.triggerGameOver();
-//         this.playCharacterAnimation(this.IMAGES_GAME_OVER);
-//     } else {
-//         this.isGameOverTriggered = false;
-//         if (this.isAboveGround()) {
-//             this.playCharacterAnimation(this.IMAGES_JUMPING);
-//         } else if (this.isMovingHorizontally(this.world.keyboard)) {
-//             this.playCharacterAnimation(this.IMAGES_WALKING);
-//         } else {
-//             this.playCharacterAnimation(this.IMAGES_STANDING);
-//         }
-//     }
-// }

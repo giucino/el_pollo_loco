@@ -32,7 +32,7 @@ class Chicken extends MovableObject {
         this.loadImages(this.CHICKEN_ELIMINATED);
         this.x = 400 + Math.random() * 5000;
         this.speed = 0.15 + Math.random() * 0.5;
-        // this.start();
+        // this.start(); Wird in der level1.js gestartet!!
     }
 
 
