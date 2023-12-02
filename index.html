@@ -11,42 +11,116 @@
 </head>
 
 <body>
-    <h1>El Pollo Loco</h1>
-    <main class="game-container">
+    <div class="header-container">
+        <h1>¡ EL POLLO LOCO !</h1>
+        <h2 class="second-header gradient-text">¡ EL POLLO LOCO !</h2>
+    </div>
+    <main id="fullscreen" class="game-container">
+
         <div id="startScreen" class="start-screen">
             <img src="/img/9_intro_outro_screens/start/startscreen_1.png" alt="Start Screen">
-            <button id="startGame" class="start-game">Play</button>
+            <button type="button" id="startGame" class="start-btn button" title="Start the game">¡PLAY</button>
         </div>
 
-        <div class="info-bar">
-            <img src="img/unmute.png" id="muteSounds" alt="Volume"></img>
-            <img src="img/pause.png" id="toggleGame" alt="Resume Game"></img>
+        <div id="endScreenContainer" class="d-none">
+            <img class="you-lost-image" src="img/9_intro_outro_screens/game_over/oh no you lost!.png" alt="You Lost">
+            <img class="you-lost-image" src="img/9_intro_outro_screens/game_over/you lost.png" alt="You Lost">
+            <img class="game-over-image" src="img/9_intro_outro_screens/game_over/game over!.png" alt="Game Over">
+            <img class="game-over-image" src="img/9_intro_outro_screens/game_over/game over.png" alt="Game Over">
+            <div class="action-btn">
+                <button type="button" id="restartGame" class="button delayed-btn" title="Try again!"
+                    data-text="¡TRY AGAIN"></button>
+                <button type="button" id="backToMenu" class="button delayed-btn" title="Menu"
+                    data-text="¡MENU"></button>
+            </div>
+        </div>
+        <div id="overlay"></div>
+
+        <div id="infoBar" class="info-bar">
+            <svg id="muteSounds" xmlns="http://www.w3.org/2000/svg" height="40" width="38"
+                viewBox="0 0 640 512">
+                <title>Mute Sounds</title>
+                <path fill="#ffd111"
+                    d="M533.6 32.5C598.5 85.2 640 165.8 640 256s-41.5 170.7-106.4 223.5c-10.3 8.4-25.4 6.8-33.8-3.5s-6.8-25.4 3.5-33.8C557.5 398.2 592 331.2 592 256s-34.5-142.2-88.7-186.3c-10.3-8.4-11.8-23.5-3.5-33.8s23.5-11.8 33.8-3.5zM473.1 107c43.2 35.2 70.9 88.9 70.9 149s-27.7 113.8-70.9 149c-10.3 8.4-25.4 6.8-33.8-3.5s-6.8-25.4 3.5-33.8C475.3 341.3 496 301.1 496 256s-20.7-85.3-53.2-111.8c-10.3-8.4-11.8-23.5-3.5-33.8s23.5-11.8 33.8-3.5zm-60.5 74.5C434.1 199.1 448 225.9 448 256s-13.9 56.9-35.4 74.5c-10.3 8.4-25.4 6.8-33.8-3.5s-6.8-25.4 3.5-33.8C393.1 284.4 400 271 400 256s-6.9-28.4-17.7-37.3c-10.3-8.4-11.8-23.5-3.5-33.8s23.5-11.8 33.8-3.5zM301.1 34.8C312.6 40 320 51.4 320 64V448c0 12.6-7.4 24-18.9 29.2s-25 3.1-34.4-5.3L131.8 352H64c-35.3 0-64-28.7-64-64V224c0-35.3 28.7-64 64-64h67.8L266.7 40.1c9.4-8.4 22.9-10.4 34.4-5.3z" />
+            </svg>
+            <svg id="toggleGame" xmlns="http://www.w3.org/2000/svg" height="40" width="38"
+                viewBox="0 0 320 512">
+                <title>Pause Game</title>
+                <path fill="#ffd111"
+                    d="M48 64C21.5 64 0 85.5 0 112V400c0 26.5 21.5 48 48 48H80c26.5 0 48-21.5 48-48V112c0-26.5-21.5-48-48-48H48zm192 0c-26.5 0-48 21.5-48 48V400c0 26.5 21.5 48 48 48h32c26.5 0 48-21.5 48-48V112c0-26.5-21.5-48-48-48H240z" />
+            </svg>
+            <svg id="enter" xmlns="http://www.w3.org/2000/svg" height="40" width="38"
+                viewBox="0 0 448 512">
+                <title>Enter Fullscreen</title>
+                <path opacity="1" fill="#ffd111"
+                    d="M32 32C14.3 32 0 46.3 0 64v96c0 17.7 14.3 32 32 32s32-14.3 32-32V96h64c17.7 0 32-14.3 32-32s-14.3-32-32-32H32zM64 352c0-17.7-14.3-32-32-32s-32 14.3-32 32v96c0 17.7 14.3 32 32 32h96c17.7 0 32-14.3 32-32s-14.3-32-32-32H64V352zM320 32c-17.7 0-32 14.3-32 32s14.3 32 32 32h64v64c0 17.7 14.3 32 32 32s32-14.3 32-32V64c0-17.7-14.3-32-32-32H320zM448 352c0-17.7-14.3-32-32-32s-32 14.3-32 32v64H320c-17.7 0-32 14.3-32 32s14.3 32 32 32h96c17.7 0 32-14.3 32-32V352z" />
+            </svg>
+            <svg id="controlInterface" xmlns="http://www.w3.org/2000/svg" height="16" width="20"
+                viewBox="0 0 640 512">
+                <title>Controll Interface</title>
+                <path fill="#ffd111"
+                    d="M192 64C86 64 0 150 0 256S86 448 192 448H448c106 0 192-86 192-192s-86-192-192-192H192zM496 168a40 40 0 1 1 0 80 40 40 0 1 1 0-80zM392 304a40 40 0 1 1 80 0 40 40 0 1 1 -80 0zM168 200c0-13.3 10.7-24 24-24s24 10.7 24 24v32h32c13.3 0 24 10.7 24 24s-10.7 24-24 24H216v32c0 13.3-10.7 24-24 24s-24-10.7-24-24V280H136c-13.3 0-24-10.7-24-24s10.7-24 24-24h32V200z" />
+            </svg>
         </div>
 
-        <div id="gameOverContainer" class="dnone">
-            <img src="img/9_intro_outro_screens/game_over/oh no you lost!.png" alt="Game Over">
-            <img src="img/9_intro_outro_screens/game_over/you lost.png" alt="Game Over">
+        <div id="showControlInterface" class="controll-container">
+            <h5 class="controll-container-elem">P = Pause / Resume</h5>
+            <h5 class="controll-container-elem">M = Mute / Unmute</h5>
+            <h5 class="controll-container-elem">D = Throw Bottle</h5>
+            <h5 class="controll-container-elem">␣ or &uarr; = Jump</h5>
+            <h5 class="controll-container-elem">&rarr; = Move Right</h5>
+            <h5 class="controll-container-elem">&larr; = Move Left</h5>
         </div>
 
         <canvas id="canvas" width="720" height="480"></canvas>
     </main>
 
-
-    Music by <a
-        href="https://pixabay.com/de/users/raspberrymusic-27759797/?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=164689">raspberrymusic</a>
-    from <a
-        href="https://pixabay.com/music//?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=164689">Pixabay</a>
-    Music by <a
-        href="https://pixabay.com/de/users/top-flow-production-28521292/?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=148320">Sergio
-        Prosvirini</a> from <a
-        href="https://pixabay.com/music//?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=148320">Pixabay</a>
-    Bild von <a
-        href="https://pixabay.com/de/users/mostafaelturkey36-13328910/?utm_source=link-attribution&utm_medium=referral&utm_campaign=image&utm_content=5112222">Mostafa
-        Elturkey</a> auf <a
-        href="https://pixabay.com/de//?utm_source=link-attribution&utm_medium=referral&utm_campaign=image&utm_content=5112222">Pixabay</a>
-
-
-        <a target="_blank" href="https://icons8.com/icon/eBCEOT0oGnaL/mute">Mute</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>
+    <!-- <footer>
+        Music by <a
+            href="https://pixabay.com/de/users/raspberrymusic-27759797/?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=164689">raspberrymusic</a>
+        from <a
+            href="https://pixabay.com/music//?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=164689">Pixabay</a>
+        Music by <a
+            href="https://pixabay.com/de/users/top-flow-production-28521292/?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=148320">Sergio
+            Prosvirini</a> from <a
+            href="https://pixabay.com/music//?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=148320">Pixabay</a>
+        Bild von <a
+            href="https://pixabay.com/de/users/_luca-10388899/?utm_source=link-attribution&utm_medium=referral&utm_campaign=image&utm_content=3784915">Luca</a>
+        auf <a
+            href="https://pixabay.com/de//?utm_source=link-attribution&utm_medium=referral&utm_campaign=image&utm_content=3784915">Pixabay</a>
+        Bild von <a
+            href="https://pixabay.com/de/users/mostafaelturkey36-13328910/?utm_source=link-attribution&utm_medium=referral&utm_campaign=image&utm_content=5112222">Mostafa
+            Elturkey</a> auf <a
+            href="https://pixabay.com/de//?utm_source=link-attribution&utm_medium=referral&utm_campaign=image&utm_content=5112222">Pixabay</a>
+        Bild von <a target="_blank" href="https://icons8.com/icon/eBCEOT0oGnaL/mute">Mute</target=> icon by <a
+                target="_blank" href="https://icons8.com">Icons8</a>
+            Music by <a
+                href="https://pixabay.com/de/users/white_records-32584949/?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=164704">Maksym
+                Dudchyk</a> from <a
+                href="https://pixabay.com//?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=164704">Pixabay</a>
+            Music by <a
+                href="https://pixabay.com/de/users/monument_music-34040748/?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=159615">Oleksii
+                Holubiev</a> from <a
+                href="https://pixabay.com/music//?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=159615">Pixabay</a>
+            Music by <a
+                href="https://pixabay.com/de/users/musictown-25873992/?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=103662">Musictown</a>
+            from <a
+                href="https://pixabay.com/music//?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=103662">Pixabay</a>
+            Music by <a
+                href="https://pixabay.com/de/users/white_records-32584949/?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=144293">Maksym
+                Dudchyk</a> from <a
+                href="https://pixabay.com//?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=144293">Pixabay</a>
+            Sound Effect by <a
+                href="https://pixabay.com/de/users/u_ss015dykrt-26759154/?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=146260">u_ss015dykrt</a>
+            from <a
+                href="https://pixabay.com/sound-effects//?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=146260">Pixabay</a>
+            Sound Effect from <a
+                href="https://pixabay.com/sound-effects/?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=48124">Pixabay</a>
+            Sound Effect by <a
+                href="https://pixabay.com/de/users/universfield-28281460/?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=122258">UNIVERSFIELD</a>
+            from <a
+                href="https://pixabay.com/sound-effects//?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=122258">Pixabay</a>
+    </footer> -->
 
     <script src="models/drawableObject.class.js"></script>
     <script src="models/movableObject.class.js"></script>
@@ -68,6 +142,7 @@
     <script src="models/endboss.class.js"></script>
     <script src="levels/level1.js"></script>
     <script src="./js/audio.js"></script>
+    <!-- <script src="./js/templates.js"></script> -->
     <script src="./js/game.js"></script>
 </body>
 

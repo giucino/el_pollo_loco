@@ -69,20 +69,54 @@ class World {
 
 
     draw() {
-        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height); // Bilder nach Bewegung löschen
+        this.clearCanvas();
+        this.setCameraPosition();
+        this.translateCamera();
 
+        this.drawBackgroundObjects();
+        this.drawMovingObjects();
+        this.resetCamera();
+
+        this.drawFixedObjects();
+        this.translateCamera();
+        this.resetCamera();
+
+        this.requestNextFrame();
+    }
+
+
+    translateCamera() {
+        this.ctx.translate(this.camera_x, 0);
+    }
+
+
+    resetCamera() {
+        this.ctx.translate(-this.camera_x, 0);
+    }
+
+
+    requestNextFrame() {
+        this.animationFrameId = requestAnimationFrame(() => {
+            this.draw(); //Dieses "this" bezieht sich direkt auf das "this" im äußeren Kontext der Methode.
+        });
+    }
+
+
+    clearCanvas() {
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    }
+
+
+    setCameraPosition() {
         if (this.character.otherDirection) {
             this.camera_x = -this.character.x + this.canvas.width - 450;
         } else {
             this.camera_x = -this.character.x + 200;
         }
+    }
 
 
-
-        this.ctx.translate(this.camera_x, 0);
-
-
-        // ------ Space for moving objects ------
+    drawBackgroundObjects() {
         if (this.character.isMoving) {
             this.level.backgroundObjects.forEach(bgObject => {
                 bgObject.start(this.character.otherDirection);
@@ -91,6 +125,10 @@ class World {
         } else {
             this.addObjectsToMap(this.level.backgroundObjects);
         }
+    }
+
+
+    drawMovingObjects() {
         this.addObjectsToMap(this.level.clouds);
         this.addObjectsToMap(this.level.bottles);
         this.addObjectsToMap(this.level.coins);
@@ -98,25 +136,18 @@ class World {
         this.addMovableObjectsToMap(this.endboss);
         this.addObjectsToMap(this.level.enemies);
         this.addObjectsToMap(this.throwableObjects);
+    }
 
 
-        this.ctx.translate(-this.camera_x, 0);
-        // ------ Space for fixed objects ------
+    drawFixedObjects() {
         this.addMovableObjectsToMap(this.statusBarHealth);
         this.addMovableObjectsToMap(this.statusBarBottles);
         this.addMovableObjectsToMap(this.statusBarCoins);
         if (this.statusBarHealthEndboss.visible) {
             this.addMovableObjectsToMap(this.statusBarHealthEndboss);
         }
-        this.ctx.translate(this.camera_x, 0);
-        this.ctx.translate(-this.camera_x, 0);
-
-
-        this.animationFrameId = requestAnimationFrame(() => {
-            this.draw(); //Dieses "this" bezieht sich direkt auf das "this" im äußeren Kontext der Methode.
-        });
     }
-    
+
 
     addObjectsToMap(objects) {
         objects.forEach(o => {
@@ -155,18 +186,21 @@ class World {
 
     checkThrowableObjects() {
         if (this.keyboard.KEY_D && this.collectedBottles.length > 0) {
+            let bottle = this.createBottle();
             this.statusBarBottles.decreaseCountByOne();
-
-            let bottleX = this.character.x + (this.character.otherDirection ? -10 : 50);
-            let bottleY = this.character.y + 100;
-            let bottleDirection = this.character.otherDirection;
-
-            let bottle = new ThrowableObject(bottleX, bottleY, bottleDirection);
             this.throwableObjects.push(bottle);
-            // throwBottleAudio.play();
-            playAudio('throwBottleAudio');
             this.collectedBottles.pop();
+            playAudio('throwBottleAudio');
         }
+    }
+
+
+    createBottle() {
+        let bottleX = this.character.x + (this.character.otherDirection ? -10 : 50);
+        let bottleY = this.character.y + 100;
+        let bottleDirection = this.character.otherDirection;
+
+        return new ThrowableObject(bottleX, bottleY, bottleDirection);
     }
 
 
@@ -175,6 +209,7 @@ class World {
             if (this.characterJumpAttack(enemy)) {
                 this.eliminateEnemy(enemy);
                 this.character.jump();
+                playAudio("jumpingAudio");
             }
             if (this.enemyCanDamageCharacter(enemy)) {
                 this.handleCharacterHealth();
@@ -188,9 +223,8 @@ class World {
     }
 
 
-
     eliminateEnemy(enemy) {
-        const indexEnemy = this.level.enemies.findIndex(e => e === enemy);
+        let indexEnemy = this.level.enemies.findIndex(e => e === enemy);
         if (indexEnemy !== -1) {
             this.level.enemies[indexEnemy].energy = 0;
             this.delayedRemoveEnemy(indexEnemy);
@@ -220,7 +254,7 @@ class World {
 
 
     enemyCanDamageCharacter(enemy) {
-        return this.character.isColliding(enemy) && !this.character.isHurt() && !this.character.isAboveGround();
+        return this.character.isColliding(enemy) && !this.character.isHurt() && !this.character.isAboveGround() && !this.character.isIdle();
     }
 
 
@@ -249,39 +283,16 @@ class World {
     }
 
 
-    // checkCollisionEndboss() {
-    //     this.level.endboss.forEach((endboss) => {
-    //         if (this.character.isColliding(endboss)) {
-    //             this.character.reduceEnergy();
-    //             this.statusBarHealth.setPercentage(this.character.energy);
-    //         }
-    //     });
-    // }
-
-
-    // checkCollisionEndboss() {
-    //     this.level.endboss.forEach((endboss) => {
-    //         if (this.character.isColliding(endboss)) {
-    //             console.log('Collision detected');
-    //             this.character.reduceEnergy();
-    //             this.statusBarHealth.setPercentage(this.character.energy);
-    //         } 
-    //     });
-    // }
-
-
     checkCollisionEndboss() {
-        this.level.endboss.forEach((endboss) => {
-            if (this.endbossCanDamageCharacter(endboss)) {
-                this.handleCharacterHealth();
-                console.log('Collision detected');
-            }
-        });
+        if (this.endbossCanDamageCharacter(this.endboss)) {
+            this.handleCharacterHealth();
+            console.log('Collision detected');
+        }
     }
 
 
     endbossCanDamageCharacter(endboss) {
-        return this.character.isColliding(endboss) && !this.character.isHurt() && !this.character.isAboveGround();
+        return this.character.isColliding(endboss) && !this.character.isHurt() && !this.character.isAboveGround() && !this.character.isIdle();
     }
 
 
@@ -325,6 +336,8 @@ class World {
     triggerEndbossEncounter() {
         this.firstContactMade = true;
         this.statusBarHealthEndboss.visible = true;
+        playAudio("endbossAudio");
+        pauseAudio("backgroundMusic");
     }
 
 
@@ -349,40 +362,16 @@ class World {
             'coinAudio'
         );
     }
-    
-    
+
+
     collectBottles() {
         this.collectItems(
             this.level.bottles,
             this.bottleSounds,
             this.statusBarBottles,
             (bottle) => this.characterCanCollectItem(bottle),
-            'collectBottleAudio' 
+            'collectBottleAudio'
         );
-    }
-    
-
-    // playItemSound(item, itemSounds, itemSoundFile) {
-    //     if (!itemSounds.has(item)) {
-    //         itemSounds.set(item, itemSoundFile);
-    //     }
-    //     const sound = new Audio(itemSoundFile.src);   
-    //     sound.muted = isSoundMuted;     
-    //     sound.play();
-    // }
-    playItemSound(item, itemSounds, soundName) {
-        if (!itemSounds.has(item)) {
-            const soundFile = findAudioByName(soundName);
-            if (!soundFile) {
-                console.error('Sound not found:', soundName);
-                return;
-            }
-            itemSounds.set(item, soundFile);
-        }
-        
-        const sound = new Audio(itemSounds.get(item).src);
-        sound.muted = isSoundMuted;     
-        sound.play();
     }
 
 
@@ -400,6 +389,31 @@ class World {
     }
 
 
+    playItemSound(item, itemSounds, soundName) {
+        this.findAndSetSound(item, itemSounds, soundName);
+        this.createAndPlaySound(item, itemSounds);
+    }
+
+
+    findAndSetSound(item, itemSounds, soundName) {
+        if (!itemSounds.has(item)) {
+            let soundFile = findAudioByName(soundName);
+            if (!soundFile) {
+                console.error('Sound not found:', soundName);
+                return;
+            }
+            itemSounds.set(item, soundFile);
+        }
+    }
+
+
+    createAndPlaySound(item, itemSounds) {
+        let sound = new Audio(itemSounds.get(item).src);
+        sound.muted = isSoundMuted;
+        sound.play();
+    }
+
+
     // collectCoins() {
     //     this.level.coins.forEach((coin, index) => {
     //         if (this.characterCanCollectCoin(coin)) {
@@ -413,41 +427,10 @@ class World {
 
     // playCoinSound(coin) {
     //     if (!this.coinSounds.has(coin)) {
-    //         const coinSound = new Audio('audio/coin.mp3');
+    //         let coinSound = new Audio('audio/coin.mp3');
     //         this.coinSounds.set(coin, coinSound);
     //     }
-    //     const coinSound = this.coinSounds.get(coin);
+    //     let coinSound = this.coinSounds.get(coin);
     //     coinSound.play();
-    // }
-
-
-    // characterCanCollectCoin(coin) {
-    //     return this.character.isColliding(coin) && !this.character.isHurt();
-    // }
-
-
-    // collectBottles() {
-    //     this.level.bottles.forEach((bottle, index) => {
-    //         if (this.characterCanCollectBottle(bottle)) {
-    //             this.playBottleSound(bottle); 
-    //             this.statusBarBottles.increaseCountByOne();
-    //             this.level.bottles.splice(index, 1);
-    //         }
-    //     });
-    // }
-
-
-    // playBottleSound(bottle) {
-    //     if (!this.bottleSounds.has(bottle)) {
-    //         const bottleSound = new Audio('audio/coin.mp3');
-    //         this.bottleSounds.set(bottle, bottleSound);
-    //     }
-    //     const bottleSound = this.bottleSounds.get(bottle);
-    //     bottleSound.play();
-    // }
-
-
-    // characterCanCollectBottle(bottle) {
-    //     return this.character.isColliding(bottle) && !this.character.isHurt();
     // }
 }

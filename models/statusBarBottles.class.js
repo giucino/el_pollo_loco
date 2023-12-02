@@ -24,7 +24,7 @@ class StatusBarBottles extends DrawableObject {
 
     draw(ctx) {
         super.draw(ctx);
-        ctx.font = '30px Trochut';
+        ctx.font = '35px Boogaloo';
         ctx.fillStyle = 'black';
         ctx.fillText(this.count, this.x + this.width - 15, this.y + 43);
     }

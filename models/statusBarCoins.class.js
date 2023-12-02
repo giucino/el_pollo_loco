@@ -10,7 +10,7 @@ class StatusBarCoins extends DrawableObject {
     constructor() {
         super();
         this.loadImage(this.IMAGE_COIN);
-        this.x = 350;
+        this.x = 360;
         this.y = 10;
         this.width = 60;
         this.height = 60;
@@ -24,7 +24,7 @@ class StatusBarCoins extends DrawableObject {
 
     draw(ctx) {
         super.draw(ctx);
-        ctx.font = '30px Trochut';
+        ctx.font = '35px Boogaloo';
         ctx.fillStyle = 'black';
         ctx.fillText(this.count, this.x + this.width - 5, this.y + 43);
     }

@@ -8,12 +8,10 @@ class MovableObject extends DrawableObject {
 
     
     speed = 0.09;
-    // endbossSpeed = 30;
     otherDirection = false;
     speedY = 0;
     acceleration = 2.5;
     energy = 100;
-    // energyEndboss = 100;
     lastHit = 0;
     jumpTimeStamp = new Date().getTime();
 
@@ -34,24 +32,6 @@ class MovableObject extends DrawableObject {
             this.y + this.offset.top < mo.y + mo.height - mo.offset.bottom
         );
     }
-
-
-    // isColliding(mo) {
-    //     const colliding = (
-    //         this.x + this.width - this.offset.right > mo.x + mo.offset.left &&
-    //         this.y + this.height - this.offset.bottom > mo.y + mo.offset.top &&
-    //         this.x + this.offset.left < mo.x + mo.width - mo.offset.right &&
-    //         this.y + this.offset.top < mo.y + mo.height - mo.offset.bottom
-    //     );
-    //     return colliding;
-    // }
-
-
-    // isColliding(mo) {
-    //     return (this.X + this.width) >= mo.X && this.X <= (mo.X + mo.width) &&
-    //         (this.Y + this.offsetY + this.height) >= mo.Y &&
-    //         (this.Y + this.offsetY) <= (mo.Y + mo.height);
-    // }
 
 
     applyGravity() {
@@ -108,44 +88,6 @@ class MovableObject extends DrawableObject {
         this.speedY = 30;
         this.jumpTimeStamp = new Date().getTime();
     }
-
-
-    // reduceEnergyEndboss() {
-    //     this.energyEndboss -= 20;
-    //     if (this.energyEndboss < 0) {
-    //         this.energyEndboss = 0;
-    //     } else {
-    //         this.lastHit = new Date().getTime();
-    //     }
-    // }
-
-
-    // wasHit() {
-    //     this.isHurt();
-    //     return this.energyEndboss < 100;
-    // }
-
-
-    // // endbossMoveLeft() {
-    // //     this.x -= this.endbossSpeed;
-    // //     // console.log("endbossSpeed:", this.endbossSpeed)
-    // // }
-
-    // endbossMoveLeft() {
-    //     this.x -= this.endbossSpeed;
-    //     // if (this.x < 840) {
-    //     //     this.x += this.endbossMoveRight();
-    //     // }
-    // }
-
-    // // endbossMoveRight() {
-    // //     this.x += this.endbossSpeed;
-    // // }
-
-
-    // endbossIsGameOver() {
-    //     return this.energyEndboss == 0;
-    // }
 
 
     moveRight() {

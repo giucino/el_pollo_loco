@@ -14,6 +14,7 @@ class Endboss extends MovableObject {
     endbossSpeed = 30;
     energyEndboss = 100;
     lastHit = 0;
+    isGameOverTriggered = false;
 
 
     ENDBOSS_WALKING = [
@@ -70,7 +71,7 @@ class Endboss extends MovableObject {
         this.loadImages(this.ENDBOSS_ATTACK);
         this.loadImages(this.ENDBOSS_HURT);
         this.loadImages(this.ENDBOSS_GAME_OVER);
-        this.x = 3000;
+        this.x = 6600;
         this.animateEndboss();
     }
 
@@ -85,28 +86,54 @@ class Endboss extends MovableObject {
 
         this.endbossInterval = setInterval(() => {
             if (this.endbossIsGameOver()) {
-                this.playAnimation(this.ENDBOSS_GAME_OVER);
-                // console.log('GO Animation abgespielt.');
-            }
-            else if (this.isHurt()) {
-                this.playAnimation(this.ENDBOSS_HURT);
-                // console.log('Hurt Animation abgespielt.');
-            }
-            else if (this.wasHit()) {
-                if (isAttacking) {
-                    this.playAnimation(this.ENDBOSS_ATTACK);
-                    // console.log('Attack Animation abgespielt.');
-                } else {
-                    this.playAnimation(this.ENDBOSS_WALKING);
-                    this.endbossMoveLeft();
-                    // console.log('Walking Animation abgespielt.');
-                }
+                this.handleGameOverAnimation();
+            } else if (this.isHurt()) {
+                this.handleHurtAnimation();
+            } else if (this.wasHit()) {
+                this.handleAttackOrWalkAnimation(isAttacking);
                 isAttacking = !isAttacking;
             } else {
-                this.playAnimation(this.ENDBOSS_ALERT);
-                // console.log('Alert Animation abgespielt.');
+                this.handleAlertAnimation();
             }
         }, 200);
+    }
+
+
+    handleGameOverAnimation() {
+        this.playAnimation(this.ENDBOSS_GAME_OVER);
+        this.triggerGameOver();
+    }
+
+
+    handleHurtAnimation() {
+        this.playAnimation(this.ENDBOSS_HURT);
+        playAudio('endbossHurtAudio');
+    }
+
+
+    handleAttackOrWalkAnimation(isAttacking) {
+        if (isAttacking) {
+            this.handleAttackAnimation();
+        } else {
+            this.handleWalkingAnimation();
+        }
+    }
+
+
+    handleAttackAnimation() {
+        this.playAnimation(this.ENDBOSS_ATTACK);
+        playAudio('endbossHurtAudio');
+    }
+
+
+    handleWalkingAnimation() {
+        this.playAnimation(this.ENDBOSS_WALKING);
+        this.endbossMoveLeft();
+    }
+
+
+    handleAlertAnimation() {
+        this.playAnimation(this.ENDBOSS_ALERT);
     }
 
 
@@ -126,17 +153,10 @@ class Endboss extends MovableObject {
     }
 
 
-    // endbossMoveLeft() {
-    //     this.x -= this.endbossSpeed;
-    //     // console.log("endbossSpeed:", this.endbossSpeed)
-    // }
-
     endbossMoveLeft() {
         this.x -= this.endbossSpeed;
-        // if (this.x < 840) {
-        //     this.x += this.endbossMoveRight();
-        // }
     }
+
 
     // endbossMoveRight() {
     //     this.x += this.endbossSpeed;
@@ -146,4 +166,21 @@ class Endboss extends MovableObject {
     endbossIsGameOver() {
         return this.energyEndboss == 0;
     }
+
+
+    triggerGameOver() {
+        if (!this.isGameOverTriggered) {
+            characterHasWon();
+            this.isGameOverTriggered = true;
+        }
+    }
+
+
+    // determineCharacterSide(character) {
+    //     if (character.x < this.x) {
+    //         return 'left';
+    //     } else {
+    //         return 'right';
+    //     }
+    // }
 }
