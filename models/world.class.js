@@ -54,6 +54,11 @@ class World {
     }
 
 
+    clearAllIntervals() {
+        for (let i = 1; i < 999999; i++) window.clearInterval(i);
+    }
+
+
     run() {
         this.gameIntervalId = setInterval(() => {
             this.checkThrowableObjects();
@@ -67,6 +72,32 @@ class World {
         }, 200);
     }
 
+
+    resetGame() {
+        // this.clearAllIntervals();
+        this.camera_x = 0;
+        this.level = level1;
+        this.character = new Character();
+        this.endboss = new Endboss();
+        this.chick = new Chick();
+        this.statusBarHealth = new StatusBarHealth();
+        this.statusBarBottles = new StatusBarBottles();
+        this.statusBarCoins = new StatusBarCoins();
+        this.statusBarHealthEndboss = new StatusBarHealthEndboss();
+        this.throwableObjects = [];
+        this.coinSounds = new Map();
+        this.bottleSounds = new Map();
+        this.collectedCoins = [];
+        this.collectedBottles = [];
+        this.statusBarHealthEndboss.visible = false;
+        this.firstContactMade = false;
+        this.setWorld();
+        this.start();
+        this.pause();
+    }
+
+
+    /* Draw -------------- */
 
     draw() {
         this.clearCanvas();
@@ -183,6 +214,8 @@ class World {
     }
 
 
+/* Throwable Objects -------------- */
+
     checkThrowableObjects() {
         if (this.keyboard.KEY_D && this.collectedBottles.length > 0) {
             let bottle = this.createBottle();
@@ -211,6 +244,7 @@ class World {
                 this.eliminateEnemy(enemy);
                 this.character.jump();
                 playAudio("jumpingAudio");
+                playAudio("hitEnemyAudio");
             }
             if (this.enemyCanDamageCharacter(enemy)) {
                 this.handleCharacterHealth();
@@ -289,7 +323,6 @@ class World {
     checkCollisionEndboss() {
         if (this.endbossCanDamageCharacter(this.endboss)) {
             this.handleCharacterHealth();
-            console.log('Collision detected');
         }
     }
 
@@ -317,7 +350,6 @@ class World {
     handleEndbossHealth() {
         this.endboss.reduceEnergyEndboss();
         this.statusBarHealthEndboss.setPercentage(this.endboss.energyEndboss);
-        // playAudio("chickenHit");
     }
 
 

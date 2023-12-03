@@ -7,6 +7,7 @@ const OBJECT_TYPE_COIN = Coin;
 const OBJECT_TYPE_BO = BackgroundObject;
 
 let isGamePaused = false;
+let firstContactMade = false;
 
 
 function handlePauseKey(event) {
@@ -36,24 +37,30 @@ function updateToggleGamePath() {
 function pauseGame() {
     isGamePaused = true;
     pauseAudio('backgroundMusic');
+    pauseAudio('endbossAudio');
     pauseAudio('snoringAudio');
+    pauseAudio('endbossHurtAudio');
     pauseAllGameObjects();
     updateToggleGamePath();
+    pauseWorld();
 }
 
 
 function resumeGame() {
     isGamePaused = false;
-    playAudio('backgroundMusic');
     resumeAllGameObjects();
     updateToggleGamePath();
+    resumeWorld();
+
+    if (!world.firstContactMade) {
+        playAudio('backgroundMusic');
+    } else {
+        playAudio('endbossAudio');
+    }
 }
 
 
 function pauseAllGameObjects() {
-    world.pause();
-    world.character.pause();
-    world.endboss.pause();
     togglePauseResume(level1.enemies, ACTION_PAUSE, OBJECT_TYPE_CHICK);
     togglePauseResume(level1.enemies, ACTION_PAUSE, OBJECT_TYPE_CHICKEN);
     togglePauseResume(level1.clouds, ACTION_PAUSE, OBJECT_TYPE_CLOUD);
@@ -63,9 +70,6 @@ function pauseAllGameObjects() {
 
 
 function resumeAllGameObjects() {
-    world.start();
-    world.character.start();
-    world.endboss.animateEndboss();
     togglePauseResume(level1.enemies, ACTION_START, OBJECT_TYPE_CHICK);
     togglePauseResume(level1.enemies, ACTION_START, OBJECT_TYPE_CHICKEN);
     togglePauseResume(level1.clouds, ACTION_START, OBJECT_TYPE_CLOUD);
@@ -81,4 +85,18 @@ function togglePauseResume(objects, action, objectType) {
             object[action]();
         }
     });
+}
+
+
+function pauseWorld() {
+    world.pause();
+    world.character.pause();
+    world.endboss.pause();
+}
+
+
+function resumeWorld() {
+    world.start();
+    world.character.start();
+    world.endboss.animateEndboss();
 }

@@ -6,6 +6,8 @@ class Keyboard {
     KEY_D = false;
     KEY_P = false;
     KEY_M = false;
+    KEY_F = false;
+    KEY_ENTER = false;
     isKeyPressed = true;
 
 
@@ -76,6 +78,24 @@ class Keyboard {
                 }, 500);
                 this.isKeyPressed = false;
             }
+            if (key === 'f' || key === 'F') {
+                if (this.isKeyPressed) {
+                    keyboard.KEY_F = true;
+                }
+                setTimeout(() => {
+                    keyboard.KEY_F = false;
+                }, 500);
+                this.isKeyPressed = false;
+            }
+            if (key === 'Enter') {
+                if (this.isKeyPressed) {
+                    keyboard.KEY_ENTER = true;
+                }
+                setTimeout(() => {
+                    keyboard.KEY_ENTER = false;
+                }, 500);
+                this.isKeyPressed = false;
+            }
         });
     }
 
@@ -108,6 +128,10 @@ class Keyboard {
             }
             if (key === 'm' || key === 'M') {
                 keyboard.KEY_M = false;
+                this.isKeyPressed = true;
+            }
+            if (key === 'Enter') {
+                keyboard.KEY_ENTER = false;
                 this.isKeyPressed = true;
             }
         });

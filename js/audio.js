@@ -3,13 +3,13 @@ const audioConfig = [
         name: "startAudio",
         path: "audio/start_audio.mp3",
         loop: true,
-        volume: 0.3
+        volume: 0.2
     },
     {
         name: "backgroundMusic",
         path: "audio/backgroundMusic.mp3",
         loop: true,
-        volume: 0.2
+        volume: 0.1
     },
     {
         name: "walkingAudio",
@@ -21,19 +21,25 @@ const audioConfig = [
         name: "jumpingAudio",
         path: "audio/jump.mp3",
         loop: false,
-        volume: 1.0
+        volume: 0.7
     },
     {
         name: "hurtAudio",
         path: "audio/hurt.mp3",
         loop: false,
-        volume: 0.7
+        volume: 0.3
     },
     {
         name: "gameOverAudio",
         path: "audio/game_over.mp3",
         loop: false,
-        volume: 0.7
+        volume: 0.2
+    },
+    {
+        name: "hitEnemyAudio",
+        path: "audio/hit_enemy.mp3",
+        loop: false,
+        volume: 0.5
     },
     {
         name: "coinAudio",
@@ -63,19 +69,25 @@ const audioConfig = [
         name: "snoringAudio",
         path: "audio/snoring.mp3",
         loop: false,
-        volume: 0.4
+        volume: 0.1
     },
     {
         name: "endbossAudio",
         path: "audio/endboss_theme.mp3",
         loop: true,
-        volume: 0.6
+        volume: 0.3
     },
     {
         name: "endbossHurtAudio",
         path: "audio/endboss.wav",
         loop: false,
         volume: 0.3
+    },
+    {
+        name: "outroAudio",
+        path: "audio/outro.mp3",
+        loop: true,
+        volume: 0.5
     },
     {
         name: "victoryAudio",
@@ -118,6 +130,24 @@ function playAudio(name) {
 function pauseAudio(name) {
     let audio = findAudioByName(name);
     if (audio) {
+        audio.pause();
+    }
+}
+
+
+function resetAudioAndPlay(name) {
+    let audio = findAudioByName(name);
+    if (audio) {
+        audio.currentTime = 0;
+        audio.play();
+    }
+}
+
+
+function resetAudioAndPause(name) {
+    let audio = findAudioByName(name);
+    if (audio) {
+        audio.currentTime = 0;
         audio.pause();
     }
 }

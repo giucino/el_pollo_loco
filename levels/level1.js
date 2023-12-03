@@ -102,51 +102,37 @@ function initLevel() {
 }
 
 
-// for (let i = 0; i < 40; i++) {
-//     let imageSuffix;
-//     if (i % 2 === 0) {
-//         imageSuffix = '2';
-//     } else {
-//         imageSuffix = '1';
-//     }
+function resetLevel() {
+    clouds.length = 0;
+    coins.length = 0;
+    bottlesStraight.length = 0;
+    leftTiltedBottles.length = 0;
+    rightTiltedBottles.length = 0;
+    bottles.length = 0;
+    chickens.length = 0;
+    chicks.length = 0;
+    enemies.length = 0;
+    backgroundObjects.length = 0;
 
-//     backgroundObjects.push(new BackgroundObject('img/5_background/layers/air.png', -719 + (719 * i), 0.1));
-//     backgroundObjects.push(new BackgroundObject(`img/5_background/layers/3_third_layer/${imageSuffix}.png`, -719 + (719 * i), 0.2));
-//     backgroundObjects.push(new BackgroundObject(`img/5_background/layers/2_second_layer/${imageSuffix}.png`, -719 + (719 * i), 0.3));
-//     backgroundObjects.push(new BackgroundObject(`img/5_background/layers/1_first_layer/${imageSuffix}.png`, -719 + (719 * i), 0.4));
-// }
+    clouds.push(...generateClouds(999));
+    coins.push(...generateCoins(12));
+    bottlesStraight.push(...generateBottlesStraight(12));
+    leftTiltedBottles.push(...generateBottlesTilted(4));
+    rightTiltedBottles.push(...generateBottlesTilted(4, true));
+    bottles.push(...bottlesStraight, ...leftTiltedBottles, ...rightTiltedBottles);
+    chickens.push(...generateEnemies(10, 'Chicken'));
+    chicks.push(...generateEnemies(17, 'Chick'));
+    enemies.push(...chickens, ...chicks);
+    backgroundObjects.push(...generateBackgroundObjects(40));
 
+    level1 = new Level(
+        backgroundObjects,
+        clouds,
+        enemies,
+        [new Endboss()],
+        bottles,
+        coins
+    );
 
-// [
-//     new BackgroundObject('img/5_background/layers/air.png', -719, 0.1),
-//     new BackgroundObject('img/5_background/layers/air.png', 0, 0.1),
-//     new BackgroundObject('img/5_background/layers/air.png', 719, 0.1),
-//     new BackgroundObject('img/5_background/layers/air.png', 719 * 2, 0.1),
-//     new BackgroundObject('img/5_background/layers/air.png', 719 * 3, 0.1),
-//     new BackgroundObject('img/5_background/layers/air.png', 719 * 4, 0.1),
-//     new BackgroundObject('img/5_background/layers/air.png', 719 * 5, 0.1),
-
-//     new BackgroundObject('img/5_background/layers/3_third_layer/2.png', -719, 0.2),
-//     new BackgroundObject('img/5_background/layers/3_third_layer/1.png', 0, 0.2),
-//     new BackgroundObject('img/5_background/layers/3_third_layer/2.png', 719, 0.2),
-//     new BackgroundObject('img/5_background/layers/3_third_layer/1.png', 719 * 2, 0.2),
-//     new BackgroundObject('img/5_background/layers/3_third_layer/2.png', 719 * 3, 0.2),
-//     new BackgroundObject('img/5_background/layers/3_third_layer/1.png', 719 * 4, 0.2),
-//     new BackgroundObject('img/5_background/layers/3_third_layer/2.png', 719 * 5, 0.2),
-
-//     new BackgroundObject('img/5_background/layers/2_second_layer/2.png', -719, 0.3),
-//     new BackgroundObject('img/5_background/layers/2_second_layer/1.png', 0, 0.3),
-//     new BackgroundObject('img/5_background/layers/2_second_layer/2.png', 719, 0.3),
-//     new BackgroundObject('img/5_background/layers/2_second_layer/1.png', 719 * 2, 0.3),
-//     new BackgroundObject('img/5_background/layers/2_second_layer/2.png', 719 * 3, 0.3),
-//     new BackgroundObject('img/5_background/layers/2_second_layer/1.png', 719 * 4, 0.3),
-//     new BackgroundObject('img/5_background/layers/2_second_layer/2.png', 719 * 5, 0.3),
-
-//     new BackgroundObject('img/5_background/layers/1_first_layer/2.png', -719, 0.4),
-//     new BackgroundObject('img/5_background/layers/1_first_layer/1.png', 0, 0.4),
-//     new BackgroundObject('img/5_background/layers/1_first_layer/2.png', 719, 0.4),
-//     new BackgroundObject('img/5_background/layers/1_first_layer/1.png', 719 * 2, 0.4),
-//     new BackgroundObject('img/5_background/layers/1_first_layer/2.png', 719 * 3,  0.4),
-//     new BackgroundObject('img/5_background/layers/1_first_layer/1.png', 719 * 4, 0.4),
-//     new BackgroundObject('img/5_background/layers/1_first_layer/2.png', 719 * 5, 0.4),
-// ],
+    enemies.forEach(enemy => enemy.start());
+}

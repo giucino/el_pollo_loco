@@ -1,5 +1,3 @@
-
-
 function characterIsGameOver() {
     // showEndscreen('gameOverAudio');
     showEndscreen(false);
@@ -51,7 +49,7 @@ function pauseGameObjectsAndListeners(losingObj, motionIntervalId) {
 
 function resumeBackgroundAfterDelay(winningObj) {
     setTimeout(() => {
-        playAudio('startAudio');
+        playAudio('outroAudio');
         winningObj.pause();
     }, 3000);
 }
@@ -113,18 +111,32 @@ function showRandomImage(images) {
 }
 
 
+function backToStartScreen() {
+    location.reload();
+}
+document.getElementById('backToStartScreen').addEventListener('click', backToStartScreen);
+
+
 function restartGame() {
-    let endScreenContainer = document.getElementById("endScreenContainer");
-    let overlay = document.getElementById('overlay');
-    endScreenContainer.classList.add("d-none");
-    overlay.style.display = 'none';
-    startGame();
+    hideEndScreen();
+    resetGameAudio();
+    world.resetGame();
+    resetLevel();
+    restartGameParts();
+    isGameStarted = true;
 }
 document.getElementById('restartGame').addEventListener('click', restartGame);
 
 
-function backToMenu() {
-    location.reload();
+function hideEndScreen() {
+    let endScreenContainer = document.getElementById("endScreenContainer");
+    let overlay = document.getElementById('overlay');
+    endScreenContainer.classList.add("d-none");
+    overlay.style.display = 'none';
 }
-document.getElementById('backToMenu').addEventListener('click', backToMenu);
 
+
+function resetGameAudio() {
+    pauseAudio('outroAudio');
+    resetAudioAndPause('endbossAudio');
+}
