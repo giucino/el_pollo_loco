@@ -6,9 +6,14 @@ let character;
 
 
 window.onload = function () {
-    playAudio('startAudio');
+    handleDeviceOrientation();
     document.getElementById('startGame').addEventListener('click', startGame);
     document.addEventListener('keydown', checkMuteKey);
+    document.getElementById('credits').addEventListener('click', showCredits);
+    // initializeMuteState(); 
+    // muteAllSounds();
+    // updateMuteIcon(isSoundMuted);
+    // document.getElementById('unmuteSounds').addEventListener('click', toggleMuteSounds);
 }
 
 
@@ -20,7 +25,6 @@ function startGame() {
     initializeGameScreen();
     document.removeEventListener('keydown', enterGame);
     document.addEventListener('keydown', handlePauseKey);
-    // rotateMessage();
 }
 
 
@@ -63,12 +67,26 @@ function restartGameParts() {
 }
 
 
-function rotateMessage() {
-    window.addEventListener("orientationchange", function () {
+function handleDeviceOrientation() {
+    function checkOrientation() {
         if (window.matchMedia("(orientation: portrait)").matches) {
-            document.getElementById("rotateMessageContainer").style.display = "block";
+            document.getElementById('deviceContainer').style.display = "flex";
         } else {
-            document.getElementById("rotateMessageContainer").style.display = "none";
+            document.getElementById('deviceContainer').style.display = "none";
         }
-    });
+    }
+
+    window.addEventListener("orientationchange", checkOrientation);
+    window.addEventListener("resize", checkOrientation);
+}
+
+
+function showCredits() {
+    let credits = document.getElementById('crediteurs');
+
+    if (credits.style.display === 'flex') {
+        credits.style.display = 'none';
+    } else {
+        credits.style.display = 'flex';
+    }
 }

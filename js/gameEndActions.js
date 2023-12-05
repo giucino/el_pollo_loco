@@ -121,6 +121,7 @@ function restartGame() {
     hideEndScreen();
     resetGameAudio();
     world.resetGame();
+    world.character.start();
     resetLevel();
     restartGameParts();
     isGameStarted = true;

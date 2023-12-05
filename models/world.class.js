@@ -54,9 +54,9 @@ class World {
     }
 
 
-    clearAllIntervals() {
-        for (let i = 1; i < 999999; i++) window.clearInterval(i);
-    }
+    // clearAllIntervals() {
+    //     for (let i = 1; i < 999999; i++) window.clearInterval(i);
+    // }
 
 
     run() {
