@@ -13,7 +13,7 @@ class Keyboard {
 
     constructor() {
         this.eventKeyboard();
-        // this.eventTouchpad();
+        this.checkButtonsArePressed();
     }
 
 
@@ -28,71 +28,71 @@ class Keyboard {
             const { key, code } = event;
 
             if (code === 'ArrowLeft') {
-                keyboard.KEY_LEFT = true;
+                this.KEY_LEFT = true;
             }
             if (code === 'ArrowRight') {
-                keyboard.KEY_RIGHT = true;
+                this.KEY_RIGHT = true;
             }
             if (code === 'ArrowUp') {
                 if (this.isKeyPressed) {
-                    keyboard.KEY_UP = true;
+                    this.KEY_UP = true;
                 }
                 setTimeout(() => {
-                    keyboard.KEY_UP = false;
+                    this.KEY_UP = false;
                 }, 500);
                 this.isKeyPressed = false;
             }
             if (key === ' ') {
                 if (this.isKeyPressed) {
-                    keyboard.KEY_SPACE = true;
+                    this.KEY_SPACE = true;
                 }
                 setTimeout(() => {
-                    keyboard.KEY_SPACE = false;
+                    this.KEY_SPACE = false;
                 }, 500);
                 this.isKeyPressed = false;
             }
-            if (key === 'd' || key === 'D') {
+            if (key.toLowerCase() === 'd') {
                 if (this.isKeyPressed) {
-                    keyboard.KEY_D = true;
+                    this.KEY_D = true;
                 }
                 setTimeout(() => {
-                    keyboard.KEY_D = false;
+                    this.KEY_D = false;
                 }, 500);
                 this.isKeyPressed = false;
             }
-            if (key === 'p' || key === 'P') {
+            if (key.toLowerCase() === 'p') {
                 if (this.isKeyPressed) {
-                    keyboard.KEY_P = true;
+                    this.KEY_P = true;
                 }
                 setTimeout(() => {
-                    keyboard.KEY_P = false;
+                    this.KEY_P = false;
                 }, 500);
                 this.isKeyPressed = false;
             }
-            if (key === 'm' || key === 'M') {
+            if (key.toLowerCase() === 'm') {
                 if (this.isKeyPressed) {
-                    keyboard.KEY_M = true;
+                    this.KEY_M = true;
                 }
                 setTimeout(() => {
-                    keyboard.KEY_M = false;
+                    this.KEY_M = false;
                 }, 500);
                 this.isKeyPressed = false;
             }
-            if (key === 'f' || key === 'F') {
+            if (key.toLowerCase() === 'f') {
                 if (this.isKeyPressed) {
-                    keyboard.KEY_F = true;
+                    this.KEY_F = true;
                 }
                 setTimeout(() => {
-                    keyboard.KEY_F = false;
+                    this.KEY_F = false;
                 }, 500);
                 this.isKeyPressed = false;
             }
             if (key === 'Enter') {
                 if (this.isKeyPressed) {
-                    keyboard.KEY_ENTER = true;
+                    this.KEY_ENTER = true;
                 }
                 setTimeout(() => {
-                    keyboard.KEY_ENTER = false;
+                    this.KEY_ENTER = false;
                 }, 500);
                 this.isKeyPressed = false;
             }
@@ -105,109 +105,117 @@ class Keyboard {
             const { key, code } = event;
 
             if (code === 'ArrowLeft') {
-                keyboard.KEY_LEFT = false;
+                this.KEY_LEFT = false;
+                this.isKeyPressed = true;
             }
             if (code === 'ArrowRight') {
-                keyboard.KEY_RIGHT = false;
+                this.KEY_RIGHT = false;
+                this.isKeyPressed = true;
             }
             if (code === 'ArrowUp') {
-                keyboard.KEY_UP = false;
+                this.KEY_UP = false;
                 this.isKeyPressed = true;
             }
             if (key === ' ') {
-                keyboard.KEY_SPACE = false;
+                this.KEY_SPACE = false;
                 this.isKeyPressed = true;
             }
-            if (key === 'd' || key === 'D') {
-                keyboard.KEY_D = false;
+            if (key.toLowerCase() === 'd') {
+                this.KEY_D = false;
                 this.isKeyPressed = true;
             }
-            if (key === 'p' || key === 'P') {
-                keyboard.KEY_P = false;
+            if (key.toLowerCase() === 'p') {
+                this.KEY_P = false;
                 this.isKeyPressed = true;
             }
-            if (key === 'm' || key === 'M') {
-                keyboard.KEY_M = false;
+            if (key.toLowerCase() === 'm') {
+                this.KEY_M = false;
+                this.isKeyPressed = true;
+            }
+            if (key.toLowerCase() === 'f') {
+                this.KEY_F = false;
                 this.isKeyPressed = true;
             }
             if (key === 'Enter') {
-                keyboard.KEY_ENTER = false;
+                this.KEY_ENTER = false;
                 this.isKeyPressed = true;
             }
         });
     }
 
 
-    //     eventTouchpad() {
-    //         this.checkButtonsArePressed();
-    //         this.checkButtonsAreReleased();
-    //     }
+    // addTouchListeners(buttonId, startTouch, endTouch) {
+    //     const button = document.getElementById(buttonId);
+
+    //     button.addEventListener('touchstart', startTouch, { passive: false });
+    //     button.addEventListener('touchend', endTouch, { passive: false });
+    // }
+
+    // checkButtonsArePressed() {
+    //     this.addTouchListeners('btnRight',
+    //         (event) => { event.preventDefault(); this.KEY_RIGHT = true; },
+    //         (event) => { event.preventDefault(); this.KEY_RIGHT = false; }
+    //     );
+    //     this.addTouchListeners('btnLeft',
+    //         (event) => { event.preventDefault(); this.KEY_LEFT = true; },
+    //         (event) => { event.preventDefault(); this.KEY_LEFT = false; }
+    //     );
+    //     this.addTouchListeners('btnJump',
+    //         (event) => { event.preventDefault(); this.KEY_UP = true; },
+    //         (event) => { event.preventDefault(); this.KEY_UP = false; }
+    //     );
+    //     this.addTouchListeners('btnThrow',
+    //         (event) => { event.preventDefault(); this.KEY_D = true; },
+    //         (event) => { event.preventDefault(); this.KEY_D = false; }
+    //     );
+    // }
 
 
-    //     checkButtonsArePressed() {
-    //         setTimeout(() => {
-    //             document.getElementById("btnRight").addEventListener(
-    //                 "touchstart",
-    //                 (e) => {
-    //                     e.preventDefault();
-    //                     this.KEY_RIGHT = true;
-    //                 },
-    //                 { passive: false }
-    //             );
+    // checkButtonsArePressed() {
+    //     const btnRight = document.getElementById('btnRight');
+    //     const btnLeft = document.getElementById('btnLeft');
+    //     const btnJump = document.getElementById('btnJump');
+    //     const btnThrow = document.getElementById('btnThrow');
 
-    //             document.getElementById("btnLeft").addEventListener(
-    //                 "touchstart",
-    //                 (e) => {
-    //                     e.preventDefault();
-    //                     this.KEY_LEFT = true;
-    //                 },
-    //                 { passive: false }
-    //             );
+    //     btnRight.addEventListener('touchstart', (event) => { event.preventDefault(); this.KEY_RIGHT = true; }, { passive: false });
+    //     btnLeft.addEventListener('touchstart', (event) => { event.preventDefault(); this.KEY_LEFT = true; }, { passive: false });
+    //     btnJump.addEventListener('touchstart', (event) => { event.preventDefault(); this.KEY_UP = true; }, { passive: false });
+    //     btnThrow.addEventListener('touchstart', (event) => { event.preventDefault(); this.KEY_D = true; }, { passive: false });
 
-    //             document.getElementById("btnJump").addEventListener(
-    //                 "touchstart",
-    //                 (e) => {
-    //                     e.preventDefault();
-    //                     this.KEY_SPACE = true;
-    //                 },
-    //                 { passive: false }
-    //             );
+    //     const endTouch = (event) => {
+    //         event.preventDefault();
+    //         this.KEY_RIGHT = false;
+    //         this.KEY_LEFT = false;
+    //         this.KEY_UP = false;
+    //         this.KEY_D = false;
+    //     };
 
-    //             document.getElementById("btnThrow").addEventListener(
-    //                 "touchstart",
-    //                 (e) => {
-    //                     e.preventDefault();
-    //                     this.KEY_D = true;
-    //                 },
-    //                 { passive: false }
-    //             );
-    //         }, 500);
-    //     }
+    //     btnRight.addEventListener('touchend', endTouch, { passive: false });
+    //     btnLeft.addEventListener('touchend', endTouch, { passive: false });
+    //     btnJump.addEventListener('touchend', endTouch, { passive: false });
+    //     btnThrow.addEventListener('touchend', endTouch, { passive: false });
+    // }
 
-    //     /**
-    //      * Checks for touchpad buttons that are released and updates corresponding properties.
-    //      */
-    //     checkButtonsAreReleased() {
-    //         setTimeout(() => {
-    //             document.getElementById("btnRight").addEventListener("touchend", (e) => {
-    //                 e.preventDefault();
-    //                 this.KEY_RIGHT = false;
-    //             });
+    startTouch(event, key) {
+        event.preventDefault();
+        this[key] = true;
+    }
 
-    //             document.getElementById("btnLeft").addEventListener("touchend", (e) => {
-    //                 e.preventDefault();
-    //                 this.KEY_LEFT = false;
-    //             });
+    endTouch(event, key) {
+        event.preventDefault();
+        this[key] = false;
+    }
 
-    //             document.getElementById("btnJump").addEventListener("touchend", (e) => {
-    //                 e.preventDefault();
-    //                 this.KEY_SPACE = false;
-    //             });
+    addButtonListeners(buttonId, key) {
+        const button = document.getElementById(buttonId);
+        button.addEventListener('touchstart', (event) => this.startTouch(event, key), { passive: false });
+        button.addEventListener('touchend', (event) => this.endTouch(event, key), { passive: false });
+    }
 
-    //             document.getElementById("btnThrow").addEventListener("touchend", (e) => {
-    //                 e.preventDefault();
-    //                 this.KEY_D = false;
-    //             });
-    //         }, 500);
-    //     }
+    checkButtonsArePressed() {
+        this.addButtonListeners('btnRight', 'KEY_RIGHT');
+        this.addButtonListeners('btnLeft', 'KEY_LEFT');
+        this.addButtonListeners('btnJump', 'KEY_UP');
+        this.addButtonListeners('btnThrow', 'KEY_D');
+    }
 }

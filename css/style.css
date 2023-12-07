@@ -125,14 +125,6 @@ h2 {
     width: 100%;
 }
 
-.info-bar {
-    position: absolute;
-    bottom: 13px;
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex;
-}
-
 @keyframes zoomIn {
     0% {
         transform: scale(0);
@@ -194,6 +186,7 @@ h2 {
     left: 50%;
     transform: translateX(-50%);
     display: flex;
+    z-index: 2;
 }
 
 #toggleGame, #enterFullscreen {
@@ -285,6 +278,15 @@ footer {
     font-size: 1rem;
 }
 
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+a:visited {
+    color: inherit;
+}
+
 footer::-webkit-scrollbar {
     height: 10px;
 }
@@ -338,8 +340,9 @@ p {
     from {
         transform: rotate(0deg);
     }
+
     to {
-        transform: rotate(90deg);
+        transform: rotate(-90deg);
     }
 }
 
@@ -353,6 +356,30 @@ p {
         display: block;
     }
 } */
+
+#mobileBtns {
+    display: none;
+    position: absolute;
+    bottom: 13px;
+    justify-content: space-between;
+    width: 100%;
+}
+
+#mobileBtns svg {
+    cursor: pointer;
+    width: 46px;
+    height: 36px;
+    padding: 4px;
+    margin-left: 10px;
+    border-radius: 7px;
+    background-color: var(--global-orange);
+    box-shadow: 4px 4px 0 var(--button-color-dark);
+}
+
+#mobileBtns svg:active {
+    transform: translateX(1px) translateY(1px);
+    box-shadow: 3px 3px 0 var(--button-color-dark);
+}
 
 /* Smartphones -------------- */
 @media only screen and (max-width: 720px) {
@@ -380,6 +407,12 @@ p {
 
 @media only screen and (max-height: 700px) {
     footer, .header-container {
+        display: none;
+    }
+}
+
+@media (min-width: 1000px) {
+    #mobileBtns {
         display: none;
     }
 }

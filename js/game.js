@@ -10,6 +10,10 @@ window.onload = function () {
     document.getElementById('startGame').addEventListener('click', startGame);
     document.addEventListener('keydown', checkMuteKey);
     document.getElementById('credits').addEventListener('click', showCredits);
+    let links = document.getElementsByTagName('a');
+    for (let i = 0; i < links.length; i++) {
+        links[i].target = '_blank';
+    }
     // initializeMuteState(); 
     // muteAllSounds();
     // updateMuteIcon(isSoundMuted);
@@ -21,11 +25,29 @@ function startGame() {
     init();
     isGameStarted = true;
     pauseAudio('startAudio');
-    playAudio('backgroundMusic');
     initializeGameScreen();
     document.removeEventListener('keydown', enterGame);
     document.addEventListener('keydown', handlePauseKey);
+    if (!isSoundMuted) {
+        playAudio('backgroundMusic');
+    }
 }
+
+
+function adjustInfoBarPosition() {
+    // let infoBar = document.querySelector('.info-bar');
+    let mobileBtns = document.getElementById('mobileBtns');
+
+    if (window.innerWidth <= 1000 && isGameStarted) {
+        // infoBar.style.top = '70px';
+        mobileBtns.style.display = 'flex';
+    } else {
+        // infoBar.style.top = '';
+        mobileBtns.style.display = 'none';
+    }
+}
+window.addEventListener('resize', adjustInfoBarPosition);
+
 
 
 function enterGame(event) {

@@ -1,3 +1,6 @@
+let isEndScreenShown = false;
+
+
 function characterIsGameOver() {
     // showEndscreen('gameOverAudio');
     showEndscreen(false);
@@ -25,8 +28,16 @@ function characterHasWon() {
 
 
 function showEndscreen(isWinner) {
+    isEndScreenShown = true;
     selectRandomEndscreenImage();
     playAudio(isWinner ? 'victoryAudio' : 'gameOverAudio');
+    initializeEndScreen();
+}
+
+
+function initializeEndScreen() {
+    document.getElementById('toggleGame').style.display = 'none';
+    document.getElementById('controlInterface').style.display = 'none';
 }
 
 
@@ -130,6 +141,7 @@ document.getElementById('restartGame').addEventListener('click', restartGame);
 
 
 function hideEndScreen() {
+    isEndScreenShown = false;
     let endScreenContainer = document.getElementById("endScreenContainer");
     let overlay = document.getElementById('overlay');
     endScreenContainer.classList.add("d-none");

@@ -155,15 +155,32 @@ function resetAudioAndPause(name) {
 
 function toggleMuteSounds() {
     isSoundMuted = !isSoundMuted;
-    localStorage.setItem('isSoundMuted', isSoundMuted);
+    // localStorage.setItem('isSoundMuted', isSoundMuted);
     isSoundMuted ? muteAllSounds() : unmuteAllSounds();
     updateMuteIcon(isSoundMuted);
-    // changeTooltip('unmuteSounds', isSoundMuted ? 'Unmute Sounds' : 'Mute Sounds');
-    if (!isGameStarted && !isSoundMuted) {
-        playAudio('startAudio');
+    if (!isSoundMuted) {
+        playConditionalAudio();
     }
 }
 document.getElementById('unmuteSounds').addEventListener('click', toggleMuteSounds);
+
+
+function playConditionalAudio() {
+    let endbossAudio = findAudioByName('endbossAudio');
+    if (isGamePaused || isEndScreenShown || (endbossAudio && !endbossAudio.paused)) {
+        return;
+    }
+
+    isGameStarted ? playAudio('backgroundMusic') : playAudio('startAudio');
+}
+
+
+function initializeSoundState() {
+    isSoundMuted = true;
+    muteAllSounds();
+    updateMuteIcon(isSoundMuted);
+}
+window.addEventListener('load', initializeSoundState);
 
 
 function updateMuteIcon(isSoundMuted) {
@@ -192,37 +209,37 @@ function updateMuteIcon(isSoundMuted) {
 // document.addEventListener('DOMContentLoaded', initializeMuteState);
 
 
-function initializeMuteState() {
-    let hasVisited = localStorage.getItem('hasVisited');
-    let storedMuteState = localStorage.getItem('isSoundMuted');
+// function initializeMuteState() {
+//     let hasVisited = localStorage.getItem('hasVisited');
+//     let storedMuteState = localStorage.getItem('isSoundMuted');
 
-    if (hasVisited === null) {
-        handleFirstVisit();
-    } else {
-        handleReturningVisit(storedMuteState);
-    }
-    updateMuteIcon(isSoundMuted);
-}
+//     if (hasVisited === null) {
+//         handleFirstVisit();
+//     } else {
+//         handleReturningVisit(storedMuteState);
+//     }
+//     updateMuteIcon(isSoundMuted);
+// }
 
-document.addEventListener('DOMContentLoaded', initializeMuteState);
-
-
-function handleFirstVisit() {
-    muteAllSounds();
-    localStorage.setItem('isSoundMuted', 'true');
-    localStorage.setItem('hasVisited', 'true');
-}
+// document.addEventListener('DOMContentLoaded', initializeMuteState);
 
 
-function handleReturningVisit(storedMuteState) {
-    isSoundMuted = storedMuteState === 'true';
-    isSoundMuted ? muteAllSounds() : unmuteAllSounds();
-    playStartAudio();
-}
+// function handleFirstVisit() {
+//     muteAllSounds();
+//     localStorage.setItem('isSoundMuted', 'true');
+//     localStorage.setItem('hasVisited', 'true');
+// }
+
+
+// function handleReturningVisit(storedMuteState) {
+//     isSoundMuted = storedMuteState === 'true';
+//     isSoundMuted ? muteAllSounds() : unmuteAllSounds();
+//     playStartAudio();
+// }
 
 
 function playStartAudio() {
-    if (!isGameStarted && !isSoundMuted) {
+    if (!isGameStarted && !isSoundMuted && !isEndScreenShown) {
         playAudio('startAudio');
     }
 }
