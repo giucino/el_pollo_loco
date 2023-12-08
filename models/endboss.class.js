@@ -72,7 +72,7 @@ class Endboss extends MovableObject {
         this.loadImages(this.ENDBOSS_HURT);
         this.loadImages(this.ENDBOSS_GAME_OVER);
         this.x = 6600;
-        this.animateEndboss();
+        this.start();
     }
 
 
@@ -81,7 +81,7 @@ class Endboss extends MovableObject {
     }
 
 
-    animateEndboss() {
+    start() {
         let isAttacking = true;
 
         this.endbossInterval = setInterval(() => {
@@ -158,11 +158,6 @@ class Endboss extends MovableObject {
     }
 
 
-    // endbossMoveRight() {
-    //     this.x += this.endbossSpeed;
-    // }
-
-
     endbossIsGameOver() {
         return this.energyEndboss == 0;
     }
@@ -174,13 +169,4 @@ class Endboss extends MovableObject {
             this.isGameOverTriggered = true;
         }
     }
-
-
-    // determineCharacterSide(character) {
-    //     if (character.x < this.x) {
-    //         return 'left';
-    //     } else {
-    //         return 'right';
-    //     }
-    // }
 }

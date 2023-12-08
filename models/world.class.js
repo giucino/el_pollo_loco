@@ -279,20 +279,6 @@ class World {
     }
 
 
-    // eliminateEnemy(enemy) {
-    //     let indexEnemy = -1;
-    //     for (let i = 0; i < this.level.enemies.length; i++) {
-    //         if (this.level.enemies[i] === enemy) {
-    //             indexEnemy = i;
-    //         }
-    //     }
-    //     if (indexEnemy !== -1) {
-    //         this.level.enemies[indexEnemy].energy = 0;
-    //         this.delayedRemoveEnemy(indexEnemy);
-    //     }
-    // }
-
-
     delayedRemoveEnemy(enemy) {
         setTimeout(() => {
             this.level.enemies.splice(enemy, 1);
@@ -364,7 +350,7 @@ class World {
 
 
     isCharacterNearEndboss() {
-        return Math.abs(this.character.x - this.endboss.x) <= 800;
+        return Math.abs(this.character.x - this.endboss.x) <= 1200;
     }
 
 

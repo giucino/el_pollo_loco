@@ -38,10 +38,7 @@ function enterFullscreen(element) {
     }
 }
 
-/**
- * 
- * @param {*} event 
- */
+
 function handleFullscreen(event) {
     if (event.key.toLowerCase() === 'f') {
         fullscreen();
@@ -50,9 +47,7 @@ function handleFullscreen(event) {
 document.addEventListener('keydown', handleFullscreen);
 
 
-/**
- * Exits fullscreen mode.
- */
+
 function exitFullscreen() {
     if (document.exitFullscreen) {
         document.exitFullscreen();

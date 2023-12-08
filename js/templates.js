@@ -32,3 +32,16 @@
 // </svg>`;
 // content.innerHTML += createSvgButtonsHTML();}
 
+
+   // eliminateEnemy(enemy) {
+    //     let indexEnemy = -1;
+    //     for (let i = 0; i < this.level.enemies.length; i++) {
+    //         if (this.level.enemies[i] === enemy) {
+    //             indexEnemy = i;
+    //         }
+    //     }
+    //     if (indexEnemy !== -1) {
+    //         this.level.enemies[indexEnemy].energy = 0;
+    //         this.delayedRemoveEnemy(indexEnemy);
+    //     }
+    // }

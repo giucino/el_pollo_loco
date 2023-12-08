@@ -2,18 +2,6 @@ let isGameStarted = false;
 let showControlInterface;
 
 
-function addCustomEventListeners() {
-    document.addEventListener('keydown', handlePauseKey);
-    document.addEventListener('keydown', checkMuteKey);
-}
-
-
-function removeCustomEventListeners() {
-    document.removeEventListener('keydown', handlePauseKey);
-    document.removeEventListener('keydown', checkMuteKey);
-}
-
-
 function setupControlInterface() {
     showControlInterface = document.getElementById('showControlInterface');
     const controlInterface = document.getElementById('controlInterface');
@@ -26,7 +14,6 @@ function setupControlInterface() {
 
     document.addEventListener('click', closeControlInterface);
 }
-
 document.addEventListener('DOMContentLoaded', setupControlInterface);
 
 
@@ -68,6 +55,18 @@ function closeControlInterface() {
             addCustomEventListeners();
         }
     }
+}
+
+
+function addCustomEventListeners() {
+    document.addEventListener('keydown', handlePauseKey);
+    document.addEventListener('keydown', checkMuteKey);
+}
+
+
+function removeCustomEventListeners() {
+    document.removeEventListener('keydown', handlePauseKey);
+    document.removeEventListener('keydown', checkMuteKey);
 }
 
 

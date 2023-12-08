@@ -51,12 +51,7 @@ function resumeGame() {
     resumeAllGameObjects();
     updateToggleGamePath();
     resumeWorld();
-
-    if (!world.firstContactMade) {
-        playAudio('backgroundMusic');
-    } else {
-        playAudio('endbossAudio');
-    }
+    world.firstContactMade ? playAudio('endbossAudio') : playAudio('backgroundMusic');
 }
 
 
@@ -98,5 +93,5 @@ function pauseWorld() {
 function resumeWorld() {
     world.start();
     world.character.start();
-    world.endboss.animateEndboss();
+    world.endboss.start();
 }

@@ -153,3 +153,13 @@ function resetGameAudio() {
     pauseAudio('outroAudio');
     resetAudioAndPause('endbossAudio');
 }
+
+
+function restartGameParts() {
+    isGameStarted = true;
+    pauseAudio('startAudio');
+    resetAudioAndPlay('backgroundMusic');
+    initializeGameScreen();
+    document.removeEventListener('keydown', enterGame);
+    document.addEventListener('keydown', handlePauseKey);
+}
