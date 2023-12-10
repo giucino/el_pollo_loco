@@ -14,14 +14,18 @@ class BottleTilted extends DrawableObject {
         LEFT_TILTED: 'img/6_salsa_bottle/2_salsa_bottle_on_ground.png'
     };
 
-
+    /**
+     * position the bottle randomly on the screen
+     * @param {*} useRightTilted 
+     */
     constructor(useRightTilted = false) {
         super();
-        this.loadImage(useRightTilted ? BottleTilted.IMAGES.RIGHT_TILTED : BottleTilted.IMAGES.LEFT_TILTED);        
+        this.loadImage(useRightTilted ? BottleTilted.IMAGES.RIGHT_TILTED : BottleTilted.IMAGES.LEFT_TILTED);
         this.x = -400 + Math.random() * 6500;
         this.y = 350;
     }
 }
+
 
 
 class BottleStraight extends DrawableObject {
@@ -37,7 +41,10 @@ class BottleStraight extends DrawableObject {
     width = 70;
     static IMAGE = 'img/6_salsa_bottle/salsa_bottle.png';
 
-    
+
+    /**
+     * position the bottle randomly on the screen
+     */
     constructor() {
         super();
         this.loadImage(BottleStraight.IMAGE);

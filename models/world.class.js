@@ -19,6 +19,8 @@ class World {
     firstContactMade;
     gameIntervalId;
     animationFrameId;
+    intervals = [];
+    timeouts = [];
 
 
     constructor(canvas, keyboard) {
@@ -54,9 +56,16 @@ class World {
     }
 
 
-    // clearAllIntervals() {
-    //     for (let i = 1; i < 999999; i++) window.clearInterval(i);
-    // }
+    clearAllIntervalsAndTimeouts() {
+        for (let i = 0; i < this.intervals.length; i++) {
+            clearInterval(this.intervals[i]);
+        }
+        for (let i = 0; i < this.timeouts.length; i++) {
+            clearTimeout(this.timeouts[i]);
+        }
+        this.intervals = [];
+        this.timeouts = [];
+    }
 
 
     run() {
@@ -74,7 +83,7 @@ class World {
 
 
     resetGame() {
-        // this.clearAllIntervals();
+        this.clearAllIntervalsAndTimeouts();
         this.camera_x = 0;
         this.level = level1;
         this.character = new Character();
@@ -85,15 +94,15 @@ class World {
         this.statusBarCoins = new StatusBarCoins();
         this.statusBarHealthEndboss = new StatusBarHealthEndboss();
         this.throwableObjects = [];
-        this.coinSounds = new Map();
-        this.bottleSounds = new Map();
-        this.collectedCoins = [];
-        this.collectedBottles = [];
+        // this.coinSounds = new Map();
+        // this.bottleSounds = new Map();
+        // this.collectedCoins = [];
+        // this.collectedBottles = [];
         this.statusBarHealthEndboss.visible = false;
         this.firstContactMade = false;
         this.setWorld();
         this.start();
-        this.pause();
+        // this.pause();
     }
 
 
@@ -101,7 +110,7 @@ class World {
 
     draw() {
         this.clearCanvas();
-        this.setCameraPosition();
+        // this.setCameraPosition();
         this.translateCamera();
 
         this.drawBackgroundObjects();
@@ -138,13 +147,13 @@ class World {
     }
 
 
-    setCameraPosition() {
-        if (this.character.otherDirection) {
-            this.camera_x = -this.character.x + this.canvas.width - 450;
-        } else {
-            this.camera_x = -this.character.x + 200;
-        }
-    }
+    // setCameraPosition() {
+    //     if (this.character.otherDirection) {
+    //         this.camera_x = -this.character.x + this.canvas.width - 450;
+    //     } else {
+    //         this.camera_x = -this.character.x + 200;
+    //     }
+    // }
 
 
     drawBackgroundObjects() {
@@ -157,7 +166,7 @@ class World {
             this.addObjectsToMap(this.level.backgroundObjects);
         }
     }
-
+    
 
     drawMovingObjects() {
         this.addObjectsToMap(this.level.clouds);

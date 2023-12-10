@@ -16,6 +16,7 @@ class MovableObject extends DrawableObject {
     jumpTimeStamp = new Date().getTime();
 
 
+
     playAnimation(images) {
         let i = this.currentImage % images.length;
         let path = images[i];

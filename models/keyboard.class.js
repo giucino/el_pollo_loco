@@ -196,15 +196,22 @@ class Keyboard {
     //     btnThrow.addEventListener('touchend', endTouch, { passive: false });
     // }
 
+
+
+
     startTouch(event, key) {
         event.preventDefault();
+        this.isTouchActive = true;
         this[key] = true;
     }
+    
 
     endTouch(event, key) {
         event.preventDefault();
+        this.isTouchActive = false;
         this[key] = false;
     }
+
 
     addButtonListeners(buttonId, key) {
         const button = document.getElementById(buttonId);
@@ -212,10 +219,33 @@ class Keyboard {
         button.addEventListener('touchend', (event) => this.endTouch(event, key), { passive: false });
     }
 
+
+    startTouchWithTimeout(event, key, timeout) {
+        event.preventDefault();
+        this[key] = true;
+        setTimeout(() => {
+            this[key] = false;
+        }, timeout);
+    }
+
+    
     checkButtonsArePressed() {
         this.addButtonListeners('btnRight', 'KEY_RIGHT');
         this.addButtonListeners('btnLeft', 'KEY_LEFT');
-        this.addButtonListeners('btnJump', 'KEY_UP');
-        this.addButtonListeners('btnThrow', 'KEY_D');
+
+        const button = document.getElementById('btnJump');
+        button.addEventListener('touchstart', (event) => this.startTouchWithTimeout(event, 'KEY_UP', 500), { passive: false });
+        button.addEventListener('touchend', (event) => this.endTouch(event, 'KEY_UP'), { passive: false });
+
+        const buttonThrow = document.getElementById('btnThrow');
+        buttonThrow.addEventListener('touchstart', (event) => this.startTouchWithTimeout(event, 'KEY_D', 500), { passive: false });
+        buttonThrow.addEventListener('touchend', (event) => this.endTouch(event, 'KEY_D'), { passive: false });
     }
+
+     // checkButtonsArePressed() {
+    //     this.addButtonListeners('btnRight', 'KEY_RIGHT');
+    //     this.addButtonListeners('btnLeft', 'KEY_LEFT');
+    //     this.addButtonListeners('btnJump', 'KEY_UP');
+    //     this.addButtonListeners('btnThrow', 'KEY_D');
+    // }
 }

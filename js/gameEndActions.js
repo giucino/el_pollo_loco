@@ -55,6 +55,9 @@ function pauseGameObjectsAndListeners(losingObj, motionIntervalId) {
     clearInterval(motionIntervalId);
     clearInterval(world.gameIntervalId);
     document.removeEventListener('keydown', handlePauseKey);
+    world.level.backgroundObjects.forEach(bgObject => {
+            bgObject.pause();
+    });
 }
 
 
@@ -133,9 +136,11 @@ function restartGame() {
     resetGameAudio();
     world.resetGame();
     world.character.start();
-    resetLevel();
+    removeAllEventListeners();
     restartGameParts();
+    resetLevel();
     isGameStarted = true;
+    initializeAllEventListeners();
 }
 document.getElementById('restartGame').addEventListener('click', restartGame);
 
@@ -162,4 +167,48 @@ function restartGameParts() {
     initializeGameScreen();
     document.removeEventListener('keydown', enterGame);
     document.addEventListener('keydown', handlePauseKey);
+}
+
+
+function removeAllEventListeners() {
+    window.removeEventListener("orientationchange", handleDeviceOrientation);
+    window.removeEventListener("resize", handleDeviceOrientation);
+    document.getElementById('startGame').removeEventListener('click', startGame);
+    document.removeEventListener('keydown', checkMuteKey);
+    document.getElementById('credits').removeEventListener('click', showCredits);
+    document.removeEventListener('keydown', handlePauseKey);
+    window.removeEventListener('resize', adjustInfoBarPosition);
+
+    document.getElementById('toggleGame').removeEventListener('click', toggleGame);
+    document.getElementById('enterFullscreen').removeEventListener('click', fullscreen);
+    document.removeEventListener('keydown', handleFullscreen);
+    document.removeEventListener('click', closeControlInterface);
+    const controlInterface = document.getElementById('controlInterface');
+    controlInterface.removeEventListener('click', controlInterfaceClickHandler);
+
+    document.getElementById('unmuteSounds').removeEventListener('click', toggleMuteSounds);
+    window.removeEventListener('load', initializeSoundState);
+    document.removeEventListener('visibilitychange', visibilityChangeHandler);
+}
+
+
+function initializeAllEventListeners() {
+    window.addEventListener("orientationchange", handleDeviceOrientation);
+    window.addEventListener("resize", handleDeviceOrientation);
+    document.getElementById('startGame').addEventListener('click', startGame);
+    document.addEventListener('keydown', checkMuteKey);
+    document.getElementById('credits').addEventListener('click', showCredits);
+    document.addEventListener('keydown', handlePauseKey);
+    window.addEventListener('resize', adjustInfoBarPosition);
+
+    document.getElementById('toggleGame').addEventListener('click', toggleGame);
+    document.getElementById('enterFullscreen').addEventListener('click', fullscreen);
+    document.addEventListener('keydown', handleFullscreen);
+    document.addEventListener('click', closeControlInterface);
+    const controlInterface = document.getElementById('controlInterface');
+    controlInterface.addEventListener('click', controlInterfaceClickHandler);
+
+    document.getElementById('unmuteSounds').addEventListener('click', toggleMuteSounds);
+    window.addEventListener('load', initializeSoundState);
+    document.addEventListener('visibilitychange', visibilityChangeHandler);
 }

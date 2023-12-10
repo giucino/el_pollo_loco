@@ -4,7 +4,7 @@ const OBJECT_TYPE_CHICK = Chick;
 const OBJECT_TYPE_CHICKEN = Chicken;
 const OBJECT_TYPE_CLOUD = Cloud;
 const OBJECT_TYPE_COIN = Coin;
-const OBJECT_TYPE_BO = BackgroundObject;
+// const OBJECT_TYPE_BO = BackgroundObject;
 
 let isGamePaused = false;
 let firstContactMade = false;
@@ -60,7 +60,7 @@ function pauseAllGameObjects() {
     togglePauseResume(level1.enemies, ACTION_PAUSE, OBJECT_TYPE_CHICKEN);
     togglePauseResume(level1.clouds, ACTION_PAUSE, OBJECT_TYPE_CLOUD);
     togglePauseResume(level1.coins, ACTION_PAUSE, OBJECT_TYPE_COIN);
-    togglePauseResume(level1.backgroundObjects, ACTION_PAUSE, OBJECT_TYPE_BO);
+    // togglePauseResume(level1.backgroundObjects, ACTION_PAUSE, OBJECT_TYPE_BO);
 }
 
 
@@ -69,7 +69,7 @@ function resumeAllGameObjects() {
     togglePauseResume(level1.enemies, ACTION_START, OBJECT_TYPE_CHICKEN);
     togglePauseResume(level1.clouds, ACTION_START, OBJECT_TYPE_CLOUD);
     togglePauseResume(level1.coins, ACTION_START, OBJECT_TYPE_COIN);
-    togglePauseResume(level1.backgroundObjects, ACTION_START, OBJECT_TYPE_BO);
+    // togglePauseResume(level1.backgroundObjects, ACTION_START, OBJECT_TYPE_BO);
 }
 
 

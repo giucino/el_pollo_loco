@@ -25,8 +25,8 @@ function changeSVGPath() {
 
 
 /**
- * Enters fullscreen mode for a given element.
- * @param {HTMLElement} element - The element to enter fullscreen.
+ * 
+ * @param {HTMLElement} element 
  */
 function enterFullscreen(element) {
     if (element.requestFullscreen) {

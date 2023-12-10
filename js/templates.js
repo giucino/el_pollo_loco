@@ -33,15 +33,72 @@
 // content.innerHTML += createSvgButtonsHTML();}
 
 
-   // eliminateEnemy(enemy) {
-    //     let indexEnemy = -1;
-    //     for (let i = 0; i < this.level.enemies.length; i++) {
-    //         if (this.level.enemies[i] === enemy) {
-    //             indexEnemy = i;
-    //         }
-    //     }
-    //     if (indexEnemy !== -1) {
-    //         this.level.enemies[indexEnemy].energy = 0;
-    //         this.delayedRemoveEnemy(indexEnemy);
-    //     }
-    // }
+// world.js
+// eliminateEnemy(enemy) {
+//     let indexEnemy = -1;
+//     for (let i = 0; i < this.level.enemies.length; i++) {
+//         if (this.level.enemies[i] === enemy) {
+//             indexEnemy = i;
+//         }
+//     }
+//     if (indexEnemy !== -1) {
+//         this.level.enemies[indexEnemy].energy = 0;
+//         this.delayedRemoveEnemy(indexEnemy);
+//     }
+// }
+
+
+// audio.js
+
+// localStorage.setItem('isSoundMuted', isSoundMuted);
+
+// function initializeMuteState() {
+//     let hasVisited = localStorage.getItem('hasVisited');
+//     let storedMuteState = localStorage.getItem('isSoundMuted');
+
+//     if (hasVisited === null) {
+//         muteAllSounds();
+//         localStorage.setItem('isSoundMuted', 'true');
+//         localStorage.setItem('hasVisited', 'true');
+//     } else {
+//         isSoundMuted = storedMuteState === 'true';
+//         isSoundMuted ? muteAllSounds() : unmuteAllSounds();
+//         playStartAudio();
+//     }
+//     updateMuteIcon(isSoundMuted);
+// }
+// document.addEventListener('DOMContentLoaded', initializeMuteState);
+
+
+// function initializeMuteState() {
+//     let hasVisited = localStorage.getItem('hasVisited');
+//     let storedMuteState = localStorage.getItem('isSoundMuted');
+
+//     if (hasVisited === null) {
+//         handleFirstVisit();
+//     } else {
+//         handleReturningVisit(storedMuteState);
+//     }
+//     updateMuteIcon(isSoundMuted);
+// }
+
+// document.addEventListener('DOMContentLoaded', initializeMuteState);
+
+
+// function handleFirstVisit() {
+//     muteAllSounds();
+//     localStorage.setItem('isSoundMuted', 'true');
+//     localStorage.setItem('hasVisited', 'true');
+// }
+
+
+// function handleReturningVisit(storedMuteState) {
+//     isSoundMuted = storedMuteState === 'true';
+//     isSoundMuted ? muteAllSounds() : unmuteAllSounds();
+//     playStartAudio();
+// }
+
+
+
+
+

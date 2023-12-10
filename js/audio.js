@@ -155,7 +155,6 @@ function resetAudioAndPause(name) {
 
 function toggleMuteSounds() {
     isSoundMuted = !isSoundMuted;
-    // localStorage.setItem('isSoundMuted', isSoundMuted);
     isSoundMuted ? muteAllSounds() : unmuteAllSounds();
     updateMuteIcon(isSoundMuted);
     if (!isSoundMuted) {
@@ -191,53 +190,6 @@ function updateMuteIcon(isSoundMuted) {
 }
 
 
-// function initializeMuteState() {
-//     let hasVisited = localStorage.getItem('hasVisited');
-//     let storedMuteState = localStorage.getItem('isSoundMuted');
-
-//     if (hasVisited === null) {
-//         muteAllSounds();
-//         localStorage.setItem('isSoundMuted', 'true');
-//         localStorage.setItem('hasVisited', 'true');
-//     } else {
-//         isSoundMuted = storedMuteState === 'true';
-//         isSoundMuted ? muteAllSounds() : unmuteAllSounds();
-//         playStartAudio();
-//     }
-//     updateMuteIcon(isSoundMuted);
-// }
-// document.addEventListener('DOMContentLoaded', initializeMuteState);
-
-
-// function initializeMuteState() {
-//     let hasVisited = localStorage.getItem('hasVisited');
-//     let storedMuteState = localStorage.getItem('isSoundMuted');
-
-//     if (hasVisited === null) {
-//         handleFirstVisit();
-//     } else {
-//         handleReturningVisit(storedMuteState);
-//     }
-//     updateMuteIcon(isSoundMuted);
-// }
-
-// document.addEventListener('DOMContentLoaded', initializeMuteState);
-
-
-// function handleFirstVisit() {
-//     muteAllSounds();
-//     localStorage.setItem('isSoundMuted', 'true');
-//     localStorage.setItem('hasVisited', 'true');
-// }
-
-
-// function handleReturningVisit(storedMuteState) {
-//     isSoundMuted = storedMuteState === 'true';
-//     isSoundMuted ? muteAllSounds() : unmuteAllSounds();
-//     playStartAudio();
-// }
-
-
 function playStartAudio() {
     if (!isGameStarted && !isSoundMuted && !isEndScreenShown) {
         playAudio('startAudio');
@@ -268,7 +220,7 @@ function unmuteAllSounds() {
 }
 
 
-document.addEventListener('visibilitychange', function () {
+function visibilityChangeHandler() {
     if (document.hidden) {
         wasMutedBeforeLeaving = isSoundMuted;
         muteAllSounds();
@@ -277,4 +229,6 @@ document.addEventListener('visibilitychange', function () {
             unmuteAllSounds();
         }
     }
-});
+};
+
+document.addEventListener('visibilitychange', visibilityChangeHandler);

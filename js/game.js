@@ -42,7 +42,7 @@ function openLinksInNewTab() {
 
 
 function showCredits() {
-    let credits = document.getElementById('crediteurs');
+    let credits = document.getElementById('creditors');
 
     if (credits.style.display === 'flex') {
         credits.style.display = 'none';
@@ -73,6 +73,7 @@ function initializeGameScreen() {
     document.getElementById('startScreen').style.display = 'none';
     document.getElementById('toggleGame').style.display = 'flex';
     document.getElementById('enterFullscreen').style.display = 'flex';
+    document.getElementById('controlInterface').style.display = 'flex';
 }
 
 

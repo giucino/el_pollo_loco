@@ -4,6 +4,12 @@ class BackgroundObject extends MovableObject {
     speed;
 
 
+    /**
+     * 
+     * @param {*} imagePath 
+     * @param {*} x 
+     * @param {*} speed 
+     */
     constructor(imagePath, x, speed) {
         super();
         this.loadImage(imagePath);
@@ -14,6 +20,10 @@ class BackgroundObject extends MovableObject {
     }
 
 
+    /**
+     * 
+     * @param {*} otherDirection 
+     */
     start(otherDirection) {
         if (otherDirection) {
             this.x += this.speed;
@@ -23,6 +33,9 @@ class BackgroundObject extends MovableObject {
     }
 
 
+    /**
+     * 
+     */
     pause() {
         this.speed = 0;
     }

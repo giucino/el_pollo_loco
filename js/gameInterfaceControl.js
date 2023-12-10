@@ -6,15 +6,19 @@ function setupControlInterface() {
     showControlInterface = document.getElementById('showControlInterface');
     const controlInterface = document.getElementById('controlInterface');
 
-    controlInterface.addEventListener('click', (event) => {
-        event.stopPropagation();
-        toggleControlInterface();
-        handleGamePauseOrResume();
-    });
+    controlInterface.addEventListener('click', controlInterfaceClickHandler);
 
     document.addEventListener('click', closeControlInterface);
 }
 document.addEventListener('DOMContentLoaded', setupControlInterface);
+
+
+
+let controlInterfaceClickHandler = function(event) {
+    event.stopPropagation();
+    toggleControlInterface();
+    handleGamePauseOrResume();
+};
 
 
 

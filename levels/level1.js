@@ -65,9 +65,9 @@ function generateEnemies(count, enemyType) {
 function generateBackgroundObjects(count) {
     return [
         ...Array(count).fill().map((_, i) => new BackgroundObject('img/5_background/layers/air.png', -2876 + (719 * i), 0)),
-        ...Array(count).fill().map((_, i) => new BackgroundObject(`img/5_background/layers/3_third_layer/${i % 2 === 0 ? '2' : '1'}.png`, -2876 + (719 * i), 0.3)),
-        ...Array(count).fill().map((_, i) => new BackgroundObject(`img/5_background/layers/2_second_layer/${i % 2 === 0 ? '2' : '1'}.png`, -2876 + (719 * i), 0.5)),
-        ...Array(count).fill().map((_, i) => new BackgroundObject(`img/5_background/layers/1_first_layer/${i % 2 === 0 ? '2' : '1'}.png`, -2876 + (719 * i), 0.7))
+        ...Array(count).fill().map((_, i) => new BackgroundObject(`img/5_background/layers/3_third_layer/${i % 2 === 0 ? '2' : '1'}.png`, -2876 + (719 * i), 0.4)),
+        ...Array(count).fill().map((_, i) => new BackgroundObject(`img/5_background/layers/2_second_layer/${i % 2 === 0 ? '2' : '1'}.png`, -2876 + (719 * i), 0.3)),
+        ...Array(count).fill().map((_, i) => new BackgroundObject(`img/5_background/layers/1_first_layer/${i % 2 === 0 ? '2' : '1'}.png`, -2876 + (719 * i), 0.2))
     ];
 }
 

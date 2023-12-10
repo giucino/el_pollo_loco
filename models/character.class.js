@@ -174,6 +174,7 @@ class Character extends MovableObject {
         if (this.canJump()) {
             this.jump();
             playAudio('jumpingAudio');
+            console.log('Jumping...');
         }
     }
 
@@ -210,14 +211,19 @@ class Character extends MovableObject {
         if (this.isGameOver()) {
             this.handleGameOverAnimation();
         } else if (this.shouldPlayIdleAnimation(inactivityDuration)) {
+            console.log('Idle...');
             this.handleIdleAnimation();
         } else if (this.isHurt()) {
+            console.log('Hurt...');
             this.handleHurtAnimation();
         } else if (this.isAboveGround()) {
+            console.log('Above ground...');
             this.handleJumpingAnimation();
         } else if (this.isMovingHorizontally(this.world.keyboard)) {
+            console.log('moving...');
             this.handleWalkingAnimation();
         } else {
+            console.log('standing...');
             this.handleStandingAnimation();
         }
     }
@@ -269,7 +275,7 @@ class Character extends MovableObject {
 
 
     shouldPlayIdleAnimation(inactivityDuration) {
-        return inactivityDuration > 5 && !this.isGameOver() && !this.isHurt();
+        return inactivityDuration > 5 && !this.isHurt() && !this.isAboveGround();
     }
 
 

@@ -38,7 +38,7 @@
         <div id="overlay"></div>
 
         <div id="mobileBtns">
-            <div>
+            <div class="mobile-btns-left">
                 <svg id="btnLeft" xmlns="http://www.w3.org/2000/svg" height="16" width="14"
                     viewBox="0 0 448 512"><!--!Font Awesome Free 6.5.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2023 Fonticons, Inc.-->
                     <path fill="#c63e37"
@@ -50,7 +50,7 @@
                         d="M438.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-160-160c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L338.8 224 32 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l306.7 0L233.4 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l160-160z" />
                 </svg>
             </div>
-            <div>
+            <div class="mobile-btns-right">
                 <svg id="btnJump" xmlns="http://www.w3.org/2000/svg" height="16" width="12"
                     viewBox="0 0 384 512"><!--!Font Awesome Free 6.5.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2023 Fonticons, Inc.-->
                     <path fill="#c63e37"
@@ -88,7 +88,7 @@
         </div>
 
         <div id="showControlInterface" class="controll-container">
-            <h5 class="controll-container-elem">↵ = Play</h5>
+            <h5 class="controll-container-elem">↵ = Start Game</h5>
             <h5 class="controll-container-elem">P = Pause / Resume</h5>
             <h5 class="controll-container-elem">M = Mute / Unmute</h5>
             <h5 class="controll-container-elem">F = Enter Fullscreen /<br> Exit Fullscreen</h5>
@@ -115,55 +115,81 @@
 
     <footer>
         <div id="credits">Credits...
-            <div id="crediteurs" class="credits">
-                Music by <a
-                    href="https://pixabay.com/de/users/raspberrymusic-27759797/?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=164689">raspberrymusic</a>
-                from <a
-                    href="https://pixabay.com/music//?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=164689">Pixabay</a>
-                Music by <a
-                    href="https://pixabay.com/de/users/top-flow-production-28521292/?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=148320">Sergio
-                    Prosvirini</a> from <a
-                    href="https://pixabay.com/music//?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=148320">Pixabay</a>
-                Bild von <a
-                    href="https://pixabay.com/de/users/_luca-10388899/?utm_source=link-attribution&utm_medium=referral&utm_campaign=image&utm_content=3784915">Luca</a>
-                auf <a
-                    href="https://pixabay.com/de//?utm_source=link-attribution&utm_medium=referral&utm_campaign=image&utm_content=3784915">Pixabay</a>
-                Bild von <a
-                    href="https://pixabay.com/de/users/mostafaelturkey36-13328910/?utm_source=link-attribution&utm_medium=referral&utm_campaign=image&utm_content=5112222">Mostafa
-                    Elturkey</a> auf <a
-                    href="https://pixabay.com/de//?utm_source=link-attribution&utm_medium=referral&utm_campaign=image&utm_content=5112222">Pixabay</a>
-                Bild von <a target="_blank" href="https://icons8.com/icon/eBCEOT0oGnaL/mute">Mute</target=> icon by <a
-                        target="_blank" href="https://icons8.com">Icons8</a>
+            <div id="creditors" class="creditors">
+                <div>
+                    Music by <a
+                        href="https://pixabay.com/de/users/raspberrymusic-27759797/?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=164689">raspberrymusic</a>
+                    from <a
+                        href="https://pixabay.com/music//?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=164689">Pixabay</a>
+                </div>
+                <div>
+                    Music by <a
+                        href="https://pixabay.com/de/users/top-flow-production-28521292/?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=148320">Sergio
+                        Prosvirini</a> from <a
+                        href="https://pixabay.com/music//?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=148320">Pixabay</a>
+                </div>
+                <div>
+                    Bild von <a
+                        href="https://pixabay.com/de/users/_luca-10388899/?utm_source=link-attribution&utm_medium=referral&utm_campaign=image&utm_content=3784915">Luca</a>
+                    auf <a
+                        href="https://pixabay.com/de//?utm_source=link-attribution&utm_medium=referral&utm_campaign=image&utm_content=3784915">Pixabay</a>
+                </div>
+                <div>
+                    Bild von <a
+                        href="https://pixabay.com/de/users/mostafaelturkey36-13328910/?utm_source=link-attribution&utm_medium=referral&utm_campaign=image&utm_content=5112222">Mostafa
+                        Elturkey</a> auf <a
+                        href="https://pixabay.com/de//?utm_source=link-attribution&utm_medium=referral&utm_campaign=image&utm_content=5112222">Pixabay</a>
+                </div>
+                <div>
+                    Bild von <a target="_blank" href="https://icons8.com/icon/eBCEOT0oGnaL/mute">Mute</target=> icon by
+                        <a target="_blank" href="https://icons8.com">Icons8</a>
+                </div>
+                <div>
                     Music by <a
                         href="https://pixabay.com/de/users/white_records-32584949/?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=164704">Maksym
                         Dudchyk</a> from <a
                         href="https://pixabay.com//?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=164704">Pixabay</a>
+                </div>
+                <div>
                     Music by <a
                         href="https://pixabay.com/de/users/monument_music-34040748/?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=159615">Oleksii
                         Holubiev</a> from <a
                         href="https://pixabay.com/music//?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=159615">Pixabay</a>
+                </div>
+                <div>
                     Music by <a
                         href="https://pixabay.com/de/users/musictown-25873992/?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=103662">Musictown</a>
                     from <a
                         href="https://pixabay.com/music//?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=103662">Pixabay</a>
+                </div>
+                <div>
                     Music by <a
                         href="https://pixabay.com/de/users/white_records-32584949/?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=144293">Maksym
                         Dudchyk</a> from <a
                         href="https://pixabay.com//?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=144293">Pixabay</a>
+                </div>
+                <div>
                     Sound Effect by <a
                         href="https://pixabay.com/de/users/u_ss015dykrt-26759154/?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=146260">u_ss015dykrt</a>
                     from <a
                         href="https://pixabay.com/sound-effects//?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=146260">Pixabay</a>
+                </div>
+                <div>
                     Sound Effect from <a
                         href="https://pixabay.com/sound-effects/?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=48124">Pixabay</a>
+                </div>
+                <div>
                     Sound Effect by <a
                         href="https://pixabay.com/de/users/universfield-28281460/?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=122258">UNIVERSFIELD</a>
                     from <a
                         href="https://pixabay.com/sound-effects//?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=122258">Pixabay</a>
+                </div>
+                <div>
                     Sound Effect by <a
                         href="https://pixabay.com/de/users/beetpro-16097074/?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=12763">beetpro</a>
                     from <a
                         href="https://pixabay.com//?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=12763">Pixabay</a>
+                </div>
             </div>
         </div>
     </footer>
