@@ -1,3 +1,9 @@
+/**
+ * Generates an array of Cloud objects.
+ *
+ * @param {number} count - The number of Cloud objects to generate.
+ * @returns {Cloud[]} An array of Cloud objects.
+ */
 function generateClouds(count) {
     let cloudSpacing = 450;
     let clouds = [];
@@ -10,6 +16,12 @@ function generateClouds(count) {
 }
 
 
+/**
+ * Generates an array of BottleStraight objects.
+ *
+ * @param {number} count - The number of BottleStraight objects to generate.
+ * @returns {BottleStraight[]} An array of BottleStraight objects.
+ */
 function generateBottlesStraight(count) {
     let bottlesStraight = [];
 
@@ -21,6 +33,13 @@ function generateBottlesStraight(count) {
 }
 
 
+/**
+ * Generates an array of BottleTilted objects.
+ *
+ * @param {number} count - The number of BottleTilted objects to generate.
+ * @param {boolean} useRightTilted - Whether to use right tilted bottles.
+ * @returns {BottleTilted[]} An array of BottleTilted objects.
+ */
 function generateBottlesTilted(count, useRightTilted = false) {
     let bottlesTilted = [];
 
@@ -32,6 +51,12 @@ function generateBottlesTilted(count, useRightTilted = false) {
 }
 
 
+/**
+ * Generates an array of Coin objects.
+ *
+ * @param {number} count - The number of Coin objects to generate.
+ * @returns {Coin[]} An array of Coin objects.
+ */
 function generateCoins(count) {
     let coins = [];
 
@@ -43,6 +68,13 @@ function generateCoins(count) {
 }
 
 
+/**
+ * Generates an array of enemy objects of a specified type.
+ *
+ * @param {number} count - The number of enemy objects to generate.
+ * @param {string} enemyType - The type of enemy to generate ('Chicken' or 'Chick').
+ * @returns {Chicken[]|Chick[]} An array of enemy objects.
+ */
 function generateEnemies(count, enemyType) {
     const enemyConstructors = {
         'Chicken': Chicken,
@@ -62,6 +94,12 @@ function generateEnemies(count, enemyType) {
 }
 
 
+/**
+ * Generates an array of BackgroundObject objects.
+ *
+ * @param {number} count - The number of BackgroundObject objects to generate.
+ * @returns {BackgroundObject[]} An array of BackgroundObject objects.
+ */
 function generateBackgroundObjects(count) {
     return [
         ...Array(count).fill().map((_, i) => new BackgroundObject('img/5_background/layers/air.png', -2876 + (719 * i), 0)),
@@ -89,6 +127,9 @@ const backgroundObjects = generateBackgroundObjects(40);
 let level1;
 
 
+/**
+ * Initializes Level 1.
+ */
 function initLevel() {
     level1 = new Level(
         backgroundObjects,
@@ -102,6 +143,9 @@ function initLevel() {
 }
 
 
+/**
+ * Resets Level 1.
+ */
 function resetLevel() {
     clouds.length = 0;
     coins.length = 0;

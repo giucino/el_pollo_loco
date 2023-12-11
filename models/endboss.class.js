@@ -73,6 +73,7 @@ class Endboss extends MovableObject {
         this.loadImages(this.ENDBOSS_GAME_OVER);
         this.x = 6600;
         this.start();
+        this.world = world;
     }
 
 
@@ -81,8 +82,28 @@ class Endboss extends MovableObject {
     }
 
 
+    // start() {
+    //     let isAttacking = true;
+
+    //     this.endbossInterval = setInterval(() => {
+    //         if (this.endbossIsGameOver()) {
+    //             this.handleGameOverAnimation();
+    //         } else if (this.isHurt()) {
+    //             this.handleHurtAnimation();
+    //         } else if (this.wasHit()) {
+    //             this.handleAttackOrWalkAnimation(isAttacking);
+    //             isAttacking = !isAttacking;
+    //         } else {
+    //             this.handleAlertAnimation();
+    //         }
+    //     }, 200);
+    // }
+
+
+
     start() {
         let isAttacking = true;
+        let isMovingRight = false;
 
         this.endbossInterval = setInterval(() => {
             if (this.endbossIsGameOver()) {
@@ -94,6 +115,24 @@ class Endboss extends MovableObject {
                 isAttacking = !isAttacking;
             } else {
                 this.handleAlertAnimation();
+            }
+
+            if (firstContactMade) {
+                if (this.x < 5000) {
+                    isMovingRight = true;
+                    console.log('firstContactMade');
+                } else if (this.x > 6600) {
+                    isMovingRight = false;
+                    console.log('secondContactMade');
+                }
+
+                if (isMovingRight) {
+                    this.endbossMoveRight();
+                    console.log('isMovingRight');
+                } else {
+                    this.endbossMoveLeft();
+                    console.log('isMovingLeft');
+                }
             }
         }, 200);
     }
@@ -156,6 +195,34 @@ class Endboss extends MovableObject {
     endbossMoveLeft() {
         this.x -= this.endbossSpeed;
     }
+
+
+    endbossMoveRight() {
+        this.x += this.endbossSpeed;
+    }
+
+
+
+    // handleEndbossMovement() {
+    //     if (this.canMoveRight()) {
+    //         this.endbossMoveRight();
+    //         this.otherDirection = false;
+    //     }
+    //     if (this.canMoveLeft()) {
+    //         this.endbossMoveLeft();
+    //         this.otherDirection = true;
+    //     }
+    // }
+
+
+    // canMoveLeft() {
+    //     return this.x > -438;
+    // }
+
+
+    // canMoveRight() {
+    //     return this.x < this.world.level.level_end_x;
+    // }
 
 
     endbossIsGameOver() {

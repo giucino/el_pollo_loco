@@ -1,3 +1,10 @@
+/**
+ * Represents a background object.
+ * A background object is a movable object.
+ * It has a width, a height and a speed.
+ * It can be started and paused.
+ * @extends MovableObject
+ */
 class BackgroundObject extends MovableObject {
     width = 720;
     height = 480;
@@ -6,9 +13,9 @@ class BackgroundObject extends MovableObject {
 
     /**
      * 
-     * @param {*} imagePath 
-     * @param {*} x 
-     * @param {*} speed 
+     * @param {*} imagePath - The path to the image of the background object.
+     * @param {*} x - The initial x coordinate of the background object.
+     * @param {*} speed - The speed of the background object.
      */
     constructor(imagePath, x, speed) {
         super();
@@ -21,8 +28,11 @@ class BackgroundObject extends MovableObject {
 
 
     /**
+     * Starts the background object.
      * 
-     * @param {*} otherDirection 
+     * If `otherDirection` is true, the background object moves to the right.
+     * If `otherDirection` is false or not provided, the background object moves to the left.     
+     * * @param {boolean} otherDirection - The direction of the background object.
      */
     start(otherDirection) {
         if (otherDirection) {
@@ -34,8 +44,10 @@ class BackgroundObject extends MovableObject {
 
 
     /**
-     * 
-     */
+      * Pauses the movement of the background object.
+      * 
+      * This is done by setting the speed of the background object to 0.
+      */
     pause() {
         this.speed = 0;
     }

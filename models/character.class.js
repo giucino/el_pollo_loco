@@ -1,9 +1,10 @@
 class Character extends MovableObject {
     offset = {
         top: 120,
-        bottom: -10,
+        bottom: 0,
+        // bottom: -10,
         left: 20,
-        right: 20,
+        right: 2,
     };
 
 
@@ -211,19 +212,19 @@ class Character extends MovableObject {
         if (this.isGameOver()) {
             this.handleGameOverAnimation();
         } else if (this.shouldPlayIdleAnimation(inactivityDuration)) {
-            console.log('Idle...');
+            // console.log('Idle...');
             this.handleIdleAnimation();
         } else if (this.isHurt()) {
-            console.log('Hurt...');
+            // console.log('Hurt...');
             this.handleHurtAnimation();
         } else if (this.isAboveGround()) {
-            console.log('Above ground...');
+            // console.log('Above ground...');
             this.handleJumpingAnimation();
         } else if (this.isMovingHorizontally(this.world.keyboard)) {
-            console.log('moving...');
+            // console.log('moving...');
             this.handleWalkingAnimation();
         } else {
-            console.log('standing...');
+            // console.log('standing...');
             this.handleStandingAnimation();
         }
     }

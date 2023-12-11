@@ -1,11 +1,18 @@
+/**
+ * Represents a chicken in the game.
+ * 
+ * A chicken is a type of movable object that has a specific width, height, speed, and offset.
+ * It can move to the left and be eliminated.
+ * 
+ * @extends MovableObject
+ */
 class Chicken extends MovableObject {
     offset = {
-        top: 0,
-        bottom: 0,
-        left: 8,
+        top: -15,
+        bottom: 5,
+        left: -8,
         right: 8,
     };
-
 
     x = 120;
     y = 347;
@@ -19,12 +26,17 @@ class Chicken extends MovableObject {
         'img/3_enemies_chicken/chicken_normal/1_walk/3_w.png'
     ];
 
-    
+
     CHICKEN_ELIMINATED = [
         'img/3_enemies_chicken/chicken_normal/2_dead/dead.png'
     ];
 
 
+    /**
+    * Starts the movement and animation of the chicken.
+    * 
+    * The chicken starts moving to the left and its animation starts playing.
+    */
     constructor() {
         super();
         this.loadImage('img/3_enemies_chicken/chicken_normal/1_walk/1_w.png');
@@ -36,18 +48,29 @@ class Chicken extends MovableObject {
     }
 
 
+    /**
+    * Starts the movement and animation of the chick.
+    * 
+    * The chick starts moving to the left and its animation starts playing.
+    */
     start() {
         this.chickensMoveLeft();
         this.isChickenEliminated();
     }
 
 
+    /**
+     * Pauses the movement and animation of the chicken.
+     */
     pause() {
         clearInterval(this.movingIntervalId);
         clearInterval(this.animationIntervalId);
     }
 
 
+    /**
+     * Moves the chicken to the left.
+     */
     chickensMoveLeft() {
         this.movingIntervalId = setInterval(() => {
             this.moveLeft();
@@ -55,6 +78,9 @@ class Chicken extends MovableObject {
     }
 
 
+    /**
+     * Checks if the chicken is eliminated.
+     */
     isChickenEliminated() {
         this.animationIntervalId = setInterval(() => {
             this.animateChicken();
@@ -62,6 +88,9 @@ class Chicken extends MovableObject {
     }
 
 
+    /**
+     * Animates the chick. If the chick is eliminated, its animation changes.
+     */
     animateChicken() {
         if (this.isGameOver()) {
             this.speed = 0;

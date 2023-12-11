@@ -1,3 +1,11 @@
+/**
+ * Represents a tilted bottle in the game.
+ * 
+ * A tilted bottle is a type of drawable object that has a specific width, height, and offset.
+ * It can be positioned randomly on the screen.
+ * 
+ * @extends DrawableObject
+ */
 class BottleTilted extends DrawableObject {
     offset = {
         top: 20,
@@ -6,7 +14,6 @@ class BottleTilted extends DrawableObject {
         right: 40,
     };
 
-
     height = 70;
     width = 70;
     static IMAGES = {
@@ -14,9 +21,11 @@ class BottleTilted extends DrawableObject {
         LEFT_TILTED: 'img/6_salsa_bottle/2_salsa_bottle_on_ground.png'
     };
 
+
     /**
-     * position the bottle randomly on the screen
-     * @param {*} useRightTilted 
+     * Creates a new tilted bottle.
+     * 
+     * @param {boolean} [useRightTilted=false] - Whether to use the right-tilted image for the bottle.
      */
     constructor(useRightTilted = false) {
         super();
@@ -27,7 +36,14 @@ class BottleTilted extends DrawableObject {
 }
 
 
-
+/**
+ * Represents a straight bottle in the game.
+ * 
+ * A straight bottle is a type of drawable object that has a specific width, height, and offset.
+ * It can be positioned randomly on the screen.
+ * 
+ * @extends DrawableObject
+ */
 class BottleStraight extends DrawableObject {
     offset = {
         top: 20,
@@ -36,14 +52,13 @@ class BottleStraight extends DrawableObject {
         right: 0,
     };
 
-
     height = 70;
     width = 70;
     static IMAGE = 'img/6_salsa_bottle/salsa_bottle.png';
 
 
     /**
-     * position the bottle randomly on the screen
+     * Creates a new straight bottle.
      */
     constructor() {
         super();

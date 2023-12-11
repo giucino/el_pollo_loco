@@ -5,6 +5,10 @@ let keyboard = new Keyboard();
 let character;
 
 
+/**
+ * This function is called when the window loads.
+ * It initializes the device orientation, event listeners, and opens links in a new tab.
+ */
 window.onload = function () {
     handleDeviceOrientation();
     initializeEventListeners();
@@ -12,6 +16,10 @@ window.onload = function () {
 }
 
 
+/**
+ * This function handles the device orientation.
+ * It checks the orientation and displays a message if the device is in portrait mode.
+ */
 function handleDeviceOrientation() {
     function checkOrientation() {
         if (window.matchMedia("(orientation: portrait)").matches) {
@@ -26,6 +34,10 @@ function handleDeviceOrientation() {
 }
 
 
+/**
+ * This function initializes the event listeners for the game.
+ * It adds event listeners for starting the game, muting the game, and showing the credits.
+ */
 function initializeEventListeners() {
     document.getElementById('startGame').addEventListener('click', startGame);
     document.addEventListener('keydown', checkMuteKey);
@@ -33,6 +45,10 @@ function initializeEventListeners() {
 }
 
 
+/**
+ * This function opens all links in a new tab.
+ * It sets the target attribute of all anchor elements to '_blank'.
+ */
 function openLinksInNewTab() {
     let links = document.getElementsByTagName('a');
     for (let i = 0; i < links.length; i++) {
@@ -40,7 +56,10 @@ function openLinksInNewTab() {
     }
 }
 
-
+/**
+ * This function shows or hides the credits.
+ * It toggles the display style of the credits element between 'flex' and 'none'.
+ */
 function showCredits() {
     let credits = document.getElementById('creditors');
 
@@ -52,6 +71,9 @@ function showCredits() {
 }
 
 
+/**
+ * Starts the game by initializing the game elements, setting up event listeners, and playing the background music.
+ */
 function startGame() {
     init();
     isGameStarted = true;
@@ -62,6 +84,10 @@ function startGame() {
     adjustInfoBarPosition();
 }
 
+
+/**
+ * Initializes the game level and the game world.
+ */
 function init() {
     initLevel();
     canvas = document.getElementById('canvas');
@@ -69,6 +95,9 @@ function init() {
 }
 
 
+/**
+ * Initializes the game screen by hiding the start screen and showing the game controls.
+ */
 function initializeGameScreen() {
     document.getElementById('startScreen').style.display = 'none';
     document.getElementById('toggleGame').style.display = 'flex';
@@ -77,12 +106,18 @@ function initializeGameScreen() {
 }
 
 
+/**
+ * Sets up the event listeners for the game.
+ */
 function setupEventListeners() {
     document.removeEventListener('keydown', enterGame);
     document.addEventListener('keydown', handlePauseKey);
 }
 
 
+/**
+ * Plays the background music if the sound is not muted.
+ */
 function playBackgroundMusicIfNotMuted() {
     if (!isSoundMuted) {
         playAudio('backgroundMusic');
@@ -90,6 +125,9 @@ function playBackgroundMusicIfNotMuted() {
 }
 
 
+/**
+ * Adjusts the position of the info bar based on the window size.
+ */
 function adjustInfoBarPosition() {
     let mobileBtns = document.getElementById('mobileBtns');
 
@@ -102,6 +140,10 @@ function adjustInfoBarPosition() {
 window.addEventListener('resize', adjustInfoBarPosition);
 
 
+/**
+ * Starts the game when the Enter key is pressed.
+ * @param {KeyboardEvent} event - The keyboard event.
+ */
 function enterGame(event) {
     if (event.key === 'Enter') {
         startGame();
@@ -110,6 +152,11 @@ function enterGame(event) {
 document.addEventListener('keydown', enterGame);
 
 
+/**
+ * Changes the tooltip of an SVG element.
+ * @param {string} svgId - The ID of the SVG element.
+ * @param {string} newTooltip - The new tooltip text.
+ */
 function changeTooltip(svgId, newTooltip) {
     let svgElement = document.getElementById(svgId);
     let titleElement = svgElement.querySelector('title');

@@ -1,3 +1,11 @@
+/**
+ * Represents a coin in the game.
+ * 
+ * A coin is a type of movable object that has a specific width, height, and offset.
+ * It can be positioned randomly on the screen and it can play an animation.
+ * 
+ * @extends MovableObject
+ */
 class Coin extends MovableObject {
     offset = {
         top: 10,
@@ -5,7 +13,6 @@ class Coin extends MovableObject {
         left: 40,
         right: 40,
     };
-
 
     height = 120;
     width = 120;
@@ -17,6 +24,11 @@ class Coin extends MovableObject {
     ];
 
 
+    /**
+     * Creates a new coin.
+     * 
+     * The coin is positioned randomly on the screen and it starts its animation.
+     */
     constructor() {
         super();
         this.loadImage('img/8_coin/coin_1.png');
@@ -26,16 +38,32 @@ class Coin extends MovableObject {
         this.start();
     }
 
+
+    /**
+     * Starts the animation of the coin.
+     * 
+     * The coin plays an animation that cycles through different images.
+     */
     start() {
         this.animateCoins();
     }
 
 
+    /**
+     * Pauses the animation of the coin.
+     * 
+     * This is done by clearing the interval that was set in `animateCoins`.
+     */
     pause() {
         clearInterval(this.animationIntervalId);
     }
     
 
+    /**
+     * Animates the coin.
+     * 
+     * The coin plays an animation that cycles through different images at a certain speed.
+     */
     animateCoins() {
         this.animationIntervalId = setInterval(() => {
             this.playAnimation(this.IMAGES_COIN);

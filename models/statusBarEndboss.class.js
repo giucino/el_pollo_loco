@@ -1,3 +1,12 @@
+/**
+ * Represents the health status bar of the end boss in the game.
+ * 
+ * The health status bar of the end boss is a type of drawable object that displays the health of the end boss.
+ * It has a specific image, width, height, and percentage of health.
+ * The percentage of health can be set to a specific value, and the health status bar can be drawn on a canvas context.
+ * 
+ * @extends DrawableObject
+ */
 class StatusBarHealthEndboss extends DrawableObject {
     IMAGES_HEALTH_ENDBOSS = [
         'img/7_statusbars/2_statusbar_endboss/blue/0.png',
@@ -8,11 +17,15 @@ class StatusBarHealthEndboss extends DrawableObject {
         'img/7_statusbars/2_statusbar_endboss/blue/100.png',
     ];
 
-    
     percentage = 100;
     visible = false;
 
 
+    /**
+     * Creates a new health status bar for the end boss.
+     * 
+     * The health status bar loads its images and sets its initial position, size, and percentage of health.
+     */
     constructor() {
         super();
         this.loadImage('img/7_statusbars/1_statusbar/2_statusbar_health/orange/0.png');
@@ -25,6 +38,12 @@ class StatusBarHealthEndboss extends DrawableObject {
     }
 
 
+    /**
+     * Sets the percentage of health of the end boss.
+     * The percentage of health is set to a specific value, and the image of the health status bar is updated accordingly.
+     * 
+     * @param {number} percentage - The new percentage of health.
+     */
     setPercentage(percentage) {
         this.percentage = percentage;
         let path = this.IMAGES_HEALTH_ENDBOSS[this.resolveImageIndex()];
@@ -32,6 +51,12 @@ class StatusBarHealthEndboss extends DrawableObject {
     }
 
 
+    /**
+     * Resolves the index of the image to display based on the percentage of health.
+     * The index of the image is determined by the percentage of health.
+     * 
+     * @returns {number} The index of the image to display.
+     */
     resolveImageIndex() {
         if (this.percentage == 100) {
             return 5;
