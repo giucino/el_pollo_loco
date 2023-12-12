@@ -181,11 +181,11 @@ function restartGame() {
     resetGameAudio();
     world.resetGame();
     world.character.start();
-    removeAllEventListeners();
+    // removeAllEventListeners();
     restartGameParts();
     resetLevel();
     isGameStarted = true;
-    initializeAllEventListeners();
+    // initializeAllEventListeners();
 }
 document.getElementById('restartGame').addEventListener('click', restartGame);
 

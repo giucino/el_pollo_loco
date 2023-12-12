@@ -420,7 +420,7 @@ class World {
     checkCollisionEndboss() {
         if (this.endbossCanDamageCharacter(this.endboss)) {
             this.handleCharacterHealth();
-            // this.resetCharacterPosition();
+            this.resetCharacterPosition();
         }
     }
 
@@ -429,7 +429,7 @@ class World {
      * Resets the character's position by moving it 200 units to the left.
      */
     resetCharacterPosition() {
-        this.character.x = this.character.x - 200;
+        this.character.x = this.character.x - 300;
     }
 
 
