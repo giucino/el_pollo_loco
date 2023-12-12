@@ -48,6 +48,15 @@
 // }
 
 
+  // setCameraPosition() {
+    //     if (this.character.otherDirection) {
+    //         this.camera_x = -this.character.x + this.canvas.width - 450;
+    //     } else {
+    //         this.camera_x = -this.character.x + 200;
+    //     }
+    // } aufruf in der draw funktion
+
+
 // audio.js
 
 // localStorage.setItem('isSoundMuted', isSoundMuted);
@@ -99,64 +108,84 @@
 // }
 
 
-   // addTouchListeners(buttonId, startTouch, endTouch) {
-    //     const button = document.getElementById(buttonId);
+//keyboard.js
+// addTouchListeners(buttonId, startTouch, endTouch) {
+//     const button = document.getElementById(buttonId);
 
-    //     button.addEventListener('touchstart', startTouch, { passive: false });
-    //     button.addEventListener('touchend', endTouch, { passive: false });
-    // }
+//     button.addEventListener('touchstart', startTouch, { passive: false });
+//     button.addEventListener('touchend', endTouch, { passive: false });
+// }
 
-    // checkButtonsArePressed() {
-    //     this.addTouchListeners('btnRight',
-    //         (event) => { event.preventDefault(); this.KEY_RIGHT = true; },
-    //         (event) => { event.preventDefault(); this.KEY_RIGHT = false; }
-    //     );
-    //     this.addTouchListeners('btnLeft',
-    //         (event) => { event.preventDefault(); this.KEY_LEFT = true; },
-    //         (event) => { event.preventDefault(); this.KEY_LEFT = false; }
-    //     );
-    //     this.addTouchListeners('btnJump',
-    //         (event) => { event.preventDefault(); this.KEY_UP = true; },
-    //         (event) => { event.preventDefault(); this.KEY_UP = false; }
-    //     );
-    //     this.addTouchListeners('btnThrow',
-    //         (event) => { event.preventDefault(); this.KEY_D = true; },
-    //         (event) => { event.preventDefault(); this.KEY_D = false; }
-    //     );
-    // }
+// checkButtonsArePressed() {
+//     this.addTouchListeners('btnRight',
+//         (event) => { event.preventDefault(); this.KEY_RIGHT = true; },
+//         (event) => { event.preventDefault(); this.KEY_RIGHT = false; }
+//     );
+//     this.addTouchListeners('btnLeft',
+//         (event) => { event.preventDefault(); this.KEY_LEFT = true; },
+//         (event) => { event.preventDefault(); this.KEY_LEFT = false; }
+//     );
+//     this.addTouchListeners('btnJump',
+//         (event) => { event.preventDefault(); this.KEY_UP = true; },
+//         (event) => { event.preventDefault(); this.KEY_UP = false; }
+//     );
+//     this.addTouchListeners('btnThrow',
+//         (event) => { event.preventDefault(); this.KEY_D = true; },
+//         (event) => { event.preventDefault(); this.KEY_D = false; }
+//     );
+// }
 
 
-    // checkButtonsArePressed() {
-    //     const btnRight = document.getElementById('btnRight');
-    //     const btnLeft = document.getElementById('btnLeft');
-    //     const btnJump = document.getElementById('btnJump');
-    //     const btnThrow = document.getElementById('btnThrow');
+// checkButtonsArePressed() {
+//     const btnRight = document.getElementById('btnRight');
+//     const btnLeft = document.getElementById('btnLeft');
+//     const btnJump = document.getElementById('btnJump');
+//     const btnThrow = document.getElementById('btnThrow');
 
-    //     btnRight.addEventListener('touchstart', (event) => { event.preventDefault(); this.KEY_RIGHT = true; }, { passive: false });
-    //     btnLeft.addEventListener('touchstart', (event) => { event.preventDefault(); this.KEY_LEFT = true; }, { passive: false });
-    //     btnJump.addEventListener('touchstart', (event) => { event.preventDefault(); this.KEY_UP = true; }, { passive: false });
-    //     btnThrow.addEventListener('touchstart', (event) => { event.preventDefault(); this.KEY_D = true; }, { passive: false });
+//     btnRight.addEventListener('touchstart', (event) => { event.preventDefault(); this.KEY_RIGHT = true; }, { passive: false });
+//     btnLeft.addEventListener('touchstart', (event) => { event.preventDefault(); this.KEY_LEFT = true; }, { passive: false });
+//     btnJump.addEventListener('touchstart', (event) => { event.preventDefault(); this.KEY_UP = true; }, { passive: false });
+//     btnThrow.addEventListener('touchstart', (event) => { event.preventDefault(); this.KEY_D = true; }, { passive: false });
 
-    //     const endTouch = (event) => {
-    //         event.preventDefault();
-    //         this.KEY_RIGHT = false;
-    //         this.KEY_LEFT = false;
-    //         this.KEY_UP = false;
-    //         this.KEY_D = false;
-    //     };
+//     const endTouch = (event) => {
+//         event.preventDefault();
+//         this.KEY_RIGHT = false;
+//         this.KEY_LEFT = false;
+//         this.KEY_UP = false;
+//         this.KEY_D = false;
+//     };
 
-    //     btnRight.addEventListener('touchend', endTouch, { passive: false });
-    //     btnLeft.addEventListener('touchend', endTouch, { passive: false });
-    //     btnJump.addEventListener('touchend', endTouch, { passive: false });
-    //     btnThrow.addEventListener('touchend', endTouch, { passive: false });
-    // }
+//     btnRight.addEventListener('touchend', endTouch, { passive: false });
+//     btnLeft.addEventListener('touchend', endTouch, { passive: false });
+//     btnJump.addEventListener('touchend', endTouch, { passive: false });
+//     btnThrow.addEventListener('touchend', endTouch, { passive: false });
+// }
 
-    //oder
-       // checkButtonsArePressed() {
-    //     this.addButtonListeners('btnRight', 'KEY_RIGHT');
-    //     this.addButtonListeners('btnLeft', 'KEY_LEFT');
-    //     this.addButtonListeners('btnJump', 'KEY_UP');
-    //     this.addButtonListeners('btnThrow', 'KEY_D');
-    // }
+//oder
+// checkButtonsArePressed() {
+//     this.addButtonListeners('btnRight', 'KEY_RIGHT');
+//     this.addButtonListeners('btnLeft', 'KEY_LEFT');
+//     this.addButtonListeners('btnJump', 'KEY_UP');
+//     this.addButtonListeners('btnThrow', 'KEY_D');
+// }
+
+
+// gameEndActions.js
+// function showEndscreen(audioName) {
+//     isEndScreenShown = true;
+//     selectRandomEndscreenImage();
+//     playAudio(audioName);
+//     initializeEndScreen();
+// }
+
+// showEndscreen('gameOverAudio');
+// showEndscreen('victoryAudio');
+
+
+// gamePauseResume.js
+// const OBJECT_TYPE_BO = BackgroundObject;
+// togglePauseResume(level1.backgroundObjects, ACTION_PAUSE, OBJECT_TYPE_BO);
+// togglePauseResume(level1.backgroundObjects, ACTION_START, OBJECT_TYPE_BO);
+
 
 

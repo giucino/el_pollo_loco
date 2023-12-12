@@ -81,6 +81,7 @@ function startGame() {
     initializeGameScreen();
     setupEventListeners();
     playBackgroundMusicIfNotMuted();
+    adjustMobileBtnsPosition();
     adjustInfoBarPosition();
 }
 
@@ -126,15 +127,33 @@ function playBackgroundMusicIfNotMuted() {
 
 
 /**
- * Adjusts the position of the info bar based on the window size.
+ * Adjusts the position of the mobile buttons based on the window size.
  */
-function adjustInfoBarPosition() {
+function adjustMobileBtnsPosition() {
     let mobileBtns = document.getElementById('mobileBtns');
 
     if (window.innerWidth <= 1000 && isGameStarted) {
         mobileBtns.style.display = 'flex';
     } else {
         mobileBtns.style.display = 'none';
+    }
+}
+window.addEventListener('resize', adjustMobileBtnsPosition);
+
+
+/**
+ * Adjusts the position of the info bar based on the window size.
+ */
+function adjustInfoBarPosition() {
+    let infoBar = document.getElementById('infoBar');
+
+    if (window.innerWidth <= 550 && isGameStarted) {
+        infoBar.style.display = 'flex';
+        infoBar.style.top = '40px';
+    } else {
+        infoBar.style.display = '';
+        infoBar.style.top = '';
+
     }
 }
 window.addEventListener('resize', adjustInfoBarPosition);

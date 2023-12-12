@@ -1,3 +1,11 @@
+/**
+ * Represents the end boss in the game.
+ * 
+ * It is a movable object that can be paused and resumed.
+ * An end boss has a specific width, height, speed, and offset.
+ * 
+ * @extends MovableObject
+ */
 class Endboss extends MovableObject {
     offset = {
         top: 70,
@@ -63,6 +71,9 @@ class Endboss extends MovableObject {
     ];
 
 
+    /**
+     * Creates an end boss.
+     */
     constructor() {
         super();
         this.loadImage('img/4_enemie_boss_chicken/2_alert/G5.png');
@@ -77,11 +88,17 @@ class Endboss extends MovableObject {
     }
 
 
+    /**
+     * Pauses the end boss.
+     */
     pause() {
         clearInterval(this.endbossInterval);
     }
 
 
+    /**
+     * Starts the end boss.
+     */
     start() {
         let isAttacking = true;
 
@@ -100,18 +117,28 @@ class Endboss extends MovableObject {
     }
 
 
+    /**
+     * Handles the game over animation for the end boss.
+     */
     handleGameOverAnimation() {
         this.playAnimation(this.ENDBOSS_GAME_OVER);
         this.triggerGameOver();
     }
 
 
+    /**
+     * Handles the hurt animation for the end boss.
+     */
     handleHurtAnimation() {
         this.playAnimation(this.ENDBOSS_HURT);
         playAudio('endbossHurtAudio');
     }
 
 
+    /**
+     * Handles the attack or walk animation for the end boss.
+     * @param {boolean} isAttacking - Whether the end boss is attacking.
+     */
     handleAttackOrWalkAnimation(isAttacking) {
         if (isAttacking) {
             this.handleAttackAnimation();
@@ -121,23 +148,35 @@ class Endboss extends MovableObject {
     }
 
 
+    /**
+     * Handles the attack animation for the end boss.
+     */
     handleAttackAnimation() {
         this.playAnimation(this.ENDBOSS_ATTACK);
         playAudio('endbossHurtAudio');
     }
 
 
+    /**
+     * Handles the walking animation for the end boss.
+     */
     handleWalkingAnimation() {
         this.playAnimation(this.ENDBOSS_WALKING);
         this.endbossMoveLeft();
     }
 
 
+    /**
+     * Handles the alert animation for the end boss.
+     */
     handleAlertAnimation() {
         this.playAnimation(this.ENDBOSS_ALERT);
     }
 
 
+    /**
+     * Reduces the energy of the end boss.
+     */
     reduceEnergyEndboss() {
         this.energyEndboss -= 20;
         if (this.energyEndboss < 0) {
@@ -148,22 +187,36 @@ class Endboss extends MovableObject {
     }
 
 
+    /**
+     * Checks if the end boss was hit.
+     * @returns {boolean} - Whether the end boss was hit.
+     */
     wasHit() {
         this.isHurt();
         return this.energyEndboss < 100;
     }
 
 
+    /**
+     * Moves the end boss to the left.
+     */
     endbossMoveLeft() {
         this.x -= this.endbossSpeed;
     }
 
 
+    /**
+     * Checks if the game is over for the end boss.
+     * @returns {boolean} - Whether the game is over for the end boss.
+     */
     endbossIsGameOver() {
         return this.energyEndboss == 0;
     }
 
 
+    /**
+     * Triggers the game over state.
+     */
     triggerGameOver() {
         if (!this.isGameOverTriggered) {
             characterHasWon();

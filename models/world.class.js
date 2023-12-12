@@ -110,7 +110,6 @@ class World {
 
     draw() {
         this.clearCanvas();
-        // this.setCameraPosition();
         this.translateCamera();
 
         this.drawBackgroundObjects();
@@ -145,15 +144,6 @@ class World {
     clearCanvas() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     }
-
-
-    // setCameraPosition() {
-    //     if (this.character.otherDirection) {
-    //         this.camera_x = -this.character.x + this.canvas.width - 450;
-    //     } else {
-    //         this.camera_x = -this.character.x + 200;
-    //     }
-    // }
 
 
     drawBackgroundObjects() {

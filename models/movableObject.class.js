@@ -1,3 +1,11 @@
+/**
+ * Represents a movable object.
+ * 
+ * A movable object is an object that can be moved in a certain direction.
+ * It has a specific width, height, and speed, and it can play different animations for moving and collision.
+ * 
+ * @extends DrawableObject
+ */
 class MovableObject extends DrawableObject {
     offset = {
         top: 0,
@@ -6,7 +14,7 @@ class MovableObject extends DrawableObject {
         bottom: 0,
     };
 
-    
+
     speed = 0.09;
     otherDirection = false;
     speedY = 0;
@@ -17,6 +25,10 @@ class MovableObject extends DrawableObject {
 
 
 
+    /**
+     * Plays an animation.
+     * @param {Array} images - The images to use for the animation.
+     */
     playAnimation(images) {
         let i = this.currentImage % images.length;
         let path = images[i];
@@ -25,6 +37,11 @@ class MovableObject extends DrawableObject {
     }
 
 
+    /**
+     * Checks if the object is colliding with another object.
+     * @param {MovableObject} mo - The other object to check for collision.
+     * @returns {boolean} - Whether the object is colliding with the other object.
+     */
     isColliding(mo) {
         return (
             this.x + this.width - this.offset.right > mo.x + mo.offset.left &&
@@ -35,6 +52,9 @@ class MovableObject extends DrawableObject {
     }
 
 
+    /**
+     * Applies gravity to the object.
+     */
     applyGravity() {
         setInterval(() => {
             if (this.isAboveGround() || this.speedY > 0) {
@@ -49,6 +69,10 @@ class MovableObject extends DrawableObject {
     }
 
 
+    /**
+     * Checks if the object is above the ground.
+     * @returns {boolean} - Whether the object is above the ground.
+     */
     isAboveGround() {
         if (this instanceof ThrowableObject) { // Throwable object should always fall
             return true;
@@ -58,6 +82,9 @@ class MovableObject extends DrawableObject {
     }
 
 
+    /**
+     * Reduces the energy of the object.
+     */
     reduceEnergy() {
         this.energy -= 5;
         if (this.energy < 0) {
@@ -68,6 +95,10 @@ class MovableObject extends DrawableObject {
     }
 
 
+    /**
+     * Checks if the object is hurt.
+     * @returns {boolean} - Whether the object is hurt.
+     */
     isHurt() {
         let timePassed = new Date().getTime() - this.lastHit;
         timePassed = timePassed / 1000;
@@ -75,27 +106,45 @@ class MovableObject extends DrawableObject {
     }
 
 
+    /**
+     * Checks if the game is over.
+     * @returns {boolean} - Whether the game is over.
+     */
     isGameOver() {
         return this.energy == 0;
     }
 
 
+    /**
+     * Checks if the object is moving horizontally.
+     * @param {Keyboard} keyboard - The keyboard input.
+     * @returns {boolean} - Whether the object is moving horizontally.
+     */
     isMovingHorizontally(keyboard) {
         return keyboard.KEY_RIGHT || keyboard.KEY_LEFT;
     }
 
 
+    /**
+     * Makes the object jump.
+     */
     jump() {
         this.speedY = 30;
         this.jumpTimeStamp = new Date().getTime();
     }
 
 
+    /**
+     * Moves the object to the right.
+     */
     moveRight() {
         this.x += this.speed;
     }
 
 
+    /**
+     * Moves the object to the left.
+     */
     moveLeft() {
         this.x -= this.speed;
     }

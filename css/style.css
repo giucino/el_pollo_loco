@@ -360,13 +360,6 @@ p {
     animation: rotate 2s linear infinite alternate;
 }
 
-/* Wird durch die JS Funktion handleDeviceOrientation ersetzt
-@media screen and (orientation: portrait) {
-    #rotate-device {
-        display: block;
-    }
-} */
-
 #mobileBtns {
     display: none;
     position: absolute;
@@ -457,7 +450,6 @@ p {
     .info-bar svg{
         width: 35px;
         height: 25px;
-        /* margin-left: 8px; */
     }
 }
 
