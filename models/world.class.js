@@ -1,3 +1,9 @@
+/**
+ * A world is a collection of objects that are drawn on a canvas.
+ * It is responsible for drawing all objects and for handling the game logic.
+ * The world is also responsible for the camera movement.
+ * A world has a level, a character, an endboss, a chick, a status bar for the health of the character,
+ */
 class World {
     canvas;
     ctx;
@@ -23,6 +29,11 @@ class World {
     timeouts = [];
 
 
+    /**
+     * Constructor for the World class.
+     * @param {HTMLCanvasElement} canvas - The canvas element to draw the game on.
+     * @param {Keyboard} keyboard - The keyboard input handler.
+     */
     constructor(canvas, keyboard) {
         this.ctx = canvas.getContext("2d");
         this.canvas = canvas;
@@ -38,24 +49,36 @@ class World {
     }
 
 
+    /**
+     * Sets the world property of the character and endboss to this world.
+     */
     setWorld() {
         this.character.world = this;
         this.endboss.world = this;
     }
 
 
+    /**
+     * Starts the game by running the game logic and drawing the game.
+     */
     start() {
         this.run();
         this.draw();
     }
 
 
+    /**
+     * Pauses the game by clearing the game interval and animation frame.
+     */
     pause() {
         clearInterval(this.gameIntervalId);
         cancelAnimationFrame(this.animationFrameId);
     }
 
 
+    /**
+     * Clears all intervals and timeouts stored in the intervals and timeouts arrays.
+     */
     clearAllIntervalsAndTimeouts() {
         for (let i = 0; i < this.intervals.length; i++) {
             clearInterval(this.intervals[i]);
@@ -68,6 +91,9 @@ class World {
     }
 
 
+    /**
+     * Runs the game logic at a rate of 5 times per second.
+     */
     run() {
         this.gameIntervalId = setInterval(() => {
             this.checkThrowableObjects();
@@ -82,6 +108,9 @@ class World {
     }
 
 
+    /**
+     * Resets the game to its initial state.
+     */
     resetGame() {
         this.clearAllIntervalsAndTimeouts();
         this.camera_x = 0;
@@ -108,6 +137,9 @@ class World {
 
     /* Draw -------------- */
 
+    /**
+     * Draws the game by clearing the canvas, translating the camera, drawing the objects, and requesting the next frame.
+     */
     draw() {
         this.clearCanvas();
         this.translateCamera();
@@ -124,16 +156,25 @@ class World {
     }
 
 
+    /**
+     * Translates the camera based on the camera_x property.
+     */
     translateCamera() {
         this.ctx.translate(this.camera_x, 0);
     }
 
 
+    /**
+     * Resets the camera translation.
+     */
     resetCamera() {
         this.ctx.translate(-this.camera_x, 0);
     }
 
 
+    /**
+     * Requests the next animation frame and calls the draw method.
+     */
     requestNextFrame() {
         this.animationFrameId = requestAnimationFrame(() => {
             this.draw(); //Dieses "this" bezieht sich direkt auf das "this" im äußeren Kontext der Methode.
@@ -141,11 +182,17 @@ class World {
     }
 
 
+    /**
+     * Clears the canvas.
+     */
     clearCanvas() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     }
 
 
+    /**
+     * Draws the background objects.
+     */
     drawBackgroundObjects() {
         if (this.character.isMoving) {
             this.level.backgroundObjects.forEach(bgObject => {
@@ -156,8 +203,11 @@ class World {
             this.addObjectsToMap(this.level.backgroundObjects);
         }
     }
-    
 
+
+    /**
+     * Draws the moving objects.
+     */
     drawMovingObjects() {
         this.addObjectsToMap(this.level.clouds);
         this.addObjectsToMap(this.level.bottles);
@@ -169,6 +219,9 @@ class World {
     }
 
 
+    /**
+     * Draws the fixed objects.
+     */
     drawFixedObjects() {
         this.addMovableObjectsToMap(this.statusBarHealth);
         this.addMovableObjectsToMap(this.statusBarBottles);
@@ -179,6 +232,10 @@ class World {
     }
 
 
+    /**
+     * Adds an array of objects to the map.
+     * @param {Array} objects - The objects to add to the map.
+     */
     addObjectsToMap(objects) {
         objects.forEach(o => {
             this.addMovableObjectsToMap(o);
@@ -186,6 +243,10 @@ class World {
     }
 
 
+    /**
+     * Adds a movable object to the map.
+     * @param {MovableObject} mo - The movable object to add to the map.
+     */
     addMovableObjectsToMap(mo) {
         if (mo.otherDirection) {
             this.flipImage(mo);
@@ -199,6 +260,10 @@ class World {
     }
 
 
+    /**
+     * Flips an image horizontally.
+     * @param {MovableObject} mo - The movable object whose image to flip.
+     */
     flipImage(mo) {
         this.ctx.save();
         this.ctx.translate(mo.width, 0);
@@ -207,14 +272,22 @@ class World {
     }
 
 
+    /**
+     * Flips an image back to its original orientation.
+     * @param {MovableObject} mo - The movable object whose image to flip back.
+     */
     flipImageBack(mo) {
         mo.x = mo.x * -1;
         this.ctx.restore();
     }
 
 
-/* Throwable Objects -------------- */
+    /* Throwable Objects -------------- */
 
+    /**
+     * Checks if the character is throwing a bottle.
+     * If so, a new bottle is created and added to the throwableObjects array.
+     */
     checkThrowableObjects() {
         if (this.keyboard.KEY_D && this.collectedBottles.length > 0) {
             let bottle = this.createBottle();
@@ -226,6 +299,11 @@ class World {
     }
 
 
+    /**
+     * Creates a new ThrowableObject (bottle) at a position relative to the character,
+     * with the direction based on the character's direction.
+     * @returns {ThrowableObject} The new ThrowableObject.
+     */
     createBottle() {
         let bottleX = this.character.x + (this.character.otherDirection ? -10 : 50);
         let bottleY = this.character.y + 100;
@@ -235,8 +313,11 @@ class World {
     }
 
 
-/* Chicken -------------- */
+    /* Chicken -------------- */
 
+    /**
+     * Checks if the character is colliding with the chicken.
+     */
     checkCollisionEnemy() {
         this.level.enemies.forEach((enemy) => {
             if (this.characterJumpAttack(enemy)) {
@@ -252,11 +333,19 @@ class World {
     }
 
 
+    /**
+     * Checks if the character can attack an enemy by jumping on them.
+     * @param {Enemy} enemy - The enemy to check.
+     * @returns {boolean} True if the character is not hurt, is colliding with the enemy, is above the ground, and is moving upwards, false otherwise.
+     */
     characterJumpAttack(enemy) {
         return !this.character.isHurt() && this.character.isColliding(enemy) && this.character.isAboveGround() && this.character.speedY < 0;
     }
 
 
+    /**
+     * Checks if a thrown bottle is hurting an enemy. If so, eliminates the enemy and bursts the bottle.
+     */
     bottleIsHurtingEnemy() {
         this.throwableObjects.forEach((bottle) => {
             this.level.enemies.forEach((enemy) => {
@@ -269,6 +358,10 @@ class World {
     }
 
 
+    /**
+     * Eliminates an enemy by setting their energy to 0 and removing them from the enemies array after a delay.
+     * @param {Enemy} enemy - The enemy to eliminate.
+     */
     eliminateEnemy(enemy) {
         let indexEnemy = this.level.enemies.findIndex(e => e === enemy);
         if (indexEnemy !== -1) {
@@ -278,6 +371,10 @@ class World {
     }
 
 
+    /**
+     * Removes an enemy from the enemies array after a delay.
+     * @param {number} enemy - The index of the enemy to remove.
+     */
     delayedRemoveEnemy(enemy) {
         setTimeout(() => {
             this.level.enemies.splice(enemy, 1);
@@ -285,11 +382,19 @@ class World {
     }
 
 
+    /**
+     * Checks if an enemy can damage the character.
+     * @param {Enemy} enemy - The enemy to check.
+     * @returns {boolean} True if the character is colliding with the enemy, is not hurt, is not above the ground, and is not idle, false otherwise.
+     */
     enemyCanDamageCharacter(enemy) {
         return this.character.isColliding(enemy) && !this.character.isHurt() && !this.character.isAboveGround() && !this.character.isIdle();
     }
 
 
+    /**
+     * Handles the character's health. If the character can be hurt, reduces the character's energy and updates the health status bar.
+     */
     handleCharacterHealth() {
         if (this.characterCanBeHurt()) {
             this.character.reduceEnergy();
@@ -298,13 +403,20 @@ class World {
     }
 
 
+    /**
+     * Checks if the character can be hurt.
+     * @returns {boolean} True if the character is not hurt and the game is not over, false otherwise.
+     */
     characterCanBeHurt() {
         return !this.character.isHurt() && !this.character.isGameOver();
     }
 
 
-/* Endboss -------------- */
+    /* Endboss -------------- */
 
+    /**
+     * Checks if the endboss can damage the character. If so, handles the character's health.
+     */
     checkCollisionEndboss() {
         if (this.endbossCanDamageCharacter(this.endboss)) {
             this.handleCharacterHealth();
@@ -313,16 +425,27 @@ class World {
     }
 
 
+    /**
+     * Resets the character's position by moving it 200 units to the left.
+     */
     resetCharacterPosition() {
         this.character.x = this.character.x - 200;
     }
 
 
+    /**
+     * Checks if the endboss can damage the character.
+     * @param {Endboss} endboss - The endboss to check.
+     * @returns {boolean} True if the character is colliding with the endboss, is not hurt, is not above the ground, and is not idle, false otherwise.
+     */
     endbossCanDamageCharacter(endboss) {
         return this.character.isColliding(endboss) && !this.character.isHurt() && !this.character.isAboveGround() && !this.character.isIdle();
     }
 
 
+    /**
+     * Checks if a thrown bottle is hurting the endboss. If so, handles the endboss's health and bursts the bottle.
+     */
     bottleIsHurtingEndboss() {
         this.throwableObjects.forEach((bottle) => {
             if (!bottle.isBursted && this.isBottleHittingEndboss(bottle)) {
@@ -333,17 +456,28 @@ class World {
     }
 
 
+    /**
+     * Checks if a bottle is hitting the endboss.
+     * @param {Bottle} bottle - The bottle to check.
+     * @returns {boolean} True if the endboss is colliding with the bottle and is not hurt, false otherwise.
+     */
     isBottleHittingEndboss(bottle) {
         return this.endboss.isColliding(bottle) && !this.endboss.isHurt();
     }
 
 
+    /**
+     * Handles the endboss's health by reducing its energy and updating the health status bar.
+     */
     handleEndbossHealth() {
         this.endboss.reduceEnergyEndboss();
         this.statusBarHealthEndboss.setPercentage(this.endboss.energyEndboss);
     }
 
 
+    /**
+     * Checks if the character has reached the endboss. If so, triggers the endboss encounter.
+     */
     reachedEndboss() {
         if (this.firstContactMade) {
             return;
@@ -354,11 +488,18 @@ class World {
     }
 
 
+    /**
+     * Checks if the character is near the endboss.
+     * @returns {boolean} True if the absolute difference between the character's and the endboss's x positions is less than or equal to 1200, false otherwise.
+     */
     isCharacterNearEndboss() {
         return Math.abs(this.character.x - this.endboss.x) <= 1200;
     }
 
 
+    /**
+     * Triggers the endboss encounter by setting firstContactMade to true, making the health status bar visible, playing the endboss audio, and pausing the background music.
+     */
     triggerEndbossEncounter() {
         this.firstContactMade = true;
         this.statusBarHealthEndboss.visible = true;
@@ -367,8 +508,16 @@ class World {
     }
 
 
-/* Collect Items -------------- */
+    /* Collect Items -------------- */
 
+    /**
+     * Collects items if the character can collect them. Plays the item sound, increases the status bar count by one, and removes the item from the items array.
+     * @param {Array} items - The items to collect.
+     * @param {Map} itemSounds - The sounds to play when an item is collected.
+     * @param {StatusBar} statusBar - The status bar to update when an item is collected.
+     * @param {function} canCollectItem - The function to check if the character can collect an item.
+     * @param {string} soundName - The name of the sound to play when an item is collected.
+     */
     collectItems(items, itemSounds, statusBar, canCollectItem, soundName) {
         items.forEach((item, index) => {
             if (this.characterCanCollectItem(item, canCollectItem)) {
@@ -381,6 +530,9 @@ class World {
     }
 
 
+    /**
+     * Checks if the character can collect a coin.
+     */
     collectCoins() {
         this.collectItems(
             this.level.coins,
@@ -392,6 +544,9 @@ class World {
     }
 
 
+    /**
+     * Checks if the character can collect a bottle.
+     */
     collectBottles() {
         this.collectItems(
             this.level.bottles,
@@ -403,11 +558,20 @@ class World {
     }
 
 
+    /**
+     * Checks if the character can collect an item.
+     * @param {MovableObject} item - The item to check.
+     * @returns {boolean} True if the character is colliding with the item and is not hurt, false otherwise.
+     */
     characterCanCollectItem(item) {
         return this.character.isColliding(item) && !this.character.isHurt();
     }
 
 
+    /**
+     * Adds an item to the collected items array based on its type.
+     * @param {MovableObject} item - The item to collect.
+     */
     collectItem(item) {
         if (item instanceof BottleTilted || item instanceof BottleStraight) {
             this.collectedBottles.push(item);
@@ -417,12 +581,24 @@ class World {
     }
 
 
+    /**
+     * Plays the sound for an item.
+     * @param {MovableObject} item - The item to play the sound for.
+     * @param {Map} itemSounds - The sounds to play when an item is collected.
+     * @param {string} soundName - The name of the sound to play.
+     */
     playItemSound(item, itemSounds, soundName) {
         this.findAndSetSound(item, itemSounds, soundName);
         this.createAndPlaySound(item, itemSounds);
     }
 
 
+    /**
+     * Finds and sets the sound for an item.
+     * @param {MovableObject} item - The item to find and set the sound for.
+     * @param {Map} itemSounds - The sounds to play when an item is collected.
+     * @param {string} soundName - The name of the sound to find and set.
+     */
     findAndSetSound(item, itemSounds, soundName) {
         if (!itemSounds.has(item)) {
             let soundFile = findAudioByName(soundName);
@@ -435,6 +611,11 @@ class World {
     }
 
 
+    /**
+     * Creates and plays the sound for an item.
+     * @param {MovableObject} item - The item to create and play the sound for.
+     * @param {Map} itemSounds - The sounds to play when an item is collected.
+     */
     createAndPlaySound(item, itemSounds) {
         let sound = new Audio(itemSounds.get(item).src);
         sound.muted = isSoundMuted;
