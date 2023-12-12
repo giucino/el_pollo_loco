@@ -318,7 +318,13 @@ class World {
     checkCollisionEndboss() {
         if (this.endbossCanDamageCharacter(this.endboss)) {
             this.handleCharacterHealth();
+            // this.resetCharacterPosition();
         }
+    }
+
+
+    resetCharacterPosition() {
+        this.character.x = this.character.x - 200;
     }
 
 

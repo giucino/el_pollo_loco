@@ -229,7 +229,7 @@ h2 {
     padding: 10px 60px;
     opacity: 0.9;
     z-index: 2;
-    /* overflow-y: scroll; */
+    overflow-y: scroll;
 }
 
 .controll-container-elem {
@@ -449,6 +449,15 @@ p {
 
     .controll-container-elem {
         margin: 4px;
+    }
+}
+
+/* Smartphones -------------- */
+@media only screen and (max-width: 480px) and (max-height: 320px) {
+    .info-bar svg{
+        width: 35px;
+        height: 25px;
+        /* margin-left: 8px; */
     }
 }
 

@@ -8,9 +8,9 @@
  */
 class Chick extends MovableObject {
     offset = {
-        top: -22,
+        top: 0,
         bottom: 0,
-        left: -5,
+        left: 5,
         right: 5,
     };
 
@@ -34,7 +34,6 @@ class Chick extends MovableObject {
 
     /**
     * Starts the movement and animation of the chick.
-    * 
     * The chick starts moving to the left and its animation starts playing.
     */
     constructor() {
