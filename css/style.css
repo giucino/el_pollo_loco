@@ -193,7 +193,7 @@ h2 {
     display: none;
 }
 
-.info-bar svg {
+.info-bar svg{
     cursor: pointer;
     width: 46px;
     height: 36px;
@@ -394,7 +394,10 @@ p {
 .mobile-btns-right {
     display: flex;
     gap: 10px;
+}
 
+#menuButton {
+    display: none;
 }
 
 /* Smartphones -------------- */
@@ -411,7 +414,32 @@ p {
         font-size: 1.5rem;
     }
 
-    .info-bar svg, #mobileBtns svg {
+    /* .info-bar {
+        display: none;
+        position: absolute;
+        bottom: 60px;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 6px;
+    } */
+
+    .info-bar svg {
+        width: 40px;
+        height: 30px;
+        margin-left: 0px;
+    }
+
+    #menuButton {
+        position: absolute;
+        bottom: 13px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        z-index: 2;
+    }
+
+    #mobileBtns svg {
         width: 40px;
         height: 30px;
         margin-left: 8px;
@@ -447,7 +475,7 @@ p {
 
 /* Smartphones -------------- */
 @media only screen and (max-width: 480px) and (max-height: 320px) {
-    .info-bar svg{
+    .info-bar svg {
         width: 35px;
         height: 25px;
     }

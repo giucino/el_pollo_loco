@@ -9,15 +9,15 @@
 class Chick extends MovableObject {
     offset = {
         top: 0,
-        bottom: 0,
-        left: 5,
-        right: 5,
+        bottom: -100,
+        left: 0,
+        right: 0
     };
 
     x = 120;
-    y = 375;
-    height = 50;
-    width = 50;
+    y = 358;
+    height = 65;
+    width = 65;
 
 
     CHICK_WALKING = [
@@ -71,7 +71,7 @@ class Chick extends MovableObject {
      * Moves the chick to the left.
      */
     chicksMoveLeft() {
-        this.movingIntervalId = setInterval(() => {
+        this.movingIntervalId = addSetInterval(() => {
             this.moveLeft();
         }, 1000 / 60);
     }
@@ -81,7 +81,7 @@ class Chick extends MovableObject {
      * Checks if the chick is eliminated.
      */
     isChickEliminated() {
-        this.animationIntervalId = setInterval(() => {
+        this.animationIntervalId = addSetInterval(() => {
             this.animateChick();
         }, 100);
     }

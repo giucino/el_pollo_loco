@@ -59,7 +59,7 @@ class ThrowableObject extends MovableObject {
         this.applyGravity();
         this.speedX = this.otherDirection ? -10 : 10;
 
-        this.animationInterval = setInterval(() => {
+        this.animationInterval = addSetInterval(() => {
             this.handleBottleAnimation();
         }, 45);
     }

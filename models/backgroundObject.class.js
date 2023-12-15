@@ -17,13 +17,14 @@ class BackgroundObject extends MovableObject {
      * @param {*} x - The initial x coordinate of the background object.
      * @param {*} speed - The speed of the background object.
      */
-    constructor(imagePath, x, speed) {
+    constructor(imagePath, x, speed, otherDirection) {
         super();
         this.loadImage(imagePath);
         this.x = x;
         this.y = 480 - this.height;
         this.speed = speed;
-        this.start();
+        this.originalSpeed = speed;
+        this.start(otherDirection);
     }
 
 
@@ -49,6 +50,16 @@ class BackgroundObject extends MovableObject {
       * This is done by setting the speed of the background object to 0.
       */
     pause() {
+        console.log('Pausing background object');
         this.speed = 0;
+    }
+
+
+    /**
+     * Resumes the movement of the background object.
+     */
+    resetSpeed() {
+        console.log('reset speed');
+        this.speed = this.originalSpeed;
     }
 }

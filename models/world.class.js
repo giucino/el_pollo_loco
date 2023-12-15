@@ -25,8 +25,6 @@ class World {
     firstContactMade;
     gameIntervalId;
     animationFrameId;
-    intervals = [];
-    timeouts = [];
 
 
     /**
@@ -77,25 +75,10 @@ class World {
 
 
     /**
-     * Clears all intervals and timeouts stored in the intervals and timeouts arrays.
-     */
-    clearAllIntervalsAndTimeouts() {
-        for (let i = 0; i < this.intervals.length; i++) {
-            clearInterval(this.intervals[i]);
-        }
-        for (let i = 0; i < this.timeouts.length; i++) {
-            clearTimeout(this.timeouts[i]);
-        }
-        this.intervals = [];
-        this.timeouts = [];
-    }
-
-
-    /**
      * Runs the game logic at a rate of 5 times per second.
      */
     run() {
-        this.gameIntervalId = setInterval(() => {
+        this.gameIntervalId = addSetInterval(() => {
             this.checkThrowableObjects();
             this.checkCollisionEnemy();
             this.bottleIsHurtingEnemy();
@@ -112,7 +95,6 @@ class World {
      * Resets the game to its initial state.
      */
     resetGame() {
-        this.clearAllIntervalsAndTimeouts();
         this.camera_x = 0;
         this.level = level1;
         this.character = new Character();

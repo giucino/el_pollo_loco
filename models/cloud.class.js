@@ -67,7 +67,7 @@ class Cloud extends MovableObject {
      * This is done by decreasing the x-coordinate of the cloud at a certain speed.
      */
     moveCloudLeft() {
-        this.movingIntervalId = setInterval(() => {
+        this.movingIntervalId = addSetInterval(() => {
             this.x -= this.speed;
         }, 1000 / 60)
     }

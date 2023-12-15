@@ -8,10 +8,10 @@
  */
 class Chicken extends MovableObject {
     offset = {
-        top: -15,
-        bottom: 5,
-        left: 8,
-        right: 8,
+        top: 5,
+        bottom: -100,
+        left: 5,
+        right: 5
     };
 
     x = 120;
@@ -72,7 +72,7 @@ class Chicken extends MovableObject {
      * Moves the chicken to the left.
      */
     chickensMoveLeft() {
-        this.movingIntervalId = setInterval(() => {
+        this.movingIntervalId = addSetInterval(() => {
             this.moveLeft();
         }, 1000 / 60);
     }
@@ -82,7 +82,7 @@ class Chicken extends MovableObject {
      * Checks if the chicken is eliminated.
      */
     isChickenEliminated() {
-        this.animationIntervalId = setInterval(() => {
+        this.animationIntervalId = addSetInterval(() => {
             this.animateChicken();
         }, 100);
     }

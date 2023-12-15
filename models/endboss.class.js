@@ -8,10 +8,10 @@
  */
 class Endboss extends MovableObject {
     offset = {
-        top: 70,
-        bottom: 10,
-        left: 55,
-        right: 30,
+        top: 40,
+        bottom: 20,
+        left: 0,
+        right: 30
     };
 
 
@@ -102,7 +102,7 @@ class Endboss extends MovableObject {
     start() {
         let isAttacking = true;
 
-        this.endbossInterval = setInterval(() => {
+        this.endbossInterval = addSetInterval(() => {
             if (this.endbossIsGameOver()) {
                 this.handleGameOverAnimation();
             } else if (this.isHurt()) {

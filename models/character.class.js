@@ -8,10 +8,10 @@
  */
 class Character extends MovableObject {
     offset = {
-        top: 100,
+        top: 120,
         bottom: 0,
-        left: 5,
-        right: 2,
+        left: 25,
+        right: 25
     };
 
 
@@ -144,9 +144,7 @@ class Character extends MovableObject {
      * Initiates the character's motion at a rate of 60 times per second.
      */
     characterMotion() {
-        this.motionIntervalId = setInterval(() => {
-            this.handleCharacterMotion();
-        }, 1000 / 60);
+        this.motionIntervalId = addSetInterval(() => this.handleCharacterMotion(), 1000 / 60);
     }
 
 
@@ -246,9 +244,7 @@ class Character extends MovableObject {
     animateCharacter() {
         this.lastActivityTime = new Date().getTime();
 
-        this.animationIntervalId = setInterval(() => {
-            this.updateAnimationBasedOnState();
-        }, 50);
+        this.animationIntervalId = addSetInterval(() => this.updateAnimationBasedOnState(), 50);
 
         document.addEventListener('keydown', () => {
             this.lastActivityTime = new Date().getTime();

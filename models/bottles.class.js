@@ -11,7 +11,7 @@ class BottleTilted extends DrawableObject {
         top: 20,
         bottom: 30,
         left: 40,
-        right: 40,
+        right: 40
     };
 
     height = 70;

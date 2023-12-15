@@ -11,7 +11,7 @@ class MovableObject extends DrawableObject {
         top: 0,
         left: 0,
         right: 0,
-        bottom: 0,
+        bottom: 0
     };
 
 
@@ -49,6 +49,7 @@ class MovableObject extends DrawableObject {
             this.x + this.offset.left < mo.x + mo.width - mo.offset.right &&
             this.y + this.offset.top < mo.y + mo.height - mo.offset.bottom
         );
+        
     }
 
 
@@ -56,7 +57,7 @@ class MovableObject extends DrawableObject {
      * Applies gravity to the object.
      */
     applyGravity() {
-        setInterval(() => {
+        addSetInterval(() => {
             if (this.isAboveGround() || this.speedY > 0) {
                 this.y -= this.speedY;
                 this.speedY -= this.acceleration;

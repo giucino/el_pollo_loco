@@ -11,7 +11,7 @@ class Coin extends MovableObject {
         top: 10,
         bottom: 30,
         left: 40,
-        right: 40,
+        right: 40
     };
 
     height = 120;
@@ -65,7 +65,7 @@ class Coin extends MovableObject {
      * The coin plays an animation that cycles through different images at a certain speed.
      */
     animateCoins() {
-        this.animationIntervalId = setInterval(() => {
+        this.animationIntervalId = addSetInterval(() => {
             this.playAnimation(this.IMAGES_COIN);
         }, 350);
     }

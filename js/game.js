@@ -28,6 +28,7 @@ function handleDeviceOrientation() {
             document.getElementById('deviceContainer').style.display = "none";
         }
     }
+    checkOrientation();
 
     window.addEventListener("orientationchange", checkOrientation);
     window.addEventListener("resize", checkOrientation);
@@ -82,7 +83,7 @@ function startGame() {
     setupEventListeners();
     playBackgroundMusicIfNotMuted();
     adjustMobileBtnsPosition();
-    adjustInfoBarPosition();
+    // adjustInfoBarPosition();
 }
 
 
@@ -141,22 +142,33 @@ function adjustMobileBtnsPosition() {
 window.addEventListener('resize', adjustMobileBtnsPosition);
 
 
-/**
- * Adjusts the position of the info bar based on the window size.
- */
+// /**
+//  * Adjusts the position of the info bar based on the window size.
+//  */
+// function adjustInfoBarPosition() {
+//     let infoBar = document.getElementById('infoBar');
+
+//     if (window.innerWidth <= 550 && isGameStarted) {
+//         infoBar.style.display = 'flex';
+//         infoBar.style.top = '40px';
+//     } else {
+//         infoBar.style.display = '';
+//         infoBar.style.top = '';
+
+//     }
+// }
+// window.addEventListener('resize', adjustInfoBarPosition);
+
+
 function adjustInfoBarPosition() {
     let infoBar = document.getElementById('infoBar');
-
-    if (window.innerWidth <= 550 && isGameStarted) {
+    if (infoBar.style.display === 'none') {
         infoBar.style.display = 'flex';
-        infoBar.style.top = '40px';
     } else {
-        infoBar.style.display = '';
-        infoBar.style.top = '';
-
+        infoBar.style.display = 'none';
     }
 }
-window.addEventListener('resize', adjustInfoBarPosition);
+document.addEventListener('click', adjustInfoBarPosition);
 
 
 /**

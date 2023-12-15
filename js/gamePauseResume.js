@@ -51,13 +51,22 @@ function updateToggleGamePath() {
  */
 function pauseGame() {
     isGamePaused = true;
+    pauseAudios();
+    pauseAllGameObjects();
+    updateToggleGamePath();
+    pauseWorld();
+}
+
+
+/**
+ * Pauses specific audio tracks
+ */
+function pauseAudios() {
     pauseAudio('backgroundMusic');
     pauseAudio('endbossAudio');
     pauseAudio('snoringAudio');
     pauseAudio('endbossHurtAudio');
-    pauseAllGameObjects();
-    updateToggleGamePath();
-    pauseWorld();
+    pauseAudio('walkingAudio');
 }
 
 
@@ -81,6 +90,7 @@ function pauseAllGameObjects() {
     togglePauseResume(level1.enemies, ACTION_PAUSE, OBJECT_TYPE_CHICKEN);
     togglePauseResume(level1.clouds, ACTION_PAUSE, OBJECT_TYPE_CLOUD);
     togglePauseResume(level1.coins, ACTION_PAUSE, OBJECT_TYPE_COIN);
+
 }
 
 
@@ -114,9 +124,11 @@ function togglePauseResume(objects, action, objectType) {
  * Pauses the game world.
  */
 function pauseWorld() {
+    console.log('Pausing world');
     world.pause();
     world.character.pause();
     world.endboss.pause();
+    pauseBackgroundObjects();
 }
 
 
@@ -127,4 +139,5 @@ function resumeWorld() {
     world.start();
     world.character.start();
     world.endboss.start();
+    resumeBackgroundObjects();
 }

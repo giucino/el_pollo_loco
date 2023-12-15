@@ -1,4 +1,5 @@
 let isEndScreenShown = false;
+let intervals = [];
 
 
 /**
@@ -9,6 +10,7 @@ function characterIsGameOver() {
     pauseSpecificAudios();
     pauseGameObjectsAndListeners(world.endboss, world.character.motionIntervalId);
     resumeBackgroundAfterDelay(world.character);
+    clearAllIntervals();
     isGameStarted = false;
 }
 
@@ -21,7 +23,33 @@ function characterHasWon() {
     pauseSpecificAudios();
     pauseGameObjectsAndListeners(world.character, null);
     resumeBackgroundAfterDelay(world.endboss);
+    clearAllIntervals();
     isGameStarted = false;
+}
+
+
+/**
+ * Clears all intervals stored in the intervals array.
+ */
+function clearAllIntervals() {
+    setTimeout(() => {
+        intervals.forEach(clearInterval);
+        intervals = [];
+    }, 3000);
+}
+
+
+/**
+ * Adds a function to an interval and stores the interval's ID.
+ *
+ * @param {Function} fn - The function to be executed at specified intervals.
+ * @param {number} time - The time, in milliseconds, between each execution of the function.
+ * @returns {number} The ID of the created interval.
+ */
+function addSetInterval(fn, time) {
+    let id = setInterval(fn, time);
+    intervals.push(id);
+    return id;
 }
 
 
@@ -64,12 +92,30 @@ function pauseSpecificAudios() {
  */
 function pauseGameObjectsAndListeners(losingObj, motionIntervalId) {
     pauseAllGameObjects();
+    pauseBackgroundObjects();
     losingObj.pause();
     clearInterval(motionIntervalId);
     clearInterval(world.gameIntervalId);
     document.removeEventListener('keydown', handlePauseKey);
+}
+
+
+/**
+ * Pauses all background objects.
+ */
+function pauseBackgroundObjects() {
     world.level.backgroundObjects.forEach(bgObject => {
-            bgObject.pause();
+        bgObject.pause();
+    });
+}
+
+
+/**
+ * Resumes all background objects.
+ */
+function resumeBackgroundObjects() {
+    world.level.backgroundObjects.forEach(backgroundObject => {
+        backgroundObject.resetSpeed();
     });
 }
 
@@ -177,15 +223,17 @@ document.getElementById('backToStartScreen').addEventListener('click', backToSta
  * Restarts the game.
  */
 function restartGame() {
+    console.log('Restarting game', backgroundObjects);
     hideEndScreen();
     resetGameAudio();
     world.resetGame();
     world.character.start();
-    // removeAllEventListeners();
+    removeAllEventListeners();
     restartGameParts();
     resetLevel();
     isGameStarted = true;
-    // initializeAllEventListeners();
+    initializeAllEventListeners();
+    resumeBackgroundObjects();
 }
 document.getElementById('restartGame').addEventListener('click', restartGame);
 
@@ -224,51 +272,51 @@ function restartGameParts() {
 }
 
 
-// /**
-//  * Removes all event listeners from the game elements.
-//  */
-// function removeAllEventListeners() {
-//     window.removeEventListener("orientationchange", handleDeviceOrientation);
-//     window.removeEventListener("resize", handleDeviceOrientation);
-//     document.getElementById('startGame').removeEventListener('click', startGame);
-//     document.removeEventListener('keydown', checkMuteKey);
-//     document.getElementById('credits').removeEventListener('click', showCredits);
-//     document.removeEventListener('keydown', handlePauseKey);
-//     window.removeEventListener('resize', adjustInfoBarPosition);
+/**
+ * Removes all event listeners from the game elements.
+ */
+function removeAllEventListeners() {
+    window.removeEventListener("orientationchange", handleDeviceOrientation);
+    window.removeEventListener("resize", handleDeviceOrientation);
+    document.getElementById('startGame').removeEventListener('click', startGame);
+    document.removeEventListener('keydown', checkMuteKey);
+    document.getElementById('credits').removeEventListener('click', showCredits);
+    document.removeEventListener('keydown', handlePauseKey);
+    // window.removeEventListener('resize', adjustInfoBarPosition);
 
-//     document.getElementById('toggleGame').removeEventListener('click', toggleGame);
-//     document.getElementById('enterFullscreen').removeEventListener('click', fullscreen);
-//     document.removeEventListener('keydown', handleFullscreen);
-//     document.removeEventListener('click', closeControlInterface);
-//     const controlInterface = document.getElementById('controlInterface');
-//     controlInterface.removeEventListener('click', controlInterfaceClickHandler);
+    document.getElementById('toggleGame').removeEventListener('click', toggleGame);
+    document.getElementById('enterFullscreen').removeEventListener('click', fullscreen);
+    document.removeEventListener('keydown', handleFullscreen);
+    document.removeEventListener('click', closeControlInterface);
+    const controlInterface = document.getElementById('controlInterface');
+    controlInterface.removeEventListener('click', controlInterfaceClickHandler);
 
-//     document.getElementById('unmuteSounds').removeEventListener('click', toggleMuteSounds);
-//     window.removeEventListener('load', initializeSoundState);
-//     document.removeEventListener('visibilitychange', visibilityChangeHandler);
-// }
+    document.getElementById('unmuteSounds').removeEventListener('click', toggleMuteSounds);
+    window.removeEventListener('load', initializeSoundState);
+    document.removeEventListener('visibilitychange', visibilityChangeHandler);
+}
 
 
-// /**
-//  * Initializes all event listeners for the game elements.
-//  */
-// function initializeAllEventListeners() {
-//     window.addEventListener("orientationchange", handleDeviceOrientation);
-//     window.addEventListener("resize", handleDeviceOrientation);
-//     document.getElementById('startGame').addEventListener('click', startGame);
-//     document.addEventListener('keydown', checkMuteKey);
-//     document.getElementById('credits').addEventListener('click', showCredits);
-//     document.addEventListener('keydown', handlePauseKey);
-//     window.addEventListener('resize', adjustInfoBarPosition);
+/**
+ * Initializes all event listeners for the game elements.
+ */
+function initializeAllEventListeners() {
+    window.addEventListener("orientationchange", handleDeviceOrientation);
+    window.addEventListener("resize", handleDeviceOrientation);
+    document.getElementById('startGame').addEventListener('click', startGame);
+    document.addEventListener('keydown', checkMuteKey);
+    document.getElementById('credits').addEventListener('click', showCredits);
+    document.addEventListener('keydown', handlePauseKey);
+    // window.addEventListener('resize', adjustInfoBarPosition);
 
-//     document.getElementById('toggleGame').addEventListener('click', toggleGame);
-//     document.getElementById('enterFullscreen').addEventListener('click', fullscreen);
-//     document.addEventListener('keydown', handleFullscreen);
-//     document.addEventListener('click', closeControlInterface);
-//     const controlInterface = document.getElementById('controlInterface');
-//     controlInterface.addEventListener('click', controlInterfaceClickHandler);
+    document.getElementById('toggleGame').addEventListener('click', toggleGame);
+    document.getElementById('enterFullscreen').addEventListener('click', fullscreen);
+    document.addEventListener('keydown', handleFullscreen);
+    document.addEventListener('click', closeControlInterface);
+    const controlInterface = document.getElementById('controlInterface');
+    controlInterface.addEventListener('click', controlInterfaceClickHandler);
 
-//     document.getElementById('unmuteSounds').addEventListener('click', toggleMuteSounds);
-//     window.addEventListener('load', initializeSoundState);
-//     document.addEventListener('visibilitychange', visibilityChangeHandler);
-// }
+    document.getElementById('unmuteSounds').addEventListener('click', toggleMuteSounds);
+    window.addEventListener('load', initializeSoundState);
+    document.addEventListener('visibilitychange', visibilityChangeHandler);
+}

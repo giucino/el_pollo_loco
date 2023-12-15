@@ -189,3 +189,14 @@
 
 
 
+// /**
+//  * Clears all intervals and timeouts stored in the intervals and timeouts arrays.
+//  */
+// function clearAllIntervalsAndTimeouts() {
+//     for (let i = 0; i < intervals.length; i++) {
+//         clearInterval(intervals[i]);
+//     }
+//     intervals = [];
+// }
+
+
