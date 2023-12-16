@@ -124,7 +124,6 @@ function togglePauseResume(objects, action, objectType) {
  * Pauses the game world.
  */
 function pauseWorld() {
-    console.log('Pausing world');
     world.pause();
     world.character.pause();
     world.endboss.pause();

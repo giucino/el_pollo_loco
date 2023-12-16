@@ -181,21 +181,12 @@ h2 {
 
 /* Menu -------------- */
 .info-bar {
+    display: flex;
     position: absolute;
     bottom: 13px;
     left: 50%;
     transform: translateX(-50%);
-    display: flex;
     z-index: 2;
-}
-
-.info-bar.active {
-    display: flex;
-    position: absolute;
-    bottom: 60px;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
 }
 
 #toggleGame, #enterFullscreen {
@@ -262,64 +253,6 @@ canvas {
     border-radius: 16px;
     height: 100%;
     width: 100%;
-}
-
-/* Footer -------------- */
-footer {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    padding: 16px;
-    background-color: var(--button-color-dark);
-    color: var(--global-orange);
-    opacity: 0.8;
-    overflow: auto;
-    gap: 20px;
-}
-
-#credits {
-    font-size: 1.75rem;
-    cursor: pointer;
-}
-
-.creditors {
-    display: none;
-    font-size: 1rem;
-    flex-direction: row;
-    gap: 60px;
-}
-
-.creditors div {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-a {
-    text-decoration: none;
-    color: inherit;
-}
-
-a:visited {
-    color: inherit;
-}
-
-footer::-webkit-scrollbar {
-    height: 10px;
-}
-
-footer::-webkit-scrollbar-track {
-    background: var(--global-orange);
-}
-
-footer::-webkit-scrollbar-thumb {
-    background: var(--button-color);
-}
-
-footer::-webkit-scrollbar-thumb:hover {
-    background: var(--button-color-dark);
 }
 
 #deviceContainer {
@@ -415,21 +348,11 @@ p {
     z-index: 2;
 }
 
-/* .hamburger {
-    display: block;
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    bottom: 13px;
-    cursor: pointer;
-    z-index: 2;
-} */
-
 .bar {
     display: block;
     width: 25px;
     height: 3px;
-    margin: 5px 0;
+    margin: 4px 0;
     transition: all 0.3s ease;
     background-color: var(--global-orange);
 }
@@ -439,12 +362,75 @@ p {
 }
 
 .hamburger.active .bar:nth-child(1) {
-    transform: translateY(8px) rotate(45deg);
+    transform: translateY(7px) rotate(45deg);
 }
 
 .hamburger.active .bar:nth-child(3) {
-    transform: translateY(-8px) rotate(-45deg);
+    transform: translateY(-7px) rotate(-45deg);
 }
+
+.info-bar.active {
+    bottom: 60px;
+}
+
+/* Footer -------------- */
+footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    padding: 16px;
+    background-color: var(--button-color-dark);
+    color: var(--global-orange);
+    opacity: 0.8;
+    overflow: auto;
+    gap: 20px;
+}
+
+#credits {
+    font-size: 1.75rem;
+    cursor: pointer;
+}
+
+.creditors {
+    display: none;
+    font-size: 1rem;
+    flex-direction: row;
+    gap: 60px;
+}
+
+.creditors div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+a:visited {
+    color: inherit;
+}
+
+footer::-webkit-scrollbar {
+    height: 10px;
+}
+
+footer::-webkit-scrollbar-track {
+    background: var(--global-orange);
+}
+
+footer::-webkit-scrollbar-thumb {
+    background: var(--button-color);
+}
+
+footer::-webkit-scrollbar-thumb:hover {
+    background: var(--button-color-dark);
+}
+
 
 
 /* Smartphones -------------- */
@@ -476,7 +462,7 @@ p {
         box-shadow: 4px 4px 0 var(--button-color-dark);
         letter-spacing: 2px;
     }
-    
+
     .button:active {
         transform: translateX(2px) translateY(2px);
         box-shadow: 2px 2px 0 var(--button-color-dark);
@@ -485,14 +471,6 @@ p {
     .info-bar {
         gap: 6px;
     }
-
-    /* .info-bar.active {
-        position: absolute;
-        bottom: 60px;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-    } */
 
     .info-bar svg {
         width: 40px;

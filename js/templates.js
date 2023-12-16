@@ -200,3 +200,115 @@
 // }
 
 
+/**
+ * Adds click event listeners to the info bar links.
+ */
+// function addInfoBarLinkListeners() {
+//     document.querySelectorAll('.info-bar-link').forEach(infoLink => {
+//         infoLink.addEventListener('click', () => {
+//             hamburger.classList.remove('active');
+//             infoBar.classList.remove('active');
+//             if (hamburger.style.display === 'block') {
+//                 infoBar.style.display = 'none';
+//             }
+//         });
+//     });
+// }
+
+// function addInfoBarLinkListeners() {
+//   const infoLinks = document.querySelectorAll('.info-bar-link');
+
+//   infoBarClickListener = () => {
+//       hamburger.classList.remove('active');
+//       infoBar.classList.remove('active');
+//       if (hamburger.style.display === 'block') {
+//           infoBar.style.display = 'none';
+//       }
+//   };
+//   infoLinks.forEach(infoLink => {
+//       infoLink.addEventListener('click', infoBarClickListener);
+//   });
+// }
+
+
+
+{/* <footer>
+        <div id="credits">Credits...
+            <div id="creditors" class="creditors">
+                <div>
+                    Music by <a
+                        href="https://pixabay.com/de/users/raspberrymusic-27759797/?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=164689">raspberrymusic</a>
+                    from <a
+                        href="https://pixabay.com/music//?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=164689">Pixabay</a>
+                </div>
+                <div>
+                    Music by <a
+                        href="https://pixabay.com/de/users/top-flow-production-28521292/?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=148320">Sergio
+                        Prosvirini</a> from <a
+                        href="https://pixabay.com/music//?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=148320">Pixabay</a>
+                </div>
+                <div>
+                    Bild von <a
+                        href="https://pixabay.com/de/users/_luca-10388899/?utm_source=link-attribution&utm_medium=referral&utm_campaign=image&utm_content=3784915">Luca</a>
+                    auf <a
+                        href="https://pixabay.com/de//?utm_source=link-attribution&utm_medium=referral&utm_campaign=image&utm_content=3784915">Pixabay</a>
+                </div>
+                <div>
+                    Bild von <a
+                        href="https://pixabay.com/de/users/mostafaelturkey36-13328910/?utm_source=link-attribution&utm_medium=referral&utm_campaign=image&utm_content=5112222">Mostafa
+                        Elturkey</a> auf <a
+                        href="https://pixabay.com/de//?utm_source=link-attribution&utm_medium=referral&utm_campaign=image&utm_content=5112222">Pixabay</a>
+                </div>
+                <div>
+                    Bild von <a target="_blank" href="https://icons8.com/icon/eBCEOT0oGnaL/mute">Mute</target=> icon by
+                        <a target="_blank" href="https://icons8.com">Icons8</a>
+                </div>
+                <div>
+                    Music by <a
+                        href="https://pixabay.com/de/users/white_records-32584949/?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=164704">Maksym
+                        Dudchyk</a> from <a
+                        href="https://pixabay.com//?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=164704">Pixabay</a>
+                </div>
+                <div>
+                    Music by <a
+                        href="https://pixabay.com/de/users/monument_music-34040748/?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=159615">Oleksii
+                        Holubiev</a> from <a
+                        href="https://pixabay.com/music//?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=159615">Pixabay</a>
+                </div>
+                <div>
+                    Music by <a
+                        href="https://pixabay.com/de/users/musictown-25873992/?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=103662">Musictown</a>
+                    from <a
+                        href="https://pixabay.com/music//?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=103662">Pixabay</a>
+                </div>
+                <div>
+                    Music by <a
+                        href="https://pixabay.com/de/users/white_records-32584949/?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=144293">Maksym
+                        Dudchyk</a> from <a
+                        href="https://pixabay.com//?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=144293">Pixabay</a>
+                </div>
+                <div>
+                    Sound Effect by <a
+                        href="https://pixabay.com/de/users/u_ss015dykrt-26759154/?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=146260">u_ss015dykrt</a>
+                    from <a
+                        href="https://pixabay.com/sound-effects//?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=146260">Pixabay</a>
+                </div>
+                <div>
+                    Sound Effect from <a
+                        href="https://pixabay.com/sound-effects/?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=48124">Pixabay</a>
+                </div>
+                <div>
+                    Sound Effect by <a
+                        href="https://pixabay.com/de/users/universfield-28281460/?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=122258">UNIVERSFIELD</a>
+                    from <a
+                        href="https://pixabay.com/sound-effects//?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=122258">Pixabay</a>
+                </div>
+                <div>
+                    Sound Effect by <a
+                        href="https://pixabay.com/de/users/beetpro-16097074/?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=12763">beetpro</a>
+                    from <a
+                        href="https://pixabay.com//?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=12763">Pixabay</a>
+                </div>
+            </div>
+        </div>
+    </footer> */}

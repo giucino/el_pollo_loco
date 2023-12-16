@@ -3,6 +3,10 @@ let ctx;
 let world;
 let keyboard = new Keyboard();
 let character;
+let infoBar = document.querySelector('.info-bar');
+let hamburger = document.querySelector('.hamburger');
+let hamburgerClickListener;
+let infoBarClickListener;
 
 
 /**
@@ -84,6 +88,8 @@ function startGame() {
     playBackgroundMusicIfNotMuted();
     adjustMobileBtnsPosition();
     adjustInfoBarPosition();
+    addInfoBarLinkListeners();
+    addHamburgerListener();
 }
 
 
@@ -146,37 +152,50 @@ window.addEventListener('resize', adjustMobileBtnsPosition);
  * Adjusts the position of the info bar based on the window size.
  */
 function adjustInfoBarPosition() {
-    let infoBar = document.getElementById('infoBar');
-    let hamburger = document.getElementById('hamburger');
-
     if (window.innerWidth <= 550 && isGameStarted) {
         infoBar.style.display = 'none';
         hamburger.style.display = 'block';
     } else {
         infoBar.style.display = '';
+        infoBar.classList.remove('active');
         hamburger.style.display = '';
+        hamburger.classList.remove('active');
     }
 }
 window.addEventListener('resize', adjustInfoBarPosition);
 
 
-let hamburger = document.querySelector('.hamburger');
-let navMenu = document.querySelector('.info-bar');
+/**
+ * Adds a click event listener to the hamburger menu.
+ */
+function addHamburgerListener() {
+    hamburgerClickListener = () => {
+        hamburger.classList.toggle("active");
+        infoBar.classList.toggle("active");
+        infoBar.style.display = infoBar.style.display === 'none' ? 'flex' : 'none';
+    };
+    hamburger.addEventListener("click", hamburgerClickListener);
+}
 
-hamburger.addEventListener("click", () => {
-    hamburger.classList.toggle("active");
-    navMenu.classList.toggle("active");
-    navMenu.style.display = 'flex';
-})
 
-document.querySelectorAll('.nav-link').forEach(n => n. 
-    addEventListener('click', () => {
+/**
+ * Adds click event listeners to the info bar links.
+ */
+function addInfoBarLinkListeners() {
+    const infoLinks = document.querySelectorAll('.info-bar-link');
+
+    infoBarClickListener = () => {
         hamburger.classList.remove('active');
-        navMenu.classList.remove('active');
-        navMenu.style.display = 'none';
+        infoBar.classList.remove('active');
+        if (hamburger.style.display === 'block') {
+            infoBar.style.display = 'none';
+        }
+    };
+    infoLinks.forEach(infoLink => {
+        infoLink.addEventListener('click', infoBarClickListener);
+    });
+}
 
-    } ))
-    
 
 /**
  * Starts the game when the Enter key is pressed.

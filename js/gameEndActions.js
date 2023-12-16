@@ -223,7 +223,6 @@ document.getElementById('backToStartScreen').addEventListener('click', backToSta
  * Restarts the game.
  */
 function restartGame() {
-    console.log('Restarting game', backgroundObjects);
     hideEndScreen();
     resetGameAudio();
     world.resetGame();
@@ -276,24 +275,56 @@ function restartGameParts() {
  * Removes all event listeners from the game elements.
  */
 function removeAllEventListeners() {
+    removeWindowEventListeners();
+    removeDocumentEventListeners();
+    removeElementEventListeners();
+    removeHamburgerAndInfoBarListeners();
+}
+
+
+/**
+ * Removes the event listeners for the window.
+ */
+function removeWindowEventListeners() {
     window.removeEventListener("orientationchange", handleDeviceOrientation);
     window.removeEventListener("resize", handleDeviceOrientation);
-    document.getElementById('startGame').removeEventListener('click', startGame);
-    document.removeEventListener('keydown', checkMuteKey);
-    document.getElementById('credits').removeEventListener('click', showCredits);
-    document.removeEventListener('keydown', handlePauseKey);
     window.removeEventListener('resize', adjustInfoBarPosition);
+    window.removeEventListener('load', initializeSoundState);
+}
 
-    document.getElementById('toggleGame').removeEventListener('click', toggleGame);
-    document.getElementById('enterFullscreen').removeEventListener('click', fullscreen);
+
+/**
+ * Removes the event listeners for the document.
+ */
+function removeDocumentEventListeners() {
+    document.removeEventListener('keydown', checkMuteKey);
+    document.removeEventListener('keydown', handlePauseKey);
     document.removeEventListener('keydown', handleFullscreen);
     document.removeEventListener('click', closeControlInterface);
+    document.removeEventListener('visibilitychange', visibilityChangeHandler);
+}
+
+
+/**
+ * Removes the event listeners for the game elements.
+ */
+function removeElementEventListeners() {
+    document.getElementById('startGame').removeEventListener('click', startGame);
+    document.getElementById('credits').removeEventListener('click', showCredits);
+    document.getElementById('toggleGame').removeEventListener('click', toggleGame);
+    document.getElementById('enterFullscreen').removeEventListener('click', fullscreen);
+    document.getElementById('unmuteSounds').removeEventListener('click', toggleMuteSounds);
     const controlInterface = document.getElementById('controlInterface');
     controlInterface.removeEventListener('click', controlInterfaceClickHandler);
+}
 
-    document.getElementById('unmuteSounds').removeEventListener('click', toggleMuteSounds);
-    window.removeEventListener('load', initializeSoundState);
-    document.removeEventListener('visibilitychange', visibilityChangeHandler);
+
+/**
+ * Removes the hamburger menu and info bar listeners.
+ */
+function removeHamburgerAndInfoBarListeners() {
+    hamburger.removeEventListener("click", hamburgerClickListener);
+    document.querySelectorAll('.info-bar-link').forEach(infoLink => infoLink.removeEventListener('click', infoBarClickListener ));
 }
 
 
@@ -301,22 +332,54 @@ function removeAllEventListeners() {
  * Initializes all event listeners for the game elements.
  */
 function initializeAllEventListeners() {
+    initializeWindowEventListeners();
+    initializeDocumentEventListeners();
+    initializeElementEventListeners();
+    initializeHamburgerAndInfoBarListeners();
+}
+
+
+/**
+ * Initializes the event listeners for the window.
+ */
+function initializeWindowEventListeners() {
     window.addEventListener("orientationchange", handleDeviceOrientation);
     window.addEventListener("resize", handleDeviceOrientation);
-    document.getElementById('startGame').addEventListener('click', startGame);
-    document.addEventListener('keydown', checkMuteKey);
-    document.getElementById('credits').addEventListener('click', showCredits);
-    document.addEventListener('keydown', handlePauseKey);
     window.addEventListener('resize', adjustInfoBarPosition);
+    window.addEventListener('load', initializeSoundState);
+}
 
-    document.getElementById('toggleGame').addEventListener('click', toggleGame);
-    document.getElementById('enterFullscreen').addEventListener('click', fullscreen);
+
+/**
+ * Initializes the event listeners for the document.
+ */
+function initializeDocumentEventListeners() {
+    document.addEventListener('keydown', checkMuteKey);
+    document.addEventListener('keydown', handlePauseKey);
     document.addEventListener('keydown', handleFullscreen);
     document.addEventListener('click', closeControlInterface);
+    document.addEventListener('visibilitychange', visibilityChangeHandler);
+}
+
+
+/**
+ * Initializes the event listeners for the game elements.
+ */
+function initializeElementEventListeners() {
+    document.getElementById('startGame').addEventListener('click', startGame);
+    document.getElementById('credits').addEventListener('click', showCredits);
+    document.getElementById('toggleGame').addEventListener('click', toggleGame);
+    document.getElementById('enterFullscreen').addEventListener('click', fullscreen);
+    document.getElementById('unmuteSounds').addEventListener('click', toggleMuteSounds);
     const controlInterface = document.getElementById('controlInterface');
     controlInterface.addEventListener('click', controlInterfaceClickHandler);
+}
 
-    document.getElementById('unmuteSounds').addEventListener('click', toggleMuteSounds);
-    window.addEventListener('load', initializeSoundState);
-    document.addEventListener('visibilitychange', visibilityChangeHandler);
+
+/**
+ * Initializes the hamburger menu and info bar listeners.
+ */
+function initializeHamburgerAndInfoBarListeners() {
+    hamburger.addEventListener("click", hamburgerClickListener);
+    document.querySelectorAll('.info-bar-link').forEach(infoLink => infoLink.addEventListener('click', infoBarClickListener ));
 }
