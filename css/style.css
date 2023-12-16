@@ -189,11 +189,20 @@ h2 {
     z-index: 2;
 }
 
+.info-bar.active {
+    display: flex;
+    position: absolute;
+    bottom: 60px;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
 #toggleGame, #enterFullscreen {
     display: none;
 }
 
-.info-bar svg{
+.info-bar svg {
     cursor: pointer;
     width: 46px;
     height: 36px;
@@ -388,17 +397,55 @@ p {
 
 .mobile-btns-left {
     display: flex;
-    gap: 10px;
+    gap: 20px;
 }
 
 .mobile-btns-right {
     display: flex;
-    gap: 10px;
+    gap: 20px;
 }
 
-#menuButton {
+#hamburger {
     display: none;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 13px;
+    cursor: pointer;
+    z-index: 2;
 }
+
+/* .hamburger {
+    display: block;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 13px;
+    cursor: pointer;
+    z-index: 2;
+} */
+
+.bar {
+    display: block;
+    width: 25px;
+    height: 3px;
+    margin: 5px 0;
+    transition: all 0.3s ease;
+    background-color: var(--global-orange);
+}
+
+.hamburger.active .bar:nth-child(2) {
+    opacity: 0;
+}
+
+.hamburger.active .bar:nth-child(1) {
+    transform: translateY(8px) rotate(45deg);
+}
+
+.hamburger.active .bar:nth-child(3) {
+    transform: translateY(-8px) rotate(-45deg);
+}
+
 
 /* Smartphones -------------- */
 @media only screen and (max-width: 720px) {
@@ -414,29 +461,43 @@ p {
         font-size: 1.5rem;
     }
 
-    /* .info-bar {
-        display: none;
+    .button {
+        display: inline-block;
+        margin: 0px 8px;
+        padding: 4px 6px;
+        font-family: 'Boogaloo', sans-serif;
+        color: var(--global-orange);
+        text-decoration: none;
+        border: none;
+        outline: none;
+        cursor: pointer;
+        border-radius: 7px;
+        background-color: var(--button-color);
+        box-shadow: 4px 4px 0 var(--button-color-dark);
+        letter-spacing: 2px;
+    }
+    
+    .button:active {
+        transform: translateX(2px) translateY(2px);
+        box-shadow: 2px 2px 0 var(--button-color-dark);
+    }
+
+    .info-bar {
+        gap: 6px;
+    }
+
+    /* .info-bar.active {
         position: absolute;
         bottom: 60px;
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        gap: 6px;
     } */
 
     .info-bar svg {
         width: 40px;
         height: 30px;
         margin-left: 0px;
-    }
-
-    #menuButton {
-        position: absolute;
-        bottom: 13px;
-        left: 50%;
-        transform: translateX(-50%);
-        display: flex;
-        z-index: 2;
     }
 
     #mobileBtns svg {

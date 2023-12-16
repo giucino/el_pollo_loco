@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: throwableObject.class.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: throwableObject.class.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * Represents a throwable object in the game.
+ * 
+ * A throwable object is a type of movable object that can be thrown in a certain direction.
+ * It has a specific width, height, and speed, and it can play different animations for spinning and collision.
+ * 
+ * @extends MovableObject
+ */
+class ThrowableObject extends MovableObject {
+    SALSA_BOTTLE_SPINNING = [
+        'img/6_salsa_bottle/bottle_rotation/1_bottle_rotation.png',
+        'img/6_salsa_bottle/bottle_rotation/2_bottle_rotation.png',
+        'img/6_salsa_bottle/bottle_rotation/3_bottle_rotation.png',
+        'img/6_salsa_bottle/bottle_rotation/4_bottle_rotation.png'
+    ];
+
+
+    SALSA_BOTTLE_COLLISION = [
+        'img/6_salsa_bottle/bottle_rotation/bottle_splash/1_bottle_splash.png',
+        'img/6_salsa_bottle/bottle_rotation/bottle_splash/2_bottle_splash.png',
+        'img/6_salsa_bottle/bottle_rotation/bottle_splash/3_bottle_splash.png',
+        'img/6_salsa_bottle/bottle_rotation/bottle_splash/4_bottle_splash.png',
+        'img/6_salsa_bottle/bottle_rotation/bottle_splash/5_bottle_splash.png',
+        'img/6_salsa_bottle/bottle_rotation/bottle_splash/6_bottle_splash.png'
+    ];
+
+
+    isBursted = false;
+
+
+    /**
+     * Creates a new throwable object.
+     * 
+     * @param {number} x - The initial x-coordinate of the throwable object.
+     * @param {number} y - The initial y-coordinate of the throwable object.
+     * @param {boolean} otherDirection - Whether the throwable object should be thrown in the other direction.
+     */
+    constructor(x, y, otherDirection) {
+        super();
+        this.loadImage('img/6_salsa_bottle/bottle_rotation/1_bottle_rotation.png');
+        this.loadImages(this.SALSA_BOTTLE_SPINNING);
+        this.loadImages(this.SALSA_BOTTLE_COLLISION);
+        this.x = x;
+        this.y = y;
+        this.otherDirection = otherDirection;
+        this.height = 70;
+        this.width = 70;
+        this.throwBottle();
+    }
+
+
+    /**
+     * Throws the throwable object.
+     * 
+     * The throwable object is thrown with a certain speed and direction, and it plays a spinning animation.
+     */
+    throwBottle() {
+        this.speedY = 30;
+        this.applyGravity();
+        this.speedX = this.otherDirection ? -10 : 10;
+
+        this.animationInterval = addSetInterval(() => {
+            this.handleBottleAnimation();
+        }, 45);
+    }
+
+
+    /**
+     * Handles the animation of the throwable object.
+     * 
+     * The throwable object plays a spinning animation and moves in a certain direction.
+     * If it hits the ground, it plays a collision animation.
+     */
+    handleBottleAnimation() {
+        this.playAnimation(this.SALSA_BOTTLE_SPINNING);
+        this.x += this.speedX;
+
+        if (this.hasHitPlayGround()) {
+            clearInterval(this.animationInterval);
+            this.playGroundImpactAnimation();
+        }
+    }
+
+
+    /**
+     * Checks if the throwable object has hit the ground.
+     * @returns {boolean} Whether the throwable object has hit the ground.
+     */
+    hasHitPlayGround() {
+        const groundLevel = 340;
+        return this.y >= groundLevel;
+    }
+
+
+    /**
+     * Plays the collision animation of the throwable object.
+     * 
+     * The throwable object plays a collision animation and a sound effect is played.
+     */
+    playGroundImpactAnimation() {
+        this.playAnimation(this.SALSA_BOTTLE_COLLISION);
+        playAudio('burstBottleAudio');
+    }
+}</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="BackgroundObject.html">BackgroundObject</a></li><li><a href="BottleStraight.html">BottleStraight</a></li><li><a href="BottleTilted.html">BottleTilted</a></li><li><a href="Character.html">Character</a></li><li><a href="Chick.html">Chick</a></li><li><a href="Chicken.html">Chicken</a></li><li><a href="Cloud.html">Cloud</a></li><li><a href="Coin.html">Coin</a></li><li><a href="DrawableObject.html">DrawableObject</a></li><li><a href="Endboss.html">Endboss</a></li><li><a href="Keyboard.html">Keyboard</a></li><li><a href="Level.html">Level</a></li><li><a href="MovableObject.html">MovableObject</a></li><li><a href="StatusBarBottles.html">StatusBarBottles</a></li><li><a href="StatusBarCoins.html">StatusBarCoins</a></li><li><a href="StatusBarHealth.html">StatusBarHealth</a></li><li><a href="StatusBarHealthEndboss.html">StatusBarHealthEndboss</a></li><li><a href="ThrowableObject.html">ThrowableObject</a></li><li><a href="World.html">World</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Sat Dec 16 2023 21:10:35 GMT+0100 (GMT+01:00)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

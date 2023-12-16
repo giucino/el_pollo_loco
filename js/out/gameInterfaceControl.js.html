@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: gameScreenControl.js</title>
+    <title>JSDoc: Source: gameInterfaceControl.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: gameScreenControl.js</h1>
+    <h1 class="page-title">Source: gameInterfaceControl.js</h1>
 
     
 
@@ -26,98 +26,123 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>let isFullScreenActive = false;
-
-/**
- * Toggles fullscreen mode and changes the SVG path of the fullscreen button.
- * This function is attached to the click event of the 'enterFullscreen' button.
- */
-function fullscreen() {
-    toggleFullScreen();
-    changeSVGPath();
-}
-document.getElementById('enterFullscreen').addEventListener('click', fullscreen);
-
-
-/**
- * Toggles the fullscreen mode on and off.
- * When fullscreen mode is activated, it calls the `enterFullscreen` function and changes the tooltip to 'Exit Fullscreen'.
- * When fullscreen mode is deactivated, it calls the `exitFullscreen` function and changes the tooltip to 'Enter Fullscreen'.
- */
-function toggleFullScreen() {
-    isFullScreenActive = !isFullScreenActive;
-    let fullscreen = document.getElementById("fullscreen");
-    isFullScreenActive ? enterFullscreen(fullscreen) : exitFullscreen();
-    changeTooltip('enterFullscreen', 'Exit Fullscreen');
-}
-
-
-/**
- * Changes the SVG path of the fullscreen button based on the current fullscreen state.
- * If fullscreen mode is active, it sets the SVG path to the `exitPath` (which represents the 'Exit Fullscreen' icon).
- * If fullscreen mode is not active, it sets the SVG path to the `enterPath` (which represents the 'Enter Fullscreen' icon).
- */
-function changeSVGPath() {
-    let enterImage = document.getElementById('enterFullscreen');
-    let enterPath = "M32 32C14.3 32 0 46.3 0 64v96c0 17.7 14.3 32 32 32s32-14.3 32-32V96h64c17.7 0 32-14.3 32-32s-14.3-32-32-32H32zM64 352c0-17.7-14.3-32-32-32s-32 14.3-32 32v96c0 17.7 14.3 32 32 32h96c17.7 0 32-14.3 32-32s-14.3-32-32-32H64V352zM320 32c-17.7 0-32 14.3-32 32s14.3 32 32 32h64v64c0 17.7 14.3 32 32 32s32-14.3 32-32V64c0-17.7-14.3-32-32-32H320zM448 352c0-17.7-14.3-32-32-32s-32 14.3-32 32v64H320c-17.7 0-32 14.3-32 32s14.3 32 32 32h96c17.7 0 32-14.3 32-32V352z";
-    let exitPath = "M160 64c0-17.7-14.3-32-32-32s-32 14.3-32 32v64H32c-17.7 0-32 14.3-32 32s14.3 32 32 32h96c17.7 0 32-14.3 32-32V64zM32 320c-17.7 0-32 14.3-32 32s14.3 32 32 32H96v64c0 17.7 14.3 32 32 32s32-14.3 32-32V352c0-17.7-14.3-32-32-32H32zM352 64c0-17.7-14.3-32-32-32s-32 14.3-32 32v96c0 17.7 14.3 32 32 32h96c17.7 0 32-14.3 32-32s-14.3-32-32-32H352V64zM320 320c-17.7 0-32 14.3-32 32v96c0 17.7 14.3 32 32 32s32-14.3 32-32V384h64c17.7 0 32-14.3 32-32s-14.3-32-32-32H320z";
-    enterImage.querySelector('path').setAttribute('d', isFullScreenActive ? exitPath : enterPath);
-}
-
-
-/**
- * Requests the browser to display an element in fullscreen mode.
+            <pre class="prettyprint source linenums"><code>/**
+ * This module manages the game control interface.
  * 
- * @param {HTMLElement} element - The HTML element to display in fullscreen mode.
+ * It provides functions to setup the control interface, handle clicks on the control interface,
+ * toggle the visibility of the control interface, handle game pause or resume, close the control interface,
+ * and add or remove custom event listeners.
  * 
- * This function uses the Fullscreen API, which is implemented differently in different browsers.
- * It first tries to use the standard method `requestFullscreen`.
- * If that method is not available, it tries to use the `webkitRequestFullscreen` method for Safari.
- * If that method is not available, it tries to use the `msRequestFullscreen` method for IE11.
+ * @module gameInterfaceControl
  */
-function enterFullscreen(element) {
-    if (element.requestFullscreen) {
-        element.requestFullscreen();
-    } else if (element.webkitRequestFullscreen) { /* Safari */
-        element.webkitRequestFullscreen();
-    } else if (element.msRequestFullscreen) { /* IE11 */
-        element.msRequestFullscreen();
+
+
+let isGameStarted = false;
+let showControlInterface;
+
+
+/**
+ * Sets up the control interface.
+ * 
+ * It gets the elements for showing the control interface and the control interface itself,
+ * and adds event listeners for clicks on the control interface and the document.
+ */
+function setupControlInterface() {
+    showControlInterface = document.getElementById('showControlInterface');
+    const controlInterface = document.getElementById('controlInterface');
+
+    controlInterface.addEventListener('click', controlInterfaceClickHandler);
+
+    document.addEventListener('click', closeControlInterface);
+}
+document.addEventListener('DOMContentLoaded', setupControlInterface);
+
+
+/**
+ * Handles clicks on the control interface.
+ * 
+ * It stops the propagation of the click event, toggles the control interface, and handles game pause or resume.
+ * @param {Event} event - The click event.
+ */
+let controlInterfaceClickHandler = function(event) {
+    event.stopPropagation();
+    toggleControlInterface();
+    handleGamePauseOrResume();
+};
+
+
+/**
+ * Toggles the visibility of the control interface.
+ * 
+ * It gets the overlay element and toggles the display style of the control interface and the overlay.
+ */
+function toggleControlInterface() {
+    let overlay = document.getElementById('overlay');
+
+    if (showControlInterface.style.display === 'flex') {
+        showControlInterface.style.display = 'none';
+        overlay.style.display = 'none';
+    } else {
+        showControlInterface.style.display = 'flex';
+        overlay.style.display = 'block';
     }
 }
 
 
 /**
- * Handles the keydown event to toggle fullscreen mode.
+ * Handles game pause or resume.
  * 
- * @param {KeyboardEvent} event - The keydown event.
- * 
- * If the key pressed is 'f', it calls the `fullscreen` function to toggle fullscreen mode.
- * This function is attached to the keydown event of the document.
+ * If the game has started, it pauses or resumes the game and removes or adds custom event listeners
+ * based on the display style of the control interface.
  */
-function handleFullscreen(event) {
-    if (event.key.toLowerCase() === 'f') {
-        fullscreen();
+function handleGamePauseOrResume() {
+    if (isGameStarted) {
+        if (showControlInterface.style.display === 'flex') {
+            pauseGame();
+            removeCustomEventListeners();
+        } else {
+            resumeGame();
+            addCustomEventListeners();
+        }
     }
 }
-document.addEventListener('keydown', handleFullscreen);
 
 
 /**
- * Requests the browser to exit fullscreen mode.
+ * Closes the control interface.
  * 
- * This function uses the Fullscreen API, which is implemented differently in different browsers.
- * It first tries to use the standard method `exitFullscreen`.
- * If that method is not available, it tries to use the `webkitExitFullscreen` method for Safari.
- * If that method is not available, it tries to use the `msExitFullscreen` method for IE11.
+ * It gets the overlay element and hides the control interface and the overlay if the control interface is visible.
+ * If the game has started, it also resumes the game and adds custom event listeners.
  */
-function exitFullscreen() {
-    if (document.exitFullscreen) {
-        document.exitFullscreen();
-    } else if (document.webkitExitFullscreen) { /* Safari */
-        document.webkitExitFullscreen();
-    } else if (document.msExitFullscreen) { /* IE11 */
-        document.msExitFullscreen();
+function closeControlInterface() {
+    let overlay = document.getElementById('overlay');
+
+    if (showControlInterface.style.display === 'flex') {
+        showControlInterface.style.display = 'none';
+        overlay.style.display = 'none';
+        if (isGameStarted) {
+            resumeGame();
+            addCustomEventListeners();
+        }
     }
+}
+
+
+/**
+ * Adds custom event listeners for the pause and mute keys.
+ */
+function addCustomEventListeners() {
+    document.addEventListener('keydown', handlePauseKey);
+    document.addEventListener('keydown', checkMuteKey);
+}
+
+
+/**
+ * Removes custom event listeners for the pause and mute keys.
+ */
+function removeCustomEventListeners() {
+    document.removeEventListener('keydown', handlePauseKey);
+    document.removeEventListener('keydown', checkMuteKey);
 }</code></pre>
         </article>
     </section>

@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: audio.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: audio.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * This module manages the audio in the game.
+ * 
+ * It provides functions to play, pause, reset, and mute/unmute audio.
+ * It also provides a function to toggle the mute state of all sounds.
+ * 
+ * @module audio
+ */
+
+
+/**
+ * Configuration for the audio files used in the game.
+ * Each object in the array represents an audio file, with properties for the name, path, loop, and volume.
+ * @type {Object[]}
+ */
+const audioConfig = [
+    {
+        name: "startAudio",
+        path: "audio/start_audio.mp3",
+        loop: true,
+        volume: 0.2
+    },
+    {
+        name: "backgroundMusic",
+        path: "audio/backgroundMusic.mp3",
+        loop: true,
+        volume: 0.1
+    },
+    {
+        name: "walkingAudio",
+        path: "audio/running.mp3",
+        loop: false,
+        volume: 1.0
+    },
+    {
+        name: "jumpingAudio",
+        path: "audio/jump.mp3",
+        loop: false,
+        volume: 0.7
+    },
+    {
+        name: "hurtAudio",
+        path: "audio/hurt.mp3",
+        loop: false,
+        volume: 0.3
+    },
+    {
+        name: "gameOverAudio",
+        path: "audio/game_over.mp3",
+        loop: false,
+        volume: 0.2
+    },
+    {
+        name: "hitEnemyAudio",
+        path: "audio/hit_enemy.mp3",
+        loop: false,
+        volume: 0.5
+    },
+    {
+        name: "coinAudio",
+        path: "audio/coin.mp3",
+        loop: false,
+        volume: 1.0
+    },
+    {
+        name: "collectBottleAudio",
+        path: "audio/collect_bottle.mp3",
+        loop: false,
+        volume: 1.0
+    },
+    {
+        name: "throwBottleAudio",
+        path: "audio/throw_bottle.flac",
+        loop: false,
+        volume: 1.0
+    },
+    {
+        name: "burstBottleAudio",
+        path: "audio/bottle_burst.flac",
+        loop: false,
+        volume: 0.5
+    },
+    {
+        name: "snoringAudio",
+        path: "audio/snoring.mp3",
+        loop: false,
+        volume: 0.1
+    },
+    {
+        name: "endbossAudio",
+        path: "audio/endboss_theme.mp3",
+        loop: true,
+        volume: 0.3
+    },
+    {
+        name: "endbossHurtAudio",
+        path: "audio/endboss.wav",
+        loop: false,
+        volume: 0.3
+    },
+    {
+        name: "outroAudio",
+        path: "audio/outro.mp3",
+        loop: true,
+        volume: 0.5
+    },
+    {
+        name: "victoryAudio",
+        path: "audio/victory.mp3",
+        loop: false,
+        volume: 0.5
+    }
+];
+
+
+let isSoundMuted = true;
+let wasMutedBeforeLeaving = false;
+
+
+/**
+ * An array of all sounds used in the game.
+ * Each object in the array represents a sound, with properties for the name and the audio object.
+ * @type {Object[]}
+ */
+const allSounds = audioConfig.map(sound => {
+    const audio = new Audio(sound.path);
+    audio.loop = sound.loop;
+    audio.volume = sound.volume;
+    return {
+        name: sound.name,
+        audio: audio
+    };
+});
+
+
+/**
+ * Finds an audio object by its name.
+ * @param {string} name - The name of the audio object.
+ * @returns {Audio|null} The audio object, or null if not found.
+ */
+function findAudioByName(name) {
+    let audioObj = allSounds.find(sound => sound.name === name);
+    return audioObj ? audioObj.audio : null;
+}
+
+
+/**
+ * Plays an audio object by its name.
+ * @param {string} name - The name of the audio object.
+ */
+function playAudio(name) {
+    let audio = findAudioByName(name);
+    if (audio) {
+        audio.play();
+    }
+}
+
+
+/**
+ * Pauses an audio object by its name.
+ * @param {string} name - The name of the audio object.
+ */
+function pauseAudio(name) {
+    let audio = findAudioByName(name);
+    if (audio) {
+        audio.pause();
+    }
+}
+
+
+/**
+ * Resets an audio object and plays it by its name.
+ * @param {string} name - The name of the audio object.
+ */
+function resetAudioAndPlay(name) {
+    let audio = findAudioByName(name);
+    if (audio) {
+        audio.currentTime = 0;
+        audio.play();
+    }
+}
+
+
+/**
+ * Resets an audio object and pauses it by its name.
+ * @param {string} name - The name of the audio object.
+ */
+function resetAudioAndPause(name) {
+    let audio = findAudioByName(name);
+    if (audio) {
+        audio.currentTime = 0;
+        audio.pause();
+    }
+}
+
+
+/**
+ * Toggles the mute state of all sounds.
+ * Changes the mute icon accordingly.
+ */
+function toggleMuteSounds() {
+    isSoundMuted = !isSoundMuted;
+    isSoundMuted ? muteAllSounds() : unmuteAllSounds();
+    updateMuteIcon(isSoundMuted);
+    if (!isSoundMuted) {
+        playConditionalAudio();
+    }
+}
+document.getElementById('unmuteSounds').addEventListener('click', toggleMuteSounds);
+
+
+/**
+ * Plays the appropriate audio based on the game state.
+ * @returns {boolean} True if the game is paused, false otherwise.
+ */
+function playConditionalAudio() {
+    let endbossAudio = findAudioByName('endbossAudio');
+    if (isGamePaused || isEndScreenShown || (endbossAudio &amp;&amp; !endbossAudio.paused)) {
+        return;
+    }
+
+    isGameStarted ? playAudio('backgroundMusic') : playAudio('startAudio');
+}
+
+
+/**
+ * Initializes the sound state when the page loads.
+ * The sound is muted and the mute icon is updated accordingly.
+ */
+function initializeSoundState() {
+    isSoundMuted = true;
+    muteAllSounds();
+    updateMuteIcon(isSoundMuted);
+}
+window.addEventListener('load', initializeSoundState);
+
+
+/**
+ * Updates the mute icon based on the current mute state.
+ * @param {boolean} isSoundMuted - The current mute state.
+ */
+function updateMuteIcon(isSoundMuted) {
+    let muteImage = document.getElementById('unmuteSounds');
+    let mutePath = "M533.6 32.5C598.5 85.2 640 165.8 640 256s-41.5 170.7-106.4 223.5c-10.3 8.4-25.4 6.8-33.8-3.5s-6.8-25.4 3.5-33.8C557.5 398.2 592 331.2 592 256s-34.5-142.2-88.7-186.3c-10.3-8.4-11.8-23.5-3.5-33.8s23.5-11.8 33.8-3.5zM473.1 107c43.2 35.2 70.9 88.9 70.9 149s-27.7 113.8-70.9 149c-10.3 8.4-25.4 6.8-33.8-3.5s-6.8-25.4 3.5-33.8C475.3 341.3 496 301.1 496 256s-20.7-85.3-53.2-111.8c-10.3-8.4-11.8-23.5-3.5-33.8s23.5-11.8 33.8-3.5zm-60.5 74.5C434.1 199.1 448 225.9 448 256s-13.9 56.9-35.4 74.5c-10.3 8.4-25.4 6.8-33.8-3.5s-6.8-25.4 3.5-33.8C393.1 284.4 400 271 400 256s-6.9-28.4-17.7-37.3c-10.3-8.4-11.8-23.5-3.5-33.8s23.5-11.8 33.8-3.5zM301.1 34.8C312.6 40 320 51.4 320 64V448c0 12.6-7.4 24-18.9 29.2s-25 3.1-34.4-5.3L131.8 352H64c-35.3 0-64-28.7-64-64V224c0-35.3 28.7-64 64-64h67.8L266.7 40.1c9.4-8.4 22.9-10.4 34.4-5.3z";
+    let unmutePath = "M301.1 34.8C312.6 40 320 51.4 320 64V448c0 12.6-7.4 24-18.9 29.2s-25 3.1-34.4-5.3L131.8 352H64c-35.3 0-64-28.7-64-64V224c0-35.3 28.7-64 64-64h67.8L266.7 40.1c9.4-8.4 22.9-10.4 34.4-5.3zM425 167l55 55 55-55c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9l-55 55 55 55c9.4 9.4 9.4 24.6 0 33.9s-24.6 9.4-33.9 0l-55-55-55 55c-9.4 9.4-24.6 9.4-33.9 0s-9.4-24.6 0-33.9l55-55-55-55c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0z";
+    muteImage.querySelector('path').setAttribute('d', isSoundMuted ? unmutePath : mutePath);
+}
+
+
+/**
+ * Plays the start audio if the game is not started yet and the end screen is not shown.
+ */
+function playStartAudio() {
+    if (!isGameStarted &amp;&amp; !isSoundMuted &amp;&amp; !isEndScreenShown) {
+        playAudio('startAudio');
+    }
+}
+
+
+/**
+ * Checks if the mute key was pressed.
+ * @param {KeyboardEvent} event - The keyboard event.
+ */
+function checkMuteKey(event) {
+    if (event.key.toLowerCase() === 'm') {
+        toggleMuteSounds();
+    }
+}
+
+
+/**
+ * Mutes all sounds.
+ * Changes the tooltip of the mute button to "Unmute Sounds".
+ */
+function muteAllSounds() {
+    allSounds.forEach(sound => {
+        sound.audio.muted = true;
+    });
+    changeTooltip('unmuteSounds', 'Unmute Sounds');
+}
+
+
+/**
+ * Unmutes all sounds.
+ * Changes the tooltip of the mute button to "Mute Sounds".
+ */
+function unmuteAllSounds() {
+    allSounds.forEach(sound => {
+        sound.audio.muted = false;
+    });
+    changeTooltip('unmuteSounds', 'Mute Sounds');
+}
+
+
+/**
+ * Handles the visibility change event of the document.
+ * 
+ * When the document becomes hidden, it mutes all sounds and remembers the mute state before leaving.
+ * When the document becomes visible again, it unmutes all sounds if the sound was not muted before leaving.
+ */
+function visibilityChangeHandler() {
+    if (document.hidden) {
+        wasMutedBeforeLeaving = isSoundMuted;
+        muteAllSounds();
+    } else {
+        if (!wasMutedBeforeLeaving) {
+            unmuteAllSounds();
+        }
+    }
+};
+
+document.addEventListener('visibilitychange', visibilityChangeHandler);</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-audio.html">audio</a></li><li><a href="module-gameInterfaceControl.html">gameInterfaceControl</a></li></ul><h3>Global</h3><ul><li><a href="global.html#ACTION_START">ACTION_START</a></li><li><a href="global.html#addSetInterval">addSetInterval</a></li><li><a href="global.html#adjustInfoBarPosition">adjustInfoBarPosition</a></li><li><a href="global.html#adjustMobileBtnsPosition">adjustMobileBtnsPosition</a></li><li><a href="global.html#backToStartScreen">backToStartScreen</a></li><li><a href="global.html#changeSVGPath">changeSVGPath</a></li><li><a href="global.html#changeTooltip">changeTooltip</a></li><li><a href="global.html#characterHasWon">characterHasWon</a></li><li><a href="global.html#characterIsGameOver">characterIsGameOver</a></li><li><a href="global.html#clearAllIntervals">clearAllIntervals</a></li><li><a href="global.html#enterFullscreen">enterFullscreen</a></li><li><a href="global.html#enterGame">enterGame</a></li><li><a href="global.html#exitFullscreen">exitFullscreen</a></li><li><a href="global.html#fullscreen">fullscreen</a></li><li><a href="global.html#handleDeviceOrientation">handleDeviceOrientation</a></li><li><a href="global.html#handleFullscreen">handleFullscreen</a></li><li><a href="global.html#handlePauseKey">handlePauseKey</a></li><li><a href="global.html#hideAllImages">hideAllImages</a></li><li><a href="global.html#hideEndScreen">hideEndScreen</a></li><li><a href="global.html#init">init</a></li><li><a href="global.html#initializeAllEventListeners">initializeAllEventListeners</a></li><li><a href="global.html#initializeEndScreen">initializeEndScreen</a></li><li><a href="global.html#initializeEventListeners">initializeEventListeners</a></li><li><a href="global.html#initializeGameScreen">initializeGameScreen</a></li><li><a href="global.html#openLinksInNewTab">openLinksInNewTab</a></li><li><a href="global.html#pauseAllGameObjects">pauseAllGameObjects</a></li><li><a href="global.html#pauseAudios">pauseAudios</a></li><li><a href="global.html#pauseBackgroundObjects">pauseBackgroundObjects</a></li><li><a href="global.html#pauseGame">pauseGame</a></li><li><a href="global.html#pauseGameObjectsAndListeners">pauseGameObjectsAndListeners</a></li><li><a href="global.html#pauseSpecificAudios">pauseSpecificAudios</a></li><li><a href="global.html#pauseWorld">pauseWorld</a></li><li><a href="global.html#playBackgroundMusicIfNotMuted">playBackgroundMusicIfNotMuted</a></li><li><a href="global.html#removeAllEventListeners">removeAllEventListeners</a></li><li><a href="global.html#resetGameAudio">resetGameAudio</a></li><li><a href="global.html#restartGame">restartGame</a></li><li><a href="global.html#restartGameParts">restartGameParts</a></li><li><a href="global.html#resumeAllGameObjects">resumeAllGameObjects</a></li><li><a href="global.html#resumeBackgroundAfterDelay">resumeBackgroundAfterDelay</a></li><li><a href="global.html#resumeBackgroundObjects">resumeBackgroundObjects</a></li><li><a href="global.html#resumeGame">resumeGame</a></li><li><a href="global.html#resumeWorld">resumeWorld</a></li><li><a href="global.html#selectRandomEndscreenImage">selectRandomEndscreenImage</a></li><li><a href="global.html#setupEventListeners">setupEventListeners</a></li><li><a href="global.html#showCredits">showCredits</a></li><li><a href="global.html#showDelayedButtons">showDelayedButtons</a></li><li><a href="global.html#showEndscreen">showEndscreen</a></li><li><a href="global.html#showRandomGameOverImage">showRandomGameOverImage</a></li><li><a href="global.html#showRandomImage">showRandomImage</a></li><li><a href="global.html#showRandomLoserImage">showRandomLoserImage</a></li><li><a href="global.html#startGame">startGame</a></li><li><a href="global.html#toggleFullScreen">toggleFullScreen</a></li><li><a href="global.html#toggleGame">toggleGame</a></li><li><a href="global.html#togglePauseResume">togglePauseResume</a></li><li><a href="global.html#updateToggleGamePath">updateToggleGamePath</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Sat Dec 16 2023 21:05:48 GMT+0100 (GMT+01:00)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

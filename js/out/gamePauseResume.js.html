@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: gameScreenControl.js</title>
+    <title>JSDoc: Source: gamePauseResume.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: gameScreenControl.js</h1>
+    <h1 class="page-title">Source: gamePauseResume.js</h1>
 
     
 
@@ -26,98 +26,148 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>let isFullScreenActive = false;
-
-/**
- * Toggles fullscreen mode and changes the SVG path of the fullscreen button.
- * This function is attached to the click event of the 'enterFullscreen' button.
+            <pre class="prettyprint source linenums"><code>/**
+ * Constants for game actions and object types.
  */
-function fullscreen() {
-    toggleFullScreen();
-    changeSVGPath();
-}
-document.getElementById('enterFullscreen').addEventListener('click', fullscreen);
+const ACTION_START = 'start';
+const ACTION_PAUSE = 'pause';
+const OBJECT_TYPE_CHICK = Chick;
+const OBJECT_TYPE_CHICKEN = Chicken;
+const OBJECT_TYPE_CLOUD = Cloud;
+const OBJECT_TYPE_COIN = Coin;
 
-
-/**
- * Toggles the fullscreen mode on and off.
- * When fullscreen mode is activated, it calls the `enterFullscreen` function and changes the tooltip to 'Exit Fullscreen'.
- * When fullscreen mode is deactivated, it calls the `exitFullscreen` function and changes the tooltip to 'Enter Fullscreen'.
- */
-function toggleFullScreen() {
-    isFullScreenActive = !isFullScreenActive;
-    let fullscreen = document.getElementById("fullscreen");
-    isFullScreenActive ? enterFullscreen(fullscreen) : exitFullscreen();
-    changeTooltip('enterFullscreen', 'Exit Fullscreen');
-}
+let isGamePaused = false;
+let firstContactMade = false;
 
 
 /**
- * Changes the SVG path of the fullscreen button based on the current fullscreen state.
- * If fullscreen mode is active, it sets the SVG path to the `exitPath` (which represents the 'Exit Fullscreen' icon).
- * If fullscreen mode is not active, it sets the SVG path to the `enterPath` (which represents the 'Enter Fullscreen' icon).
+ * Handles the pause key press event.
+ * @param {KeyboardEvent} event - The keyboard event.
  */
-function changeSVGPath() {
-    let enterImage = document.getElementById('enterFullscreen');
-    let enterPath = "M32 32C14.3 32 0 46.3 0 64v96c0 17.7 14.3 32 32 32s32-14.3 32-32V96h64c17.7 0 32-14.3 32-32s-14.3-32-32-32H32zM64 352c0-17.7-14.3-32-32-32s-32 14.3-32 32v96c0 17.7 14.3 32 32 32h96c17.7 0 32-14.3 32-32s-14.3-32-32-32H64V352zM320 32c-17.7 0-32 14.3-32 32s14.3 32 32 32h64v64c0 17.7 14.3 32 32 32s32-14.3 32-32V64c0-17.7-14.3-32-32-32H320zM448 352c0-17.7-14.3-32-32-32s-32 14.3-32 32v64H320c-17.7 0-32 14.3-32 32s14.3 32 32 32h96c17.7 0 32-14.3 32-32V352z";
-    let exitPath = "M160 64c0-17.7-14.3-32-32-32s-32 14.3-32 32v64H32c-17.7 0-32 14.3-32 32s14.3 32 32 32h96c17.7 0 32-14.3 32-32V64zM32 320c-17.7 0-32 14.3-32 32s14.3 32 32 32H96v64c0 17.7 14.3 32 32 32s32-14.3 32-32V352c0-17.7-14.3-32-32-32H32zM352 64c0-17.7-14.3-32-32-32s-32 14.3-32 32v96c0 17.7 14.3 32 32 32h96c17.7 0 32-14.3 32-32s-14.3-32-32-32H352V64zM320 320c-17.7 0-32 14.3-32 32v96c0 17.7 14.3 32 32 32s32-14.3 32-32V384h64c17.7 0 32-14.3 32-32s-14.3-32-32-32H320z";
-    enterImage.querySelector('path').setAttribute('d', isFullScreenActive ? exitPath : enterPath);
-}
-
-
-/**
- * Requests the browser to display an element in fullscreen mode.
- * 
- * @param {HTMLElement} element - The HTML element to display in fullscreen mode.
- * 
- * This function uses the Fullscreen API, which is implemented differently in different browsers.
- * It first tries to use the standard method `requestFullscreen`.
- * If that method is not available, it tries to use the `webkitRequestFullscreen` method for Safari.
- * If that method is not available, it tries to use the `msRequestFullscreen` method for IE11.
- */
-function enterFullscreen(element) {
-    if (element.requestFullscreen) {
-        element.requestFullscreen();
-    } else if (element.webkitRequestFullscreen) { /* Safari */
-        element.webkitRequestFullscreen();
-    } else if (element.msRequestFullscreen) { /* IE11 */
-        element.msRequestFullscreen();
+function handlePauseKey(event) {
+    if (event.key.toLowerCase() === 'p') {
+        toggleGame();
     }
 }
 
 
 /**
- * Handles the keydown event to toggle fullscreen mode.
- * 
- * @param {KeyboardEvent} event - The keydown event.
- * 
- * If the key pressed is 'f', it calls the `fullscreen` function to toggle fullscreen mode.
- * This function is attached to the keydown event of the document.
+ * Toggles the game state between paused and resumed.
  */
-function handleFullscreen(event) {
-    if (event.key.toLowerCase() === 'f') {
-        fullscreen();
-    }
+function toggleGame() {
+    isGamePaused = !isGamePaused;
+    isGamePaused ? pauseGame() : resumeGame();
+    changeTooltip('toggleGame', 'Resume Game');
+    updateToggleGamePath();
 }
-document.addEventListener('keydown', handleFullscreen);
+document.getElementById('toggleGame').addEventListener('click', toggleGame);
 
 
 /**
- * Requests the browser to exit fullscreen mode.
- * 
- * This function uses the Fullscreen API, which is implemented differently in different browsers.
- * It first tries to use the standard method `exitFullscreen`.
- * If that method is not available, it tries to use the `webkitExitFullscreen` method for Safari.
- * If that method is not available, it tries to use the `msExitFullscreen` method for IE11.
+ * Updates the game toggle button image based on the game state.
  */
-function exitFullscreen() {
-    if (document.exitFullscreen) {
-        document.exitFullscreen();
-    } else if (document.webkitExitFullscreen) { /* Safari */
-        document.webkitExitFullscreen();
-    } else if (document.msExitFullscreen) { /* IE11 */
-        document.msExitFullscreen();
-    }
+function updateToggleGamePath() {
+    let toggleImage = document.getElementById('toggleGame');
+    let playPath = "M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z";
+    let pausePath = "M48 64C21.5 64 0 85.5 0 112V400c0 26.5 21.5 48 48 48H80c26.5 0 48-21.5 48-48V112c0-26.5-21.5-48-48-48H48zm192 0c-26.5 0-48 21.5-48 48V400c0 26.5 21.5 48 48 48h32c26.5 0 48-21.5 48-48V112c0-26.5-21.5-48-48-48H240z";
+    toggleImage.querySelector('path').setAttribute('d', isGamePaused ? playPath : pausePath);
+}
+
+
+/**
+ * Pauses the game.
+ */
+function pauseGame() {
+    isGamePaused = true;
+    pauseAudios();
+    pauseAllGameObjects();
+    updateToggleGamePath();
+    pauseWorld();
+}
+
+
+/**
+ * Pauses specific audio tracks
+ */
+function pauseAudios() {
+    pauseAudio('backgroundMusic');
+    pauseAudio('endbossAudio');
+    pauseAudio('snoringAudio');
+    pauseAudio('endbossHurtAudio');
+    pauseAudio('walkingAudio');
+}
+
+
+/**
+ * Resumes the game.
+ */
+function resumeGame() {
+    isGamePaused = false;
+    resumeAllGameObjects();
+    updateToggleGamePath();
+    resumeWorld();
+    world.firstContactMade ? playAudio('endbossAudio') : playAudio('backgroundMusic');
+}
+
+
+/**
+ * Pauses all game objects.
+ */
+function pauseAllGameObjects() {
+    togglePauseResume(level1.enemies, ACTION_PAUSE, OBJECT_TYPE_CHICK);
+    togglePauseResume(level1.enemies, ACTION_PAUSE, OBJECT_TYPE_CHICKEN);
+    togglePauseResume(level1.clouds, ACTION_PAUSE, OBJECT_TYPE_CLOUD);
+    togglePauseResume(level1.coins, ACTION_PAUSE, OBJECT_TYPE_COIN);
+
+}
+
+
+/**
+ * Resumes all game objects.
+ */
+function resumeAllGameObjects() {
+    togglePauseResume(level1.enemies, ACTION_START, OBJECT_TYPE_CHICK);
+    togglePauseResume(level1.enemies, ACTION_START, OBJECT_TYPE_CHICKEN);
+    togglePauseResume(level1.clouds, ACTION_START, OBJECT_TYPE_CLOUD);
+    togglePauseResume(level1.coins, ACTION_START, OBJECT_TYPE_COIN);
+}
+
+
+/**
+ * Toggles the pause/resume state for a list of game objects.
+ * @param {Array} objects - The list of game objects.
+ * @param {string} action - The action to perform (start or pause).
+ * @param {Function} objectType - The type of objects to affect.
+ */
+function togglePauseResume(objects, action, objectType) {
+    objects.forEach((object) => {
+        if (object instanceof objectType &amp;&amp; typeof object[action] === 'function') {
+            object[action]();
+        }
+    });
+}
+
+
+/**
+ * Pauses the game world.
+ */
+function pauseWorld() {
+    console.log('Pausing world');
+    world.pause();
+    world.character.pause();
+    world.endboss.pause();
+    pauseBackgroundObjects();
+}
+
+
+/**
+ * Resumes the game world.
+ */
+function resumeWorld() {
+    world.start();
+    world.character.start();
+    world.endboss.start();
+    resumeBackgroundObjects();
 }</code></pre>
         </article>
     </section>
