@@ -310,7 +310,7 @@ function removeDocumentEventListeners() {
  */
 function removeElementEventListeners() {
     document.getElementById('startGame').removeEventListener('click', startGame);
-    document.getElementById('credits').removeEventListener('click', showCredits);
+    // document.getElementById('credits').removeEventListener('click', showCredits);
     document.getElementById('toggleGame').removeEventListener('click', toggleGame);
     document.getElementById('enterFullscreen').removeEventListener('click', fullscreen);
     document.getElementById('unmuteSounds').removeEventListener('click', toggleMuteSounds);
@@ -367,7 +367,7 @@ function initializeDocumentEventListeners() {
  */
 function initializeElementEventListeners() {
     document.getElementById('startGame').addEventListener('click', startGame);
-    document.getElementById('credits').addEventListener('click', showCredits);
+    // document.getElementById('credits').addEventListener('click', showCredits);
     document.getElementById('toggleGame').addEventListener('click', toggleGame);
     document.getElementById('enterFullscreen').addEventListener('click', fullscreen);
     document.getElementById('unmuteSounds').addEventListener('click', toggleMuteSounds);
