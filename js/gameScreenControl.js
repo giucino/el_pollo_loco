@@ -20,7 +20,6 @@ function toggleFullScreen() {
     isFullScreenActive = !isFullScreenActive;
     let fullscreen = document.getElementById("fullscreen");
     isFullScreenActive ? enterFullscreen(fullscreen) : exitFullscreen();
-    changeTooltip('enterFullscreen', 'Exit Fullscreen');
 }
 
 
@@ -55,6 +54,7 @@ function enterFullscreen(element) {
     } else if (element.msRequestFullscreen) { /* IE11 */
         element.msRequestFullscreen();
     }
+    changeTooltip('enterFullscreen', 'Exit Fullscreen');
 }
 
 
@@ -90,4 +90,5 @@ function exitFullscreen() {
     } else if (document.msExitFullscreen) { /* IE11 */
         document.msExitFullscreen();
     }
+    changeTooltip('enterFullscreen', 'Enter Fullscreen');
 }

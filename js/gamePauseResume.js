@@ -29,7 +29,6 @@ function handlePauseKey(event) {
 function toggleGame() {
     isGamePaused = !isGamePaused;
     isGamePaused ? pauseGame() : resumeGame();
-    changeTooltip('toggleGame', 'Resume Game');
     updateToggleGamePath();
 }
 document.getElementById('toggleGame').addEventListener('click', toggleGame);
@@ -55,6 +54,7 @@ function pauseGame() {
     pauseAllGameObjects();
     updateToggleGamePath();
     pauseWorld();
+    changeTooltip('toggleGame', 'Resume Game');
 }
 
 
@@ -79,6 +79,7 @@ function resumeGame() {
     updateToggleGamePath();
     resumeWorld();
     world.firstContactMade ? playAudio('endbossAudio') : playAudio('backgroundMusic');
+    changeTooltip('toggleGame', 'Pause Game');
 }
 
 
