@@ -152,7 +152,7 @@ window.addEventListener('resize', adjustMobileBtnsPosition);
  * Adjusts the position of the info bar based on the window size.
  */
 function adjustInfoBarPosition() {
-    if (window.innerWidth <= 550 && isGameStarted) {
+    if (window.innerWidth <= 720 && isGameStarted) {
         infoBar.style.display = 'none';
         hamburger.style.display = 'block';
     } else {

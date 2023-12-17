@@ -209,7 +209,7 @@ h2 {
     box-shadow: 3px 3px 0 var(--button-color-dark);
 }
 
-.controll-container {
+.control-container {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -232,16 +232,32 @@ h2 {
     overflow-y: scroll;
 }
 
-.controll-container-elem {
+.control-container::-webkit-scrollbar {
+    width: 6px;
+}
+
+.control-container::-webkit-scrollbar-track {
+    background: var(--global-orange);
+}
+
+.control-container::-webkit-scrollbar-thumb {
+    background: var(--button-color);
+}
+
+.control-container::-webkit-scrollbar-thumb:hover {
+    background: var(--button-color-dark);
+}
+
+.control-container-elem {
     margin: 8px;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
 
-.controll-container-elem:nth-child(odd) {
+.control-container-elem:nth-child(odd) {
     color: var(--global-orange);
 }
 
-.controll-container-elem:nth-child(even) {
+.control-container-elem:nth-child(even) {
     color: rgb(230, 230, 230);
 }
 
@@ -483,13 +499,13 @@ footer::-webkit-scrollbar-thumb:hover {
         margin-left: 8px;
     }
 
-    .controll-container {
+    .control-container {
         font-size: 1rem;
         padding: 10px 10px;
         gap: 2px;
     }
 
-    .controll-container-elem {
+    .control-container-elem {
         margin: 2px;
     }
 }
@@ -500,13 +516,13 @@ footer::-webkit-scrollbar-thumb:hover {
         height: 100svh;
     }
 
-    .controll-container {
+    .control-container {
         font-size: 1.25rem;
         padding: 15px 40px;
         gap: 4px;
     }
 
-    .controll-container-elem {
+    .control-container-elem {
         margin: 4px;
     }
 }
