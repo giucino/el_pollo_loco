@@ -48,6 +48,7 @@ function handleDeviceOrientation() {
 function initializeEventListeners() {
     document.getElementById('startGame').addEventListener('click', startGame);
     document.addEventListener('keydown', checkMuteKey);
+    // document.getElementById('credits').addEventListener('click', showCredits);
 }
 
 
